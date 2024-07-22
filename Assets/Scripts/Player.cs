@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public event EventHandler<UsePowerUPEventArgs> UsePowerUp;
     public class UsePowerUPEventArgs : EventArgs {
         public GameObject gameObject;
+        public GameInput gameInput;
     }
     private Rigidbody2D rb;
     public void Start() {
@@ -30,7 +31,8 @@ public class Player : MonoBehaviour
 
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
         UsePowerUp?.Invoke(this, new UsePowerUPEventArgs {
-            gameObject = gameObject
+            gameObject = gameObject,
+            gameInput = gameInput
         });
         UsePowerUp = null;
     }

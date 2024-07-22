@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameInput : MonoBehaviour
 {
     public event EventHandler onPowerUpPerformed;
-    private PlayerInputActions playerInputActions;
+    public PlayerInputActions playerInputActions;
     private void Awake() {
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
