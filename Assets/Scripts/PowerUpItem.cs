@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class PowerUpItem : MonoBehaviour
 {
-
+    [SerializeField] protected GameObject vfx;
     public void collect() {
         Destroy(gameObject);
     }

@@ -11,10 +11,11 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 30f;
-    [SerializeField] private float bounceSpeed = 5f;
     [SerializeField] private float squishChange = 5f;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
+    [SerializeField] private Animator mouthAnim;
+    [SerializeField] private Animator EyesAnim;
 
     Vector2 normalVector;
     
@@ -45,9 +46,17 @@ public class Player : MonoBehaviour
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
         transform.localScale = transform.localScale.Abs();
-    }
+        
+        //do this on dealt damage
+        //EyesAnim.SetBool("hit", true);
+        //mouthAnim.SetBool("Hit", true);
+	}
+	public void OnCollisionExit2D(Collision2D collision) {
+		EyesAnim.SetBool("hit", false);
+		mouthAnim.SetBool("Hit", false);
+	}
 
-    public void OnTriggerEnter2D(Collider2D collision) {
+	public void OnTriggerEnter2D(Collider2D collision) {
         Debug.Log("Trigger");
         if (collision.TryGetComponent(out PowerUpItem powerUpItem) && UsePowerUp == null) {
             UsePowerUp += powerUpItem.Use;

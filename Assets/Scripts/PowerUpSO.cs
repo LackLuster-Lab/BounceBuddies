@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class PowerUpSO : ScriptableObject {
     public Transform prefab;
-    //public PowerUpItem Sprite;
+    public PowerUpItem Script;
+    public Sprite Sprite;
 }

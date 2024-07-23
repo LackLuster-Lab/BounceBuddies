@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Rocket
   m_EditorClassIdentifier: 
   prefab: {fileID: 1676230384002126231, guid: e56d1aeba0ee771408e118deadf479d0, type: 3}
+  Script: {fileID: 2494879386968538571, guid: e56d1aeba0ee771408e118deadf479d0, type: 3}
+  Sprite: {fileID: 21300000, guid: be81bdd4cca71a047be016cc02bf53a1, type: 3}
