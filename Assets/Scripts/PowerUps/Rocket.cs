@@ -5,7 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rocket : PowerUpItem {
-    public override void Use(object sender, Player.UsePowerUPEventArgs eventArgs) {
+	[SerializeField] protected GameObject vfx;
+	public override void Use(object sender, Player.UsePowerUPEventArgs eventArgs) {
         Vector2 currentDir = eventArgs.gameInput.playerInputActions.Player.Move.ReadValue<Vector2>();
         
         Vector3 Rotation = new Vector3(0, 0, (Mathf.Rad2Deg * Mathf.Acos(Vector2.Dot(Vector2.right, currentDir))));

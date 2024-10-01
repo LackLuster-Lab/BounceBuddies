@@ -2,22 +2,28 @@ using Cinemachine.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 30f;
     [SerializeField] private float squishChange = 5f;
+    [SerializeField] private Color BodyColor;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
     [SerializeField] private Animator mouthAnim;
     [SerializeField] private Animator EyesAnim;
+    [SerializeField] private SpriteRenderer MouthSprite;
+    [SerializeField] private SpriteRenderer BodySprite;
+    [SerializeField] private Image powerupIcon; 
+    private Sprite Icon;
 
-    Vector2 normalVector;
+	Vector2 normalVector;
     
     public event EventHandler<UsePowerUPEventArgs> UsePowerUp;
     public class UsePowerUPEventArgs : EventArgs {
@@ -27,6 +33,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     public void Start() {
         rb = GetComponent<Rigidbody2D>();
+        BodySprite.color = BodyColor;
+        MouthSprite.color = BodyColor;
         gameInput.onPowerUpPerformed += GameInput_onPowerUpPerformed;
     }
 
@@ -35,7 +43,9 @@ public class Player : MonoBehaviour
             gameObject = gameObject,
             gameInput = gameInput
         });
+        Icon = null;
         UsePowerUp = null;
+        UpdateIcon();
     }
 
     public void Update() {
@@ -48,8 +58,8 @@ public class Player : MonoBehaviour
         transform.localScale = transform.localScale.Abs();
         
         //do this on dealt damage
-        //EyesAnim.SetBool("hit", true);
-        //mouthAnim.SetBool("Hit", true);
+        EyesAnim.SetBool("hit", true);
+        mouthAnim.SetBool("Hit", true);
 	}
 	public void OnCollisionExit2D(Collision2D collision) {
 		EyesAnim.SetBool("hit", false);
@@ -60,11 +70,15 @@ public class Player : MonoBehaviour
         Debug.Log("Trigger");
         if (collision.TryGetComponent(out PowerUpItem powerUpItem) && UsePowerUp == null) {
             UsePowerUp += powerUpItem.Use;
+            Icon = powerUpItem.powerUpSO.Sprite;
+            UpdateIcon();
             powerUpItem.collect();
         }
     }
 
-
+    private void UpdateIcon() {
+        powerupIcon.sprite = Icon;
+    }
 
     private void HandleMovement() {
         rb.velocity += gameInput.getMovementVectorNormalized() * moveSpeed;

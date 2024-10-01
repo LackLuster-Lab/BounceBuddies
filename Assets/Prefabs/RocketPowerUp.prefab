@@ -33,7 +33,7 @@ Transform:
   - {fileID: 2481134077029889}
   - {fileID: 9192194601311998060}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2494879386968538571
 MonoBehaviour:
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79cb8fcaa1dcb27488d9690d1d4eafe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpSO: {fileID: 11400000, guid: a0c5dd299ad161d43a1a8ce174482647, type: 2}
   vfx: {fileID: 7267094215010224710, guid: ebd133751bb49d04b86aec1259e1ba4a, type: 3}
 --- !u!58 &530224552456339710
 CircleCollider2D:

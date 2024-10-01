@@ -5,8 +5,8 @@ using UnityEngine;
 
 public abstract class PowerUpItem : MonoBehaviour
 {
-    [SerializeField] protected GameObject vfx;
-    public void collect() {
+    [SerializeField]public PowerUpSO powerUpSO;
+	public void collect() {
         Destroy(gameObject);
     }
     public abstract void Use(object sender, Player.UsePowerUPEventArgs eventArgs);
