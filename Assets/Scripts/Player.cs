@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private int HealthMax;
+    private int Health;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 30f;
     [SerializeField] private float squishChange = 5f;
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer BodySprite;
     [SerializeField] private Image powerupIcon; 
     private Sprite Icon;
+
+
 
 	Vector2 normalVector;
     
@@ -36,6 +40,7 @@ public class Player : MonoBehaviour
         BodySprite.color = BodyColor;
         MouthSprite.color = BodyColor;
         gameInput.onPowerUpPerformed += GameInput_onPowerUpPerformed;
+        Health = HealthMax;
     }
 
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
