@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int HealthMax;
+    [SerializeField] private Slider HealthBar;
     private int Health;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 30f;
@@ -41,6 +42,8 @@ public class Player : MonoBehaviour
         MouthSprite.color = BodyColor;
         gameInput.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         Health = HealthMax;
+        HealthBar.maxValue = HealthMax;
+        HealthBar.value = Health;
     }
 
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
@@ -61,7 +64,8 @@ public class Player : MonoBehaviour
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
         transform.localScale = transform.localScale.Abs();
-        
+        Health--;
+        updateHealthBar();
         //do this on dealt damage
         EyesAnim.SetBool("hit", true);
         mouthAnim.SetBool("Hit", true);
@@ -102,4 +106,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    private void updateHealthBar() {
+        HealthBar.value = Health;
+    }
 }
