@@ -5,11 +5,29 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     //all different variables for game modes
+    enum GameState {
+        Start,
+        playing,
+        Endgame
+    }
+    enum Gamemode {
+        Fighter,
+        Race,
+        KingOfHill
+    }
+    enum DamageType {
+        None,
+        Stocks,
+        Percentage
+    }
+    [SerializeField] Gamemode gamemode;//TODO implement
+    [SerializeField] DamageType damageType;//TODO implement
     [SerializeField] bool powerUpsEnabled;
     [SerializeField] private float powerUpSpawnTimerMax = 4f;
     [SerializeField] GameObject[] allPowerUps;
     private float powerUpSpawnTimer;
     private GameObject currentPowerup;
+    private GameState currentGameState = GameState.Start;
     //all map specific things
     [SerializeField] Vector4[] powerUpSpawnLocations;// X-Left, Y-Right, Z-Top, W-Bottom
 
