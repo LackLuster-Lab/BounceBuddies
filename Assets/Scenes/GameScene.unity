@@ -1600,6 +1600,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8957483186507661878, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_fontSize
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957483186507661878, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 851a8555583e79946836bd4505a40cd2, type: 2}
+    - target: {fileID: 8957483186507661878, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957483186507661878, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2293991235019357520, guid: 851a8555583e79946836bd4505a40cd2, type: 2}
+    - target: {fileID: 8957483186507661878, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8970478908970589095, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
       propertyPath: m_Camera
       value: 
