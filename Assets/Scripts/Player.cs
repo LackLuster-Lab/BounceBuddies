@@ -66,12 +66,12 @@ public class Player : MonoBehaviour
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
         transform.localScale = transform.localScale.Abs();
         //do this on dealt damage
-        EyesAnim.SetBool("hit", true);
-        mouthAnim.SetBool("Hit", true);
+        //EyesAnim.SetBool("hit", true);
+        //mouthAnim.SetBool("Hit", true);
 	}
 	public void OnCollisionExit2D(Collision2D collision) {
-		EyesAnim.SetBool("hit", false);
-		mouthAnim.SetBool("Hit", false);
+		//EyesAnim.SetBool("hit", false);
+		//mouthAnim.SetBool("Hit", false);
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision) {
