@@ -884,12 +884,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13fd6531264e664d938e551686d4863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpsEnabled: 0
-  powerUpSpawnTimerMax: 0
+  powerUpsEnabled: 1
+  powerUpSpawnTimerMax: 8
   allPowerUps:
-  - {fileID: 0}
+  - {fileID: 5146337186254192159, guid: e56d1aeba0ee771408e118deadf479d0, type: 3}
   powerUpSpawnLocations:
-  - {x: 0, y: 0, z: 0, w: 0}
+  - {x: -8, y: 8, z: 4, w: -4}
 --- !u!4 &432637374
 Transform:
   m_ObjectHideFlags: 0
