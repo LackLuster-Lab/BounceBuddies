@@ -81,8 +81,13 @@ public class Player : MonoBehaviour
                 gameStarted = true;
             }
             HandleMovement();
+        } else {
+            gameStarted = false;
+            rb.gravityScale = 0;
+            rb.velocity = Vector2.zero;
         }
-    }
+        HandleSquish();
+	}
     public void OnCollisionEnter2D(Collision2D collision) {
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
@@ -116,14 +121,17 @@ public class Player : MonoBehaviour
 
     private void HandleMovement() {
         rb.velocity += gameInput.getMovementVectorNormalized() * moveSpeed;
-
-        transform.right = Vector3.right;
-        if (rb.velocity.magnitude > maxSpeed) {
-            rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity.normalized * maxSpeed, Time.deltaTime * 3);
-        }
-
-        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime * squishChange);
     }
+
+    private void HandleSquish() {
+
+		transform.right = Vector3.right;
+		if (rb.velocity.magnitude > maxSpeed) {
+			rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity.normalized * maxSpeed, Time.deltaTime * 3);
+		}
+
+		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime * squishChange);
+	}
 
     #region gets/sets
     public float getMoveSpeed() {

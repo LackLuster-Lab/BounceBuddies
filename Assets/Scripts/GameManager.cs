@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance {get; private set;}
 
+	public event EventHandler OnStateChanged;
+
 	//all different variables for game modes
 	private enum GameState {
 		WaitingToStart,
@@ -54,12 +56,14 @@ public class GameManager : MonoBehaviour {
 				WaitingToStartTimer -= Time.deltaTime;
 				if (WaitingToStartTimer < 0f) {
 					currentGameState = GameState.Start;
+					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				break;
 			case GameState.Start:
 				StartTimer -= Time.deltaTime;
 				if (StartTimer < 0f) {
 					currentGameState = GameState.playing;
+					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				break;
 			case GameState.playing:
@@ -71,6 +75,14 @@ public class GameManager : MonoBehaviour {
 						break;
 					case Gamemode.KingOfHill:
 						break;
+				}
+				//Game Timer
+				if (UseGameTimer) {
+					GameTimer -= Time.deltaTime;
+					if (GameTimer < 0f) {
+						currentGameState = GameState.Endgame;
+						OnStateChanged?.Invoke(this, EventArgs.Empty);
+					}
 				}
 				//Powerups
 				if (powerUpsEnabled) {
@@ -94,5 +106,17 @@ public class GameManager : MonoBehaviour {
 			case GameState.Endgame:
 				break;
 		}
+	}
+
+	public bool isCountDownToStartActive() {
+		return currentGameState == GameState.Start;
+	}
+
+	public bool isGameOver() {
+		return currentGameState == GameState.Endgame;
+	}
+
+	public float GetCountDownTime() {
+		return StartTimer;
 	}
 }
