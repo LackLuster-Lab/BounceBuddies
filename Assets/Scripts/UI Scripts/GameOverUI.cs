@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class GameOverUI : MonoBehaviour
 {
-	[SerializeField] private GameObject UI;
 
 	private void Start() {
 		GameManager.instance.OnStateChanged += GameManager_OnStateChanged;

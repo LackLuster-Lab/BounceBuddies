@@ -639,7 +639,7 @@ MonoBehaviour:
   powerUpSpawnLocations:
   - {x: -8, y: 8, z: 4, w: -4}
   UseGameTimer: 1
-  GameTimer: 10
+  GameTimer: 60
 --- !u!4 &432637374
 Transform:
   m_ObjectHideFlags: 0
@@ -1341,7 +1341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31b5281068a1ed4395e7ff3150025ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UI: {fileID: 654660862}
 --- !u!1 &670920878
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,7 +2017,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 1033e6cdf7ad05a44906e4ae2cf0b074, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.015
   m_Pitch: 1
   Loop: 1
   Mute: 0
