@@ -1593,12 +1593,52 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 32481427955405004, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: maxSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 32481427955405004, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
       propertyPath: gameInput
       value: 
       objectReference: {fileID: 2091609415}
+    - target: {fileID: 32481427955405004, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: moveSpeed
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 32481427955405004, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: BodyColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 32481427955405004, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: BodyColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 32481427955405004, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: BodyColor.r
+      value: 0.972549
+      objectReference: {fileID: 0}
+    - target: {fileID: 521607875122053839, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 521607875122053839, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5632815253224235459, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294659107342934957, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294659107342934957, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294659107342934957, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8957483186507661878, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
       propertyPath: m_fontSize
