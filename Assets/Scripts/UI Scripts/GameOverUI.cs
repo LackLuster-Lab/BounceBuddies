@@ -6,6 +6,8 @@ using UnityEngine;
 public class GameOverUI : MonoBehaviour
 {
 
+	[SerializeField] private TextMeshProUGUI WinnerText;
+
 	private void Start() {
 		GameManager.instance.OnStateChanged += GameManager_OnStateChanged;
 
@@ -23,6 +25,7 @@ public class GameOverUI : MonoBehaviour
 
 	private void Show() {
 		gameObject.SetActive(true);
+		WinnerText.text = "player 1 wins";//some thing to find player username + "Wins"
 	}
 
 	private void Hide() {

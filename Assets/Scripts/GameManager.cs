@@ -41,12 +41,14 @@ public class GameManager : MonoBehaviour {
 	private float WaitingToStartTimer = 1f;
 	private float StartTimer = 3f;
 	[SerializeField] private bool UseGameTimer = true;
+	[SerializeField] private float GameTimerMax = 60f;
 	[SerializeField] private float GameTimer = 60f;
 	public bool IsGameplaying() {
 		return currentGameState == GameState.playing;
 	}
 	public void Awake() {
 		currentGameState = GameState.WaitingToStart;
+		GameTimer = GameTimerMax;
 		instance = this;
 	}
 
@@ -118,5 +120,9 @@ public class GameManager : MonoBehaviour {
 
 	public float GetCountDownTime() {
 		return StartTimer;
+	}
+
+	public float GetPLayingTimerNormalized() {
+		return 1 - (GameTimer / GameTimerMax);
 	}
 }
