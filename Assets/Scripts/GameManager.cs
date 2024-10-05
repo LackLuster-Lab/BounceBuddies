@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour {
 	//Timers
 	private float WaitingToStartTimer = 1f;
 	private float StartTimer = 3f;
+	private bool isGamePaused = false;
 	[SerializeField] private bool UseGameTimer = true;
 	[SerializeField] private float GameTimerMax = 60f;
 	[SerializeField] private float GameTimer = 60f;
@@ -50,6 +51,14 @@ public class GameManager : MonoBehaviour {
 		currentGameState = GameState.WaitingToStart;
 		GameTimer = GameTimerMax;
 		instance = this;
+	}
+
+	public void Start() {
+		GameInput.instance.pausePerformed += Game_pausePerformed;
+	}
+
+	private void Game_pausePerformed(object sender, EventArgs e) {
+		PauseGame();
 	}
 
 	public void Update() {
@@ -124,5 +133,14 @@ public class GameManager : MonoBehaviour {
 
 	public float GetPLayingTimerNormalized() {
 		return 1 - (GameTimer / GameTimerMax);
+	}
+
+	private void PauseGame() {
+		isGamePaused = !isGamePaused;
+		if (isGamePaused) {
+			Time.timeScale = 1.0f;
+		} else {
+			Time.timeScale = 0.0f;
+		}
 	}
 }
