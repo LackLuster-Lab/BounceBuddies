@@ -4592,6 +4592,7 @@ MonoBehaviour:
   MoveRightText: {fileID: 88061356}
   PowerUpText: {fileID: 1643699030}
   PauseText: {fileID: 259699838}
+  PressToRebindVisualTransform: {fileID: 45710659}
 --- !u!1 &1086078115
 GameObject:
   m_ObjectHideFlags: 0
