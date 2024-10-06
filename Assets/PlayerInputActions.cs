@@ -179,8 +179,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""706971da-0d65-4e7c-83bf-c81f8e4b67d6"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""73fdeb02-44c1-4082-afb6-03ff6dbdce32"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -190,8 +190,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""73fdeb02-44c1-4082-afb6-03ff6dbdce32"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""706971da-0d65-4e7c-83bf-c81f8e4b67d6"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
