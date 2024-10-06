@@ -20,7 +20,14 @@ public class GameInput : MonoBehaviour
         instance = this;
     }
 
-    private void PowerUp_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+	private void OnDestroy() {
+		playerInputActions.Player.PowerUp.performed -= PowerUp_performed;
+		playerInputActions.Player.Pause.performed -= Pause_performed;
+
+        playerInputActions.Dispose();
+	}
+
+	private void PowerUp_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         onPowerUpPerformed?.Invoke(this, EventArgs.Empty);
     }
 
