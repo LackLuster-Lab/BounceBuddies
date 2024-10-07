@@ -16,7 +16,9 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private Button MoveLeftButton;
 	[SerializeField] private Button MoveRightButton;
 	[SerializeField] private Button PowerUpButton;
+	[SerializeField] private Button GamePadPowerUpButton;
 	[SerializeField] private Button PauseButton;
+	[SerializeField] private Button GamePadPauseButton;
 	[SerializeField] private TextMeshProUGUI sFXText;
 	[SerializeField] private TextMeshProUGUI musicText;
 	[SerializeField] private TextMeshProUGUI MoveUpText;
@@ -24,8 +26,12 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private TextMeshProUGUI MoveLeftText;
 	[SerializeField] private TextMeshProUGUI MoveRightText;
 	[SerializeField] private TextMeshProUGUI PowerUpText;
+	[SerializeField] private TextMeshProUGUI GamePadPowerUpText;
 	[SerializeField] private TextMeshProUGUI PauseText;
+	[SerializeField] private TextMeshProUGUI GamePadPauseText;
 	[SerializeField] private Transform PressToRebindVisualTransform;
+
+	private Action closeButtonAction;
 
 	public static OptionsUI instance { get; private set; }
 
@@ -40,6 +46,7 @@ public class OptionsUI : MonoBehaviour {
 		});
 		CloseButton.onClick.AddListener(() => {
 			Hide();
+			closeButtonAction();
 		});
 		MoveUpButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Move_Up);
@@ -59,11 +66,17 @@ public class OptionsUI : MonoBehaviour {
 		PauseButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Pause);
 		});
+		GamePadPauseButton.onClick.AddListener(() => {
+			rebindKey(GameInput.Binding.GamePad_Pause);
+		});
+		GamePadPowerUpButton.onClick.AddListener(() => {
+			rebindKey(GameInput.Binding.GamePad_PowerUp);
+		});
 		instance = this;
 	}
 
 	private void Start() {
-		GameManager.instance.OnUnPauseGame += GameManger_UnpauseGame;
+		//GameManager.instance.OnUnPauseGame += GameManger_UnpauseGame;
 		Hide();
 		HideRebind();
 		
@@ -77,6 +90,8 @@ public class OptionsUI : MonoBehaviour {
 		musicText.text = "Music: " + Mathf.Round(MusicManager.instance.GetVolume() * 10f).ToString();
 		sFXText.text = "Sound Effects: " + Mathf.Round(SoundManager.instance.GetVolume() * 10f).ToString();
 		PowerUpText.text = GameInput.instance.GetBindingText(GameInput.Binding.Power_Up);
+		GamePadPowerUpText.text = GameInput.instance.GetBindingText(GameInput.Binding.GamePad_PowerUp);
+		GamePadPauseText.text = GameInput.instance.GetBindingText(GameInput.Binding.GamePad_Pause);
 		PauseText.text = GameInput.instance.GetBindingText(GameInput.Binding.Pause);
 		MoveUpText.text = GameInput.instance.GetBindingText(GameInput.Binding.Move_Up);
 		MoveDownText.text = GameInput.instance.GetBindingText(GameInput.Binding.Move_Down);
@@ -84,8 +99,10 @@ public class OptionsUI : MonoBehaviour {
 		MoveRightText.text = GameInput.instance.GetBindingText(GameInput.Binding.Move_Right);
 	}
 
-	public void Show() {
+	public void Show(Action onCloseButtonAction) {
+		closeButtonAction = onCloseButtonAction;
 		gameObject.SetActive(true);
+		sFXButton.Select();
 	}
 
 	public void Hide() {

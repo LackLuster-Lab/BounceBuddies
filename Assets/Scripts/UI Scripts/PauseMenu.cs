@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
 	[SerializeField] private Button mainMenuButton;
 	[SerializeField] private Button ResumeButton;
 	[SerializeField] private Button OptionsButton;
+	[SerializeField] private OptionsUI OptionsMenu;
 
 	private EventHandler OnOptionsOpen;
 
@@ -22,7 +23,8 @@ public class PauseMenu : MonoBehaviour
 			Loader.Load(Loader.scenes.MainMenu);
 		});
 		OptionsButton.onClick.AddListener(() => {
-			OptionsUI.instance.Show();
+			Hide(this,EventArgs.Empty);
+			OptionsMenu.Show(ShowWindow);
 		});
 	}
 
@@ -35,9 +37,12 @@ public class PauseMenu : MonoBehaviour
 
 	private void Show(object sender, System.EventArgs e) {
 		gameObject.SetActive(true);
+		ResumeButton.Select();
 	}
 
-	
+	private void ShowWindow() {
+		Show(this, EventArgs.Empty);
+	}
 
 
 
