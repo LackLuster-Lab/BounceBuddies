@@ -19,7 +19,7 @@ public class MainMenuUI : MonoBehaviour
 			Application.Quit();
 		});
 		OptionsButton.onClick.AddListener(() => {
-			OptionsMenu.Show(() => { });
+			OptionsMenu.Show(() => { PlayButton.Select(); });
 		});
 		PlayButton.Select();
 		Time.timeScale = 1f;
