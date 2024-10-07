@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
+	private const string PLAYER_PREF_BINDING = "InputBindings";
+
     public event EventHandler onPowerUpPerformed;
     public event EventHandler pausePerformed;
     public PlayerInputActions playerInputActions;
@@ -23,6 +25,11 @@ public class GameInput : MonoBehaviour
     public static GameInput instance { get; private set; }
     private void Awake() {
         playerInputActions = new PlayerInputActions();
+
+		if (PlayerPrefs.HasKey(PLAYER_PREF_BINDING)) {
+			playerInputActions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PLAYER_PREF_BINDING));
+		}
+
         playerInputActions.Player.Enable();
 
         playerInputActions.Player.PowerUp.performed += PowerUp_performed;
@@ -72,46 +79,46 @@ public class GameInput : MonoBehaviour
 		}
     }
 
-    public void RebindBinding(Binding binding) {
+    public void RebindBinding(Binding binding, Action onActionRebound) {
         playerInputActions.Player.Disable();
 
+		InputAction reboundAction;
+		int actionIndex;
         switch (binding) {
+			default:
             case Binding.Move_Up:
-                playerInputActions.Player.Move.PerformInteractiveRebinding(1).OnComplete(callback => {
-                    callback.Dispose();
-                    playerInputActions.Player.Enable();
-                }).Start(); 
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 1;
                 break;
 			case Binding.Move_Down:
-				playerInputActions.Player.Move.PerformInteractiveRebinding(2).OnComplete(callback => {
-					callback.Dispose();
-					playerInputActions.Player.Enable();
-				}).Start();
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 2;
 				break;
 			case Binding.Move_Left:
-				playerInputActions.Player.Move.PerformInteractiveRebinding(3).OnComplete(callback => {
-					callback.Dispose();
-					playerInputActions.Player.Enable();
-				}).Start();
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 3;
 				break;
 			case Binding.Move_Right:
-				playerInputActions.Player.Move.PerformInteractiveRebinding(4).OnComplete(callback => {
-					callback.Dispose();
-					playerInputActions.Player.Enable();
-				}).Start();
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 4;
 				break;
 			case Binding.Power_Up:
-				playerInputActions.Player.PowerUp.PerformInteractiveRebinding(0).OnComplete(callback => {
-					callback.Dispose();
-					playerInputActions.Player.Enable();
-				}).Start();
+				reboundAction = playerInputActions.Player.PowerUp;
+				actionIndex = 0;
 				break;
 			case Binding.Pause:
-				playerInputActions.Player.Pause.PerformInteractiveRebinding(0).OnComplete(callback => {
-					callback.Dispose();
-					playerInputActions.Player.Enable();
-				}).Start();
+				reboundAction = playerInputActions.Player.Pause;
+				actionIndex = 0;
 				break;
 		}
-    }
+
+		reboundAction.PerformInteractiveRebinding(actionIndex).OnComplete(callback => {
+			callback.Dispose();
+			playerInputActions.Player.Enable();
+			onActionRebound();
+
+			PlayerPrefs.SetString(PLAYER_PREF_BINDING, playerInputActions.SaveBindingOverridesAsJson());
+			PlayerPrefs.Save();
+		}).Start();
+	}
 }

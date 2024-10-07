@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class OptionsUI : MonoBehaviour {
@@ -41,36 +42,30 @@ public class OptionsUI : MonoBehaviour {
 			Hide();
 		});
 		MoveUpButton.onClick.AddListener(() => {
-			GameInput.instance.RebindBinding(GameInput.Binding.Move_Up);
-			updateVisual();
+			rebindKey(GameInput.Binding.Move_Up);
 		}); 
 		MoveDownButton.onClick.AddListener(() => {
-			GameInput.instance.RebindBinding(GameInput.Binding.Move_Down);
-			updateVisual();
+			rebindKey(GameInput.Binding.Move_Down);
 		});
 		MoveLeftButton.onClick.AddListener(() => {
-			GameInput.instance.RebindBinding(GameInput.Binding.Move_Left);
-			updateVisual();
+			rebindKey(GameInput.Binding.Move_Left);
 		});
 		MoveRightButton.onClick.AddListener(() => {
-			GameInput.instance.RebindBinding(GameInput.Binding.Move_Right);
-			updateVisual();
+			rebindKey(GameInput.Binding.Move_Right);
 		});
 		PowerUpButton.onClick.AddListener(() => {
-			GameInput.instance.RebindBinding(GameInput.Binding.Power_Up);
-			updateVisual();
+			rebindKey(GameInput.Binding.Power_Up);
 		});
 		PauseButton.onClick.AddListener(() => {
-			GameInput.instance.RebindBinding(GameInput.Binding.Pause);
-			updateVisual();
+			rebindKey(GameInput.Binding.Pause);
 		});
 		instance = this;
 	}
 
 	private void Start() {
 		GameManager.instance.OnUnPauseGame += GameManger_UnpauseGame;
-		updateVisual();
 		Hide();
+		HideRebind();
 		
 	}
 
@@ -103,5 +98,11 @@ public class OptionsUI : MonoBehaviour {
 
 	public void HideRebind() {
 		PressToRebindVisualTransform.gameObject.SetActive(false);
+		updateVisual();
+	}
+
+	private void rebindKey(GameInput.Binding binding) {
+		ShowRebind();
+		GameInput.instance.RebindBinding(binding, HideRebind);
 	}
 }
