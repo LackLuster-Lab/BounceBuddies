@@ -8,6 +8,6 @@ public class TimerUI : MonoBehaviour
 	[SerializeField] private Image timerImage;
 
 	private void Update() {
-		timerImage.fillAmount = GameManager.instance.GetPLayingTimerNormalized();
+		timerImage.fillAmount = RoundManager.instance.GetPLayingTimerNormalized();
 	}
 }

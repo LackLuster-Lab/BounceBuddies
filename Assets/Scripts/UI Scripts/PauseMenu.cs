@@ -17,7 +17,7 @@ public class PauseMenu : MonoBehaviour
 
 	private void Awake() {
 		ResumeButton.onClick.AddListener(() => { 
-			GameManager.instance.PauseGame();
+			RoundManager.instance.PauseGame();
 		});
 		mainMenuButton.onClick.AddListener(() => {
 			Loader.Load(Loader.scenes.MainMenu);
@@ -29,8 +29,8 @@ public class PauseMenu : MonoBehaviour
 	}
 
 	private void Start() {
-		GameManager.instance.OnPauseGame += Show;
-		GameManager.instance.OnUnPauseGame += Hide;
+		RoundManager.instance.OnPauseGame += Show;
+		RoundManager.instance.OnUnPauseGame += Hide;
 
 		Hide(this, EventArgs.Empty);
 	}

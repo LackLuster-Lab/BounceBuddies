@@ -9,13 +9,13 @@ public class GameOverUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI WinnerText;
 
 	private void Start() {
-		GameManager.instance.OnStateChanged += GameManager_OnStateChanged;
+		RoundManager.instance.OnStateChanged += GameManager_OnStateChanged;
 
 		Hide();
 	}
 
 	private void GameManager_OnStateChanged(object sender, System.EventArgs e) {
-		if (GameManager.instance.isGameOver()) {
+		if (RoundManager.instance.isGameOver()) {
 			Show();
 		} else {
 			Hide();

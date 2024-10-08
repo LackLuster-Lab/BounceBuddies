@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
 
-
+    //GamePlay
     [SerializeField] private int HealthMax;
     private int Health;
     [SerializeField] private float moveSpeed = 5f;
@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Color BodyColor;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
+
+    //Anim
     [SerializeField] private Animator mouthAnim;
     [SerializeField] private Animator EyesAnim;
     [SerializeField] private SpriteRenderer MouthSprite;
@@ -29,7 +31,9 @@ public class Player : MonoBehaviour
 
     private bool gameStarted = false;
 	Vector2 normalVector;
+    private Rigidbody2D rb;
 
+    //Events
     public event EventHandler OnPlayerHitWall;
 
     public event EventHandler<HealthChangeEventArgs> HealthChange;
@@ -42,7 +46,11 @@ public class Player : MonoBehaviour
         public GameObject gameObject;
         public GameInput gameInput;
     }
-    private Rigidbody2D rb;
+
+    public event EventHandler<UpdateIconArgs> UpdateIcon;
+    public class UpdateIconArgs : EventArgs {
+        public Sprite Icon;
+    }
 
 	public void Awake() {
         if (Instance != null) {
@@ -50,6 +58,7 @@ public class Player : MonoBehaviour
         }
 		Instance = this;
 	}
+
 	public void Start() {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
@@ -60,22 +69,10 @@ public class Player : MonoBehaviour
 		gameInput.onPowerUpPerformed += GameInput_onPowerUpPerformed;
 	}
 
-    private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
-        if (GameManager.instance.IsGameplaying()) {
-            UsePowerUp?.Invoke(this, new UsePowerUPEventArgs {
-                gameObject = gameObject,
-                gameInput = gameInput
-            });
-            UsePowerUp = null;
-            UpdateIcon?.Invoke(this, new UpdateIconArgs {
-                Icon = null
-            });
-        }
-    }
 
     public void Update() {
 
-        if (GameManager.instance.IsGameplaying()) {
+        if (RoundManager.instance.IsGameplaying()) {
             if (!gameStarted) {
                 rb.gravityScale = 1;
                 gameStarted = true;
@@ -88,6 +85,20 @@ public class Player : MonoBehaviour
         }
         HandleSquish();
 	}
+
+    private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
+        if (RoundManager.instance.IsGameplaying()) {
+            UsePowerUp?.Invoke(this, new UsePowerUPEventArgs {
+                gameObject = gameObject,
+                gameInput = gameInput
+            });
+            UsePowerUp = null;
+            UpdateIcon?.Invoke(this, new UpdateIconArgs {
+                Icon = null
+            });
+        }
+    }
+
     public void OnCollisionEnter2D(Collision2D collision) {
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
@@ -114,10 +125,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    public event EventHandler<UpdateIconArgs> UpdateIcon;
-    public class UpdateIconArgs : EventArgs {
-        public Sprite Icon;
-    }
 
     private void HandleMovement() {
         rb.velocity += gameInput.getMovementVectorNormalized() * moveSpeed;
@@ -133,15 +140,15 @@ public class Player : MonoBehaviour
 		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime * squishChange);
 	}
 
-    #region gets/sets
-    public float getMoveSpeed() {
-        return moveSpeed;
-    }
-    #endregion
-
     private void changeHealth() {
         HealthChange?.Invoke(this, new HealthChangeEventArgs {
             newHealth = Health
         });
     }
+
+    #region gets/sets
+    public float getMoveSpeed() {
+        return moveSpeed;
+    }
+    #endregion
 }

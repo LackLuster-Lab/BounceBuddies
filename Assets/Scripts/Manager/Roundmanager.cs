@@ -3,13 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class RoundManager : MonoBehaviour {
 
-	public static GameManager instance {get; private set;}
-
-	public event EventHandler OnStateChanged;
-	public event EventHandler OnPauseGame;
-	public event EventHandler OnUnPauseGame;
+	public static RoundManager instance {get; private set;}
 
 
 	//all different variables for game modes
@@ -29,6 +25,8 @@ public class GameManager : MonoBehaviour {
 		Stocks,
 		Percentage
 	}
+
+	//Gamemode Settings
 	[SerializeField] Gamemode gamemode = Gamemode.Fighter;//TODO implement
 	[SerializeField] DamageType damageType = DamageType.Percentage;//TODO implement
 	[SerializeField] bool powerUpsEnabled;
@@ -37,6 +35,7 @@ public class GameManager : MonoBehaviour {
 	private float powerUpSpawnTimer;
 	private GameObject currentPowerup;
 	private GameState currentGameState;
+
 	//all map specific things
 	[SerializeField] Vector4[] powerUpSpawnLocations;// X-Left, Y-Right, Z-Top, W-Bottom
 
@@ -47,9 +46,12 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] private bool UseGameTimer = true;
 	[SerializeField] private float GameTimerMax = 60f;
 	[SerializeField] private float GameTimer = 60f;
-	public bool IsGameplaying() {
-		return currentGameState == GameState.playing;
-	}
+
+	//Events
+	public event EventHandler OnStateChanged;
+	public event EventHandler OnPauseGame;
+	public event EventHandler OnUnPauseGame;
+
 	public void Awake() {
 		currentGameState = GameState.WaitingToStart;
 		GameTimer = GameTimerMax;
@@ -122,14 +124,20 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	//state Gets
 	public bool isCountDownToStartActive() {
 		return currentGameState == GameState.Start;
+	}
+
+	public bool IsGameplaying() {
+		return currentGameState == GameState.playing;
 	}
 
 	public bool isGameOver() {
 		return currentGameState == GameState.Endgame;
 	}
 
+	//Timer Gets
 	public float GetCountDownTime() {
 		return StartTimer;
 	}
@@ -138,6 +146,7 @@ public class GameManager : MonoBehaviour {
 		return 1 - (GameTimer / GameTimerMax);
 	}
 
+	//Pause Game
 	public void PauseGame() {
 		isGamePaused = !isGamePaused;
 		if (isGamePaused) {

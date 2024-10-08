@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour {
+public class PlayerUI : MonoBehaviour {
 	[SerializeField] private Player player;
 	[SerializeField] private Slider HealthBarUI;
 	[SerializeField] private Image powerupIcon;
 	[SerializeField] private Sprite EmptyIcon;
+
 	private void Start() {
 		player.HealthChange += Player_HealthChange;
 		player.UpdateIcon += Player_UpdateIcon;

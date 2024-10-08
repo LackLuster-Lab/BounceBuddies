@@ -9,8 +9,8 @@ public class GameInput : MonoBehaviour
 {
 	private const string PLAYER_PREF_BINDING = "InputBindings";
 
-    public event EventHandler onPowerUpPerformed;
-    public event EventHandler pausePerformed;
+    public static GameInput instance { get; private set; }
+
     public PlayerInputActions playerInputActions;
 
     public enum Binding {
@@ -24,7 +24,10 @@ public class GameInput : MonoBehaviour
 		GamePad_Pause
     }
 
-    public static GameInput instance { get; private set; }
+
+    public event EventHandler onPowerUpPerformed;
+    public event EventHandler pausePerformed;
+
     private void Awake() {
         playerInputActions = new PlayerInputActions();
 
@@ -62,6 +65,7 @@ public class GameInput : MonoBehaviour
         return inputVector;
     }
 
+	//Binding
     public string GetBindingText(Binding binding) {
         switch (binding) {
             default:

@@ -8,6 +8,7 @@ public class MusicManager : MonoBehaviour
 	[SerializeField] private AudioSource music;
 	[SerializeField] private float baseVolume;
 	private float volume = 1f;
+
 	private const string PLAYER_PREF_MUSIC_VOLUME = "MUSICVOLUME";
 
 	private void Awake() {

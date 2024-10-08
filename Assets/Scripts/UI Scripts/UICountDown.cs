@@ -9,13 +9,13 @@ public class UICountDown : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI CountDownText;
 
 	private void Start() {
-		GameManager.instance.OnStateChanged += GameManager_OnStateChanged;
+		RoundManager.instance.OnStateChanged += GameManager_OnStateChanged;
 
 		Hide();
 	}
 
 	private void GameManager_OnStateChanged(object sender, System.EventArgs e) {
-		if (GameManager.instance.isCountDownToStartActive()) {
+		if (RoundManager.instance.isCountDownToStartActive()) {
 			Show();
 		} else {
 			Hide();
@@ -23,7 +23,7 @@ public class UICountDown : MonoBehaviour
 	}
 
 	private void Update() {
-		CountDownText.text = Mathf.Ceil(GameManager.instance.GetCountDownTime()).ToString();
+		CountDownText.text = Mathf.Ceil(RoundManager.instance.GetCountDownTime()).ToString();
 	}
 
 	private void Show() {

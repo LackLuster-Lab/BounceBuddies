@@ -18,11 +18,13 @@ public class SoundManager : MonoBehaviour
 		Player.Instance.OnPlayerHitWall += Player_OnPlayerHitWall;
 	}
 
+	//play sounds
 	private void Player_OnPlayerHitWall(object sender, System.EventArgs e) {
 		Player player = (Player)sender;
 		PlaySound(sounds.PlayerHitWall, player.transform.position, sounds.PlayerHitWallVolume); 
 	}
 
+	//sound manager functions
 	private void PlaySound(AudioClip audio, Vector3 position, float VolumeMultiplier = 1f) {
 		AudioSource.PlayClipAtPoint(audio, position, VolumeMultiplier * volume);
 	}
