@@ -21,6 +21,10 @@ public class GameInput : MonoBehaviour
         Power_Up,
         Pause,
 		GamePad_PowerUp,
+		GamePad_MoveUp,
+		GamePad_MoveDown,
+		GamePad_MoveLeft,
+		GamePad_MoveRight,
 		GamePad_Pause
     }
 
@@ -85,6 +89,14 @@ public class GameInput : MonoBehaviour
 				return playerInputActions.Player.Pause.bindings[0].ToDisplayString();
 			case Binding.GamePad_Pause:
 				return playerInputActions.Player.Pause.bindings[1].ToDisplayString();
+			case Binding.GamePad_MoveUp:
+				return playerInputActions.Player.Move.bindings[6].ToDisplayString();
+			case Binding.GamePad_MoveDown:
+				return playerInputActions.Player.Move.bindings[7].ToDisplayString();
+			case Binding.GamePad_MoveLeft:
+				return playerInputActions.Player.Move.bindings[8].ToDisplayString();
+			case Binding.GamePad_MoveRight:
+				return playerInputActions.Player.Move.bindings[9].ToDisplayString();
 
 
 		}
@@ -128,6 +140,22 @@ public class GameInput : MonoBehaviour
 			case Binding.GamePad_Pause:
 				reboundAction = playerInputActions.Player.Pause;
 				actionIndex = 1;
+				break;
+			case Binding.GamePad_MoveUp:
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 6;
+				break;
+			case Binding.GamePad_MoveDown:
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 7;
+				break;
+			case Binding.GamePad_MoveLeft:
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 8;
+				break;
+			case Binding.GamePad_MoveRight:
+				reboundAction = playerInputActions.Player.Move;
+				actionIndex = 9;
 				break;
 		}
 

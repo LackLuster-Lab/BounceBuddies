@@ -21,6 +21,10 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private Button GamePadPowerUpButton;
 	[SerializeField] private Button PauseButton;
 	[SerializeField] private Button GamePadPauseButton;
+	[SerializeField] private Button GamepadMoveUpButton;
+	[SerializeField] private Button GamepadMoveDownButton;
+	[SerializeField] private Button GamepadMoveLeftButton;
+	[SerializeField] private Button GamepadMoveRightButton;
 
 	//text Values
 	[SerializeField] private TextMeshProUGUI sFXText;
@@ -33,6 +37,10 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private TextMeshProUGUI GamePadPowerUpText;
 	[SerializeField] private TextMeshProUGUI PauseText;
 	[SerializeField] private TextMeshProUGUI GamePadPauseText;
+	[SerializeField] private TextMeshProUGUI GamepadMoveUpText;
+	[SerializeField] private TextMeshProUGUI GamepadMoveDownText;
+	[SerializeField] private TextMeshProUGUI GamepadMoveLeftText;
+	[SerializeField] private TextMeshProUGUI GamepadMoveRightText;
 
 	//rebind visual
 	[SerializeField] private Transform PressToRebindVisualTransform;
@@ -77,6 +85,18 @@ public class OptionsUI : MonoBehaviour {
 		});
 		GamePadPowerUpButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_PowerUp);
+		});//change binding
+		GamepadMoveUpButton.onClick.AddListener(() => {
+			rebindKey(GameInput.Binding.GamePad_MoveUp);
+		});
+		GamepadMoveDownButton.onClick.AddListener(() => {
+			rebindKey(GameInput.Binding.GamePad_MoveDown);
+		});
+		GamepadMoveLeftButton.onClick.AddListener(() => {
+			rebindKey(GameInput.Binding.GamePad_MoveLeft);
+		});
+		GamepadMoveRightButton.onClick.AddListener(() => {
+			rebindKey(GameInput.Binding.GamePad_MoveRight);
 		});
 		instance = this;
 	}
@@ -103,6 +123,10 @@ public class OptionsUI : MonoBehaviour {
 		MoveDownText.text = GameInput.instance.GetBindingText(GameInput.Binding.Move_Down);
 		MoveLeftText.text = GameInput.instance.GetBindingText(GameInput.Binding.Move_Left);
 		MoveRightText.text = GameInput.instance.GetBindingText(GameInput.Binding.Move_Right);
+		GamepadMoveUpText.text = GameInput.instance.GetBindingText(GameInput.Binding.GamePad_MoveUp);
+		GamepadMoveDownText.text = GameInput.instance.GetBindingText(GameInput.Binding.GamePad_MoveDown);
+		GamepadMoveLeftText.text = GameInput.instance.GetBindingText(GameInput.Binding.GamePad_MoveLeft);
+		GamepadMoveRightText.text = GameInput.instance.GetBindingText(GameInput.Binding.GamePad_MoveRight);
 	}
 
 	public void Show(Action onCloseButtonAction) {

@@ -100,11 +100,11 @@ public class Player : MonoBehaviour
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {
+        OnPlayerHitWall?.Invoke(this, EventArgs.Empty);
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
         transform.localScale = transform.localScale.Abs();
-        OnPlayerHitWall?.Invoke(this, EventArgs.Empty);
         //do this on dealt damage
         //EyesAnim.SetBool("hit", true);
         //mouthAnim.SetBool("Hit", true);
