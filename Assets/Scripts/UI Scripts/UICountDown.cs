@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 
-public class UICountDown : MonoBehaviour
-{
+public class UICountDown : MonoBehaviour {
 	[SerializeField] private TextMeshProUGUI CountDownText;
 
 	private void Start() {

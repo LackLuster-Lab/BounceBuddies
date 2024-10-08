@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Rocket : PowerUpItem {
 	[SerializeField] protected GameObject vfx;
+
 	public override void Use(object sender, Player.UsePowerUPEventArgs eventArgs) {
         Vector2 currentDir = eventArgs.gameInput.playerInputActions.Player.Move.ReadValue<Vector2>();
         

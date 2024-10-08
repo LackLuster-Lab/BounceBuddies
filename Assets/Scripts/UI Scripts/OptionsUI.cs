@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class OptionsUI : MonoBehaviour {
+
+	//buttons
 	[SerializeField] private Button sFXButton;
 	[SerializeField] private Button musicButton;
 	[SerializeField] private Button CloseButton;
@@ -19,6 +21,8 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private Button GamePadPowerUpButton;
 	[SerializeField] private Button PauseButton;
 	[SerializeField] private Button GamePadPauseButton;
+
+	//text Values
 	[SerializeField] private TextMeshProUGUI sFXText;
 	[SerializeField] private TextMeshProUGUI musicText;
 	[SerializeField] private TextMeshProUGUI MoveUpText;
@@ -29,6 +33,8 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private TextMeshProUGUI GamePadPowerUpText;
 	[SerializeField] private TextMeshProUGUI PauseText;
 	[SerializeField] private TextMeshProUGUI GamePadPauseText;
+
+	//rebind visual
 	[SerializeField] private Transform PressToRebindVisualTransform;
 
 	private Action closeButtonAction;
