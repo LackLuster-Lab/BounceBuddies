@@ -102,13 +102,12 @@ public class OptionsUI : MonoBehaviour {
 	}
 
 	private void Start() {
-		//GameManager.instance.OnUnPauseGame += GameManger_UnpauseGame;
 		Hide();
 		HideRebind();
 		
 	}
 
-	private void GameManger_UnpauseGame(object sender, EventArgs e) {
+	public void GameManger_UnpauseGame(object sender, EventArgs e) {
 		Hide();
 	}
 

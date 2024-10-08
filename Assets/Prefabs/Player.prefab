@@ -137,7 +137,7 @@ Transform:
   - {fileID: 3326577069437505885}
   - {fileID: 3476346200299507586}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &32481427955405004
 MonoBehaviour:
@@ -153,9 +153,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthMax: 100
   moveSpeed: 0.3
-  maxSpeed: 30
+  maxSpeed: 50
   squishChange: 6
-  BodyColor: {r: 0.9703375, g: 0.9716981, b: 0, a: 1}
+  BodyColor: {r: 0.972549, g: 0, b: 0, a: 1}
   gameInput: {fileID: 0}
   squishSize: {x: 0.4, y: 1.4, z: 1}
   mouthAnim: {fileID: 3979751375038169392}
@@ -292,8 +292,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Player 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 851a8555583e79946836bd4505a40cd2, type: 2}
+  m_sharedMaterial: {fileID: -2293991235019357520, guid: 851a8555583e79946836bd4505a40cd2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -317,8 +317,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.4
-  m_fontSizeBase: 0.4
+  m_fontSize: 0.72
+  m_fontSizeBase: 0.72
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -367,9 +367,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4529124850480446}
     m_Modifications:
+    - target: {fileID: 230251851335645324, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 230251851335645324, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3731846516018666535, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
       propertyPath: m_Name
       value: body
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8810021588418071164, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
       propertyPath: m_RootOrder

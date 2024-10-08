@@ -475,6 +475,10 @@ MonoBehaviour:
   GamePadPowerUpButton: {fileID: 8313301563317883692}
   PauseButton: {fileID: 6993622101324244638}
   GamePadPauseButton: {fileID: 807557582397392023}
+  GamepadMoveUpButton: {fileID: 8953462441485630442}
+  GamepadMoveDownButton: {fileID: 3211007025099478929}
+  GamepadMoveLeftButton: {fileID: 7592057794122355691}
+  GamepadMoveRightButton: {fileID: 6518554261372738445}
   sFXText: {fileID: 1906125353046625944}
   musicText: {fileID: 4034946749350136073}
   MoveUpText: {fileID: 5736379743262630996}
@@ -485,6 +489,10 @@ MonoBehaviour:
   GamePadPowerUpText: {fileID: 188522384949559170}
   PauseText: {fileID: 3076316453284886080}
   GamePadPauseText: {fileID: 7740245708873280316}
+  GamepadMoveUpText: {fileID: 7544233974701873372}
+  GamepadMoveDownText: {fileID: 6362421556984067284}
+  GamepadMoveLeftText: {fileID: 6882558050774563592}
+  GamepadMoveRightText: {fileID: 7737780838123713151}
   PressToRebindVisualTransform: {fileID: 1263724986421620158}
 --- !u!1 &641148082758592429
 GameObject:

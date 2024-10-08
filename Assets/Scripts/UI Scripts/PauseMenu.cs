@@ -25,6 +25,7 @@ public class PauseMenu : MonoBehaviour
 		OptionsButton.onClick.AddListener(() => {
 			Hide(this,EventArgs.Empty);
 			OptionsMenu.Show(ShowWindow);
+			RoundManager.instance.OnUnPauseGame += OptionsMenu.GameManger_UnpauseGame;
 		});
 	}
 
