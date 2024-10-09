@@ -3,12 +3,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
     public static Player Instance { get; private set; }
 

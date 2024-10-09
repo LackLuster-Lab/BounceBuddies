@@ -15,7 +15,9 @@ public class SoundManager : MonoBehaviour
 	}
 
 	private void Start() {
-		Player.Instance.OnPlayerHitWall += Player_OnPlayerHitWall;
+		if (Player.Instance != null) {
+			Player.Instance.OnPlayerHitWall += Player_OnPlayerHitWall;
+		}
 	}
 
 	//play sounds
