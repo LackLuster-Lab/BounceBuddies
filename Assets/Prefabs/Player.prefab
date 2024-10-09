@@ -159,6 +159,8 @@ MonoBehaviour:
   BodyColor: {r: 0.972549, g: 0, b: 0, a: 1}
   gameInput: {fileID: 0}
   squishSize: {x: 0.4, y: 1.4, z: 1}
+  UI: {fileID: 5620464052100414665, guid: 6c8080b3551750347b448ed9a31fad3a, type: 3}
+  Parent: {fileID: 0}
   mouthAnim: {fileID: 3979751375038169392}
   EyesAnim: {fileID: 2430691654609322960}
   MouthSprite: {fileID: 6294659107342934957}

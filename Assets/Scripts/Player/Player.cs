@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
-    public static Player Instance { get; private set; }
+    //public static Player Instance { get; private set; }
 
     //GamePlay
     [SerializeField] private int HealthMax;
@@ -20,9 +20,9 @@ public class Player : NetworkBehaviour
     [SerializeField] private float maxSpeed = 30f;
     [SerializeField] private float squishChange = 5f;
     [SerializeField] private Color BodyColor;
-    [SerializeField] private GameInput gameInput;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
-
+    [SerializeField] private GameObject UI;
+    [SerializeField] private GameObject Parent;
     //Anim
     [SerializeField] private Animator mouthAnim;
     [SerializeField] private Animator EyesAnim;
@@ -54,10 +54,7 @@ public class Player : NetworkBehaviour
     }
 
 	public void Awake() {
-        if (Instance != null) {
-            Debug.Log("there is more then one player");
-        }
-		Instance = this;
+		//Instance = this;
 	}
 
 	public void Start() {
@@ -66,10 +63,11 @@ public class Player : NetworkBehaviour
         BodySprite.color = BodyColor;
         MouthSprite.color = BodyColor;
         Health = HealthMax;
-
-		gameInput.onPowerUpPerformed += GameInput_onPowerUpPerformed;
+        Parent = GameObject.Find("Canvas/PlayersUI");
+        GameObject UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
+        UsedUI.GetComponent<PlayerUI>().setPlayer(this);
+		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
 	}
-
 
     public void Update() {
 
@@ -91,7 +89,7 @@ public class Player : NetworkBehaviour
         if (RoundManager.instance.IsGameplaying()) {
             UsePowerUp?.Invoke(this, new UsePowerUPEventArgs {
                 gameObject = gameObject,
-                gameInput = gameInput
+                gameInput = GameInput.instance
             });
             UsePowerUp = null;
             UpdateIcon?.Invoke(this, new UpdateIconArgs {
@@ -128,7 +126,7 @@ public class Player : NetworkBehaviour
 
 
     private void HandleMovement() {
-        rb.velocity += gameInput.getMovementVectorNormalized() * moveSpeed;
+        rb.velocity += GameInput.instance.getMovementVectorNormalized() * moveSpeed; //network issue
     }
 
     private void HandleSquish() {
