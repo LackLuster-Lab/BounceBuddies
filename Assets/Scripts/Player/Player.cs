@@ -101,18 +101,21 @@ public class Player : NetworkBehaviour
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {
+        if (!IsOwner) { return; }
         OnPlayerHitWall?.Invoke(this, EventArgs.Empty);
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
         transform.localScale = transform.localScale.Abs();
         //do this on dealt damage
-        //EyesAnim.SetBool("hit", true);
-        //mouthAnim.SetBool("Hit", true);
+        if (collision.rigidbody.gameObject.TryGetComponent<Player>(out Player other)) {
+            EyesAnim.SetBool("hit", true);
+            mouthAnim.SetBool("Hit", true);
+        }
 	}
 	public void OnCollisionExit2D(Collision2D collision) {
-		//EyesAnim.SetBool("hit", false);
-		//mouthAnim.SetBool("Hit", false);
+		EyesAnim.SetBool("hit", false);
+		mouthAnim.SetBool("Hit", false);
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision) {
