@@ -1032,7 +1032,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 330182898}
-    PlayerPrefab: {fileID: 5632815253224235459, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
+    PlayerPrefab: {fileID: 6675081184018622526, guid: d83daf3a152ec1e478183dcbe4f516a1, type: 3}
     NetworkPrefabs: []
     TickRate: 30
     ClientConnectionBufferTimeout: 10
@@ -2197,6 +2197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HostButton: {fileID: 1837460412}
   ClientButton: {fileID: 388138991}
+  parent: {fileID: 0}
 --- !u!1 &746426768
 GameObject:
   m_ObjectHideFlags: 0

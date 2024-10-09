@@ -70,7 +70,9 @@ public class Player : NetworkBehaviour
 	}
 
     public void Update() {
-
+        if (!IsOwner) {
+            return;
+        }
         if (RoundManager.instance.IsGameplaying()) {
             if (!gameStarted) {
                 rb.gravityScale = 1;

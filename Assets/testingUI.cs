@@ -8,6 +8,7 @@ public class testingUI : MonoBehaviour
 {
 	[SerializeField] Button HostButton;
 	[SerializeField] Button ClientButton;
+	[SerializeField] Button parent;
 
 	private void Awake() {
 		HostButton.onClick.AddListener(() => {
