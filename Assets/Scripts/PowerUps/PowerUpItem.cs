@@ -13,7 +13,7 @@ public abstract class PowerUpItem : NetworkBehaviour {
 
     [ServerRpc]
     private void collectServerRpc() {
-        Destroy(gameObject);
+		Destroy(gameObject);
     }
 
     public abstract void Use(object sender, Player.UsePowerUPEventArgs eventArgs);

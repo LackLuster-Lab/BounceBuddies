@@ -120,10 +120,10 @@ public class Player : NetworkBehaviour
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision) {
-        Debug.Log("Trigger");
         if (collision.TryGetComponent(out PowerUpItem powerUpItem) && UsePowerUp == null && IsOwner) {
             powerUpItem.collect();
-            UsePowerUp += powerUpItem.Use;
+			Debug.Log("powerup");
+			UsePowerUp += powerUpItem.Use;
             UpdateIcon?.Invoke(this, new UpdateIconArgs {
                 Icon = powerUpItem.powerUpSO.Sprite
 			});
