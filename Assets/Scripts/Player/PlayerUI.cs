@@ -9,15 +9,22 @@ public class PlayerUI : NetworkBehaviour {
 	[SerializeField] private Slider HealthBarUI;
 	[SerializeField] private Image powerupIcon;
 	[SerializeField] private Sprite EmptyIcon;
+	[SerializeField] private Sprite currentIcon;
 
 	private void Start() {
 	}
 
 	private void Player_UpdateIcon(object sender, Player.UpdateIconArgs e) {
-		if (e.Icon != null) {
-			powerupIcon.sprite = e.Icon;
+		currentIcon = e.Icon;
+		UpdateIconServerRpc(e.Icon != null);
+	}
+
+	[ServerRpc]
+	private void UpdateIconServerRpc(bool powerup) {
+		if (powerup) {
+			powerupIcon.sprite = currentIcon;
 		} else {
-			powerupIcon.sprite= EmptyIcon;
+			powerupIcon.sprite = EmptyIcon;
 		}
 	}
 

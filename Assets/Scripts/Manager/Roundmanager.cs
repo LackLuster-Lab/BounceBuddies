@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class RoundManager : MonoBehaviour {
+public class RoundManager : NetworkBehaviour {
 
 	public static RoundManager instance {get; private set;}
 
@@ -67,18 +69,19 @@ public class RoundManager : MonoBehaviour {
 	}
 
 	public void Update() {
+		if (!IsServer) { return; }
 		switch (currentGameState) {
 			case GameState.WaitingToStart:
 				WaitingToStartTimer -= Time.deltaTime;
 				if (WaitingToStartTimer < 0f) {
-					currentGameState = GameState.Start;
+					setStateClientRpc(GameState.Start);
 					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				break;
 			case GameState.Start:
 				StartTimer -= Time.deltaTime;
 				if (StartTimer < 0f) {
-					currentGameState = GameState.playing;
+					setStateClientRpc(GameState.playing);
 					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				break;
@@ -96,7 +99,7 @@ public class RoundManager : MonoBehaviour {
 				if (UseGameTimer) {
 					GameTimer -= Time.deltaTime;
 					if (GameTimer < 0f) {
-						currentGameState = GameState.Endgame;
+						setStateClientRpc(GameState.Endgame);
 						OnStateChanged?.Invoke(this, EventArgs.Empty);
 					}
 				}
@@ -111,7 +114,7 @@ public class RoundManager : MonoBehaviour {
 						float randomX = UnityEngine.Random.Range(powerUpSpawnLocations[randomSpawnArea].x, powerUpSpawnLocations[randomSpawnArea].y);
 						float randomY = UnityEngine.Random.Range(powerUpSpawnLocations[randomSpawnArea].w, powerUpSpawnLocations[randomSpawnArea].z);
 						Vector3 position = new Vector3(randomX, randomY, 0);
-						currentPowerup = Instantiate(allPowerUps[powerupInt], position, Quaternion.identity);
+						SpawnPowerUpClientRpc(position, powerupInt);
 						//instatiate powerup
 						powerUpSpawnTimer = 0;
 					} else {
@@ -122,6 +125,12 @@ public class RoundManager : MonoBehaviour {
 			case GameState.Endgame:
 				break;
 		}
+	}
+
+	//state sets
+	[ClientRpc]
+	private void setStateClientRpc(GameState newState) {
+		currentGameState = newState;
 	}
 
 	//state Gets
@@ -156,5 +165,10 @@ public class RoundManager : MonoBehaviour {
 			Time.timeScale = 0.0f;
 			OnPauseGame?.Invoke(this, EventArgs.Empty);
 		}
+	}
+
+	[ClientRpc]
+	private void SpawnPowerUpClientRpc(Vector3 position, int powerupInt) {
+		currentPowerup = Instantiate(allPowerUps[powerupInt], position, Quaternion.identity);
 	}
 }

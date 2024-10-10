@@ -108,24 +108,25 @@ public class Player : NetworkBehaviour
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
         transform.localScale = transform.localScale.Abs();
         //do this on dealt damage
-        if (collision.rigidbody.gameObject.TryGetComponent<Player>(out Player other)) {
+        if (collision.collider.gameObject.TryGetComponent<Player>(out var player)) {
             EyesAnim.SetBool("hit", true);
             mouthAnim.SetBool("Hit", true);
         }
 	}
 	public void OnCollisionExit2D(Collision2D collision) {
+		if (!IsOwner) { return; }
 		EyesAnim.SetBool("hit", false);
 		mouthAnim.SetBool("Hit", false);
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision) {
         Debug.Log("Trigger");
-        if (collision.TryGetComponent(out PowerUpItem powerUpItem) && UsePowerUp == null) {
+        if (collision.TryGetComponent(out PowerUpItem powerUpItem) && UsePowerUp == null && IsOwner) {
+            powerUpItem.collect();
             UsePowerUp += powerUpItem.Use;
             UpdateIcon?.Invoke(this, new UpdateIconArgs {
                 Icon = powerUpItem.powerUpSO.Sprite
 			});
-            powerUpItem.collect();
         }
     }
 
