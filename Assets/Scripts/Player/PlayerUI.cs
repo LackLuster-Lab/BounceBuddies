@@ -4,25 +4,18 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUI : NetworkBehaviour {
+public class PlayerUI : MonoBehaviour {
 	[SerializeField] private Player player;
 	[SerializeField] private Slider HealthBarUI;
 	[SerializeField] private Image powerupIcon;
 	[SerializeField] private Sprite EmptyIcon;
-	[SerializeField] private Sprite currentIcon;
 
 	private void Start() {
 	}
 
 	private void Player_UpdateIcon(object sender, Player.UpdateIconArgs e) {
-		currentIcon = e.Icon;
-		UpdateIconServerRpc(e.Icon != null);
-	}
-
-	[ServerRpc]
-	private void UpdateIconServerRpc(bool powerup) {
-		if (powerup) {
-			powerupIcon.sprite = currentIcon;
+		if (e.Icon != null) {
+			powerupIcon.sprite = e.Icon;
 		} else {
 			powerupIcon.sprite = EmptyIcon;
 		}

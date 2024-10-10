@@ -29,6 +29,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private SpriteRenderer MouthSprite;
     [SerializeField] private SpriteRenderer BodySprite;
 
+    private PowerUpFunctions.powerup currentPowerUp;
+    private PowerUpItem powerup;
 
     private bool gameStarted = false;
 	Vector2 normalVector;
@@ -42,11 +44,6 @@ public class Player : NetworkBehaviour
         public int newHealth;
     }
 
-    public event EventHandler<UsePowerUPEventArgs> UsePowerUp;
-    public class UsePowerUPEventArgs : EventArgs {
-        public GameObject gameObject;
-        public GameInput gameInput;
-    }
 
     public event EventHandler<UpdateIconArgs> UpdateIcon;
     public class UpdateIconArgs : EventArgs {
@@ -87,13 +84,11 @@ public class Player : NetworkBehaviour
         HandleSquish();
 	}
 
+
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
         if (RoundManager.instance.IsGameplaying()) {
-            UsePowerUp?.Invoke(this, new UsePowerUPEventArgs {
-                gameObject = gameObject,
-                gameInput = GameInput.instance
-            });
-            UsePowerUp = null;
+            PowerUpFunctions.instance.UsePowerup(currentPowerUp, GameInput.instance, gameObject);
+            currentPowerUp = PowerUpFunctions.powerup.None;
             UpdateIcon?.Invoke(this, new UpdateIconArgs {
                 Icon = null
             });
@@ -120,16 +115,25 @@ public class Player : NetworkBehaviour
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.TryGetComponent(out PowerUpItem powerUpItem) && UsePowerUp == null && IsOwner) {
-            powerUpItem.collect();
+        if (collision.TryGetComponent(out powerup) && currentPowerUp == PowerUpFunctions.powerup.None && IsOwner) {
 			Debug.Log("powerup");
-			UsePowerUp += powerUpItem.Use;
-            UpdateIcon?.Invoke(this, new UpdateIconArgs {
-                Icon = powerUpItem.powerUpSO.Sprite
-			});
+			currentPowerUp = powerup.powerup;
+            collectServerRpc();
         }
     }
 
+    [ServerRpc]
+    private void collectServerRpc() {
+        collectClientRpc();
+    }
+
+    [ClientRpc]
+    private void collectClientRpc() {
+		UpdateIcon?.Invoke(this, new UpdateIconArgs {
+			Icon = powerup.powerUpSO.Sprite
+		});
+		powerup.collect();
+	}
 
     private void HandleMovement() {
         rb.velocity += GameInput.instance.getMovementVectorNormalized() * moveSpeed; //network issue
