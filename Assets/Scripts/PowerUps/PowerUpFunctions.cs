@@ -29,27 +29,42 @@ public class PowerUpFunctions : NetworkBehaviour
 		}
 	}
 
+	public void usePowerupVFX(powerup UsedPowerUP, GameInput gameInput, GameObject gameObject) {
+		switch (UsedPowerUP) {
+			case powerup.None:
+				break;
+				case powerup.Rocket:
+				Vector2 currentDir = gameInput.playerInputActions.Player.Move.ReadValue<Vector2>();
+				Vector3 Rotation = new Vector3(0, 0, (Mathf.Rad2Deg * Mathf.Acos(Vector2.Dot(Vector2.right, currentDir))));
+				if (currentDir.y < 0) {
+					Rotation *= -1;
+
+				}
+				Rotation = Rotation + new Vector3(0, 0, 180);
+				//GameObject particles = Instantiate(vfx, eventArgs.gameObject.transform.position, Quaternion.Euler(Rotation));
+				Debug.Log("finishedAction");
+				SpawnRocketVFXClientRpc(gameObject.transform.position, Quaternion.Euler(Rotation));
+				break;
+		}
+	}
+
 	public void RocketPower(GameInput gameInput, GameObject gameObject) {
 		Vector2 currentDir = gameInput.playerInputActions.Player.Move.ReadValue<Vector2>();
-
-		Vector3 Rotation = new Vector3(0, 0, (Mathf.Rad2Deg * Mathf.Acos(Vector2.Dot(Vector2.right, currentDir))));
-		if (currentDir.y < 0) {
-			Rotation *= -1;
-
-		}
-		Rotation = Rotation + new Vector3(0, 0, 180);
 		gameObject.GetComponent<Rigidbody2D>().velocity = currentDir * 50;
-		//GameObject particles = Instantiate(vfx, eventArgs.gameObject.transform.position, Quaternion.Euler(Rotation));
-		SpawnRocketVFXServerRpc(gameObject.transform.position, Quaternion.Euler(Rotation));
+
+
+		//FIX PARTICLES
 	}
 
 	[ServerRpc]
-	private void SpawnRocketVFXServerRpc(Vector3 position, Quaternion rotation) {
+	public void SpawnVFXServerRpc(Vector3 position, Quaternion rotation) {
+		Debug.Log("ConnectedtoServer");
 		SpawnRocketVFXClientRpc(position, rotation);
 	}
 
 	[ClientRpc]
-	private void SpawnRocketVFXClientRpc(Vector3 position, Quaternion rotation) {
+	public void SpawnRocketVFXClientRpc(Vector3 position, Quaternion rotation) {
+		Debug.Log("spawnParticles");
 		GameObject particles = Instantiate(Rocketvfx, position, rotation);
 		Destroy(particles, 1);
 	}

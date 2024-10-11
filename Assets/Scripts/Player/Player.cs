@@ -87,16 +87,33 @@ public class Player : NetworkBehaviour
 
 
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
-        if (RoundManager.instance.IsGameplaying()) {
-            PowerUpFunctions.instance.UsePowerup(currentPowerUp, GameInput.instance, gameObject);
+        if (RoundManager.instance.IsGameplaying() && IsOwner) {
+		    PowerUpFunctions.instance.UsePowerup(currentPowerUp, GameInput.instance, gameObject);
+            UsePowerupServerRpc(currentPowerUp);
             currentPowerUp = PowerUpFunctions.powerup.None;
-            UpdateIcon?.Invoke(this, new UpdateIconArgs {
-                Icon = null
-            });
+            emptyIconServerRpc();
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision) {
+    [ServerRpc]
+    private void UsePowerupServerRpc(PowerUpFunctions.powerup usedPowerup) {
+        
+		    PowerUpFunctions.instance.usePowerupVFX(currentPowerUp, GameInput.instance, gameObject);
+    }
+
+    [ServerRpc]
+    private void emptyIconServerRpc() {
+        emptyIconClientRpc();
+    }
+    [ClientRpc]
+    private void emptyIconClientRpc() {
+
+		UpdateIcon?.Invoke(this, new UpdateIconArgs {
+            Icon = null
+        });
+    }
+
+public void OnCollisionEnter2D(Collision2D collision) {
         if (!IsOwner) { return; }
         OnPlayerHitWall?.Invoke(this, EventArgs.Empty);
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
@@ -117,7 +134,6 @@ public class Player : NetworkBehaviour
 
 	public void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.TryGetComponent<PowerUpItem>(out var powerupItem) && currentPowerUp == PowerUpFunctions.powerup.None) {
-			Debug.Log("powerup");
             powerup = powerupItem;
             FixedString32Bytes name = collision.gameObject.name;
             if (IsOwner) {
@@ -129,20 +145,16 @@ public class Player : NetworkBehaviour
 
     [ServerRpc]
     private void collectServerRpc(FixedString32Bytes name) {
-        Debug.Log("called the server");
         collectClientRpc(name);
     }
 
     [ClientRpc]
     private void collectClientRpc(FixedString32Bytes name) {
         powerup = GameObject.Find(name.ToString()).GetComponent<PowerUpItem>();
-        Debug.Log("Called Client");
 		powerup.collect();
-        Debug.Log("destroyed Item");
 		UpdateIcon?.Invoke(this, new UpdateIconArgs {
 			Icon = powerup.powerUpSO.Sprite
 		});
-        Debug.Log("update Icon");
 
 	}
 
