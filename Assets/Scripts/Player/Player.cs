@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -29,7 +30,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private SpriteRenderer MouthSprite;
     [SerializeField] private SpriteRenderer BodySprite;
 
-    private PowerUpFunctions.powerup currentPowerUp;
+    private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
 
     private bool gameStarted = false;
@@ -115,24 +116,34 @@ public class Player : NetworkBehaviour
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.TryGetComponent(out powerup) && currentPowerUp == PowerUpFunctions.powerup.None && IsOwner) {
+        if (collision.gameObject.TryGetComponent<PowerUpItem>(out var powerupItem) && currentPowerUp == PowerUpFunctions.powerup.None) {
 			Debug.Log("powerup");
-			currentPowerUp = powerup.powerup;
-            collectServerRpc();
+            powerup = powerupItem;
+            FixedString32Bytes name = collision.gameObject.name;
+            if (IsOwner) {
+                currentPowerUp = powerupItem.powerup;
+                collectServerRpc(name);
+            }
         }
     }
 
     [ServerRpc]
-    private void collectServerRpc() {
-        collectClientRpc();
+    private void collectServerRpc(FixedString32Bytes name) {
+        Debug.Log("called the server");
+        collectClientRpc(name);
     }
 
     [ClientRpc]
-    private void collectClientRpc() {
+    private void collectClientRpc(FixedString32Bytes name) {
+        powerup = GameObject.Find(name.ToString()).GetComponent<PowerUpItem>();
+        Debug.Log("Called Client");
+		powerup.collect();
+        Debug.Log("destroyed Item");
 		UpdateIcon?.Invoke(this, new UpdateIconArgs {
 			Icon = powerup.powerUpSO.Sprite
 		});
-		powerup.collect();
+        Debug.Log("update Icon");
+
 	}
 
     private void HandleMovement() {

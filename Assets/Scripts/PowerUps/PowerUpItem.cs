@@ -7,6 +7,7 @@ using UnityEngine;
 public class PowerUpItem : MonoBehaviour {
     [SerializeField]public PowerUpSO powerUpSO;
     [SerializeField]public PowerUpFunctions.powerup powerup;
+
 	public void collect() {
         Destroy(gameObject);
     }

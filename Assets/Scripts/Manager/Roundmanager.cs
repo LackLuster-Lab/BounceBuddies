@@ -54,6 +54,8 @@ public class RoundManager : NetworkBehaviour {
 	public event EventHandler OnPauseGame;
 	public event EventHandler OnUnPauseGame;
 
+	private PowerUpItem PowerupToManage;
+
 	public void Awake() {
 		currentGameState = GameState.WaitingToStart;
 		GameTimer = GameTimerMax;
@@ -170,5 +172,20 @@ public class RoundManager : NetworkBehaviour {
 	[ClientRpc]
 	private void SpawnPowerUpClientRpc(Vector3 position, int powerupInt) {
 		currentPowerup = Instantiate(allPowerUps[powerupInt], position, Quaternion.identity);
+	}
+
+	public void collectPowerup() {
+		collectPowerupServerRpc();
+	}
+
+	[ServerRpc]
+	private void collectPowerupServerRpc() {
+		collectPoweripClientRpc();
+	}
+
+	[ClientRpc]
+	private void collectPoweripClientRpc() {
+		currentPowerup.TryGetComponent<PowerUpItem>(out var powerUpItem);
+		powerUpItem.collect();
 	}
 }
