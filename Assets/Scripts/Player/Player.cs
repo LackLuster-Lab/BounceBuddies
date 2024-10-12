@@ -12,7 +12,9 @@ using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
-    //public static Player Instance { get; private set; }
+
+    public static event EventHandler onAnyPlayerSpawned;
+    public static Player LocalInstance { get; private set; }
 
     //GamePlay
     [SerializeField] private int HealthMax;
@@ -38,7 +40,7 @@ public class Player : NetworkBehaviour
     private Rigidbody2D rb;
 
     //Events
-    public event EventHandler OnPlayerHitWall;
+    public static event EventHandler OnAnyPlayerHitWall;
 
     public event EventHandler<HealthChangeEventArgs> HealthChange;
     public class HealthChangeEventArgs : EventArgs {
@@ -67,7 +69,15 @@ public class Player : NetworkBehaviour
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
 	}
 
-    public void Update() {
+	public override void OnNetworkSpawn() {
+        if (IsOwner) {
+            LocalInstance = this;
+        }
+
+		onAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+	}
+
+	public void Update() {
         if (!IsOwner) {
             return;
         }
@@ -89,16 +99,9 @@ public class Player : NetworkBehaviour
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
         if (RoundManager.instance.IsGameplaying() && IsOwner) {
 		    PowerUpFunctions.instance.UsePowerup(currentPowerUp, GameInput.instance, gameObject);
-            UsePowerupServerRpc(currentPowerUp);
             currentPowerUp = PowerUpFunctions.powerup.None;
             emptyIconServerRpc();
         }
-    }
-
-    [ServerRpc]
-    private void UsePowerupServerRpc(PowerUpFunctions.powerup usedPowerup) {
-        
-		    PowerUpFunctions.instance.usePowerupVFX(currentPowerUp, GameInput.instance, gameObject);
     }
 
     [ServerRpc]
@@ -114,8 +117,8 @@ public class Player : NetworkBehaviour
     }
 
 public void OnCollisionEnter2D(Collision2D collision) {
+        OnAnyPlayerHitWall?.Invoke(this, EventArgs.Empty);
         if (!IsOwner) { return; }
-        OnPlayerHitWall?.Invoke(this, EventArgs.Empty);
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
@@ -182,5 +185,10 @@ public void OnCollisionEnter2D(Collision2D collision) {
     public float getMoveSpeed() {
         return moveSpeed;
     }
-    #endregion
+
+	public static void ResetStaticData() {
+        onAnyPlayerSpawned = null;
+        OnAnyPlayerHitWall = null;
+	}
+	#endregion
 }

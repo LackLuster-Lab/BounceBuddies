@@ -15,14 +15,14 @@ public class SoundManager : MonoBehaviour
 	}
 
 	private void Start() {
-			//Player.Instance.OnPlayerHitWall += Player_OnPlayerHitWall;
+			Player.OnAnyPlayerHitWall += Player_OnPlayerHitWall;
 		
 	}
 
 	//play sounds
 	private void Player_OnPlayerHitWall(object sender, System.EventArgs e) {
-		Player player = (Player)sender;
-		//PlaySound(sounds.PlayerHitWall, player.transform.position, sounds.PlayerHitWallVolume); 
+		Player player = sender as Player;
+		PlaySound(sounds.PlayerHitWall, player.transform.position, sounds.PlayerHitWallVolume); 
 	}
 
 	//sound manager functions
