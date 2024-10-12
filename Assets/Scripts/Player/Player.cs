@@ -116,9 +116,9 @@ public class Player : NetworkBehaviour
         });
     }
 
-public void OnCollisionEnter2D(Collision2D collision) {
-        OnAnyPlayerHitWall?.Invoke(this, EventArgs.Empty);
+    public void OnCollisionEnter2D(Collision2D collision) {
         if (!IsOwner) { return; }
+        onWallHitServerRpc();
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
@@ -129,6 +129,17 @@ public void OnCollisionEnter2D(Collision2D collision) {
             mouthAnim.SetBool("Hit", true);
         }
 	}
+
+    [ServerRpc]
+    public void onWallHitServerRpc() {
+        onWallHitClientRpc();
+    }
+
+	[ClientRpc]
+	public void onWallHitClientRpc() {
+		OnAnyPlayerHitWall?.Invoke(this, EventArgs.Empty);
+	}
+
 	public void OnCollisionExit2D(Collision2D collision) {
 		if (!IsOwner) { return; }
 		EyesAnim.SetBool("hit", false);
