@@ -56,7 +56,11 @@ public class RoundManager : NetworkBehaviour {
 
 	private PowerUpItem PowerupToManage;
 
+	private int currentPlayers;
 
+	public void addPlayer() {
+		currentPlayers++;
+	}
 
 	public void Awake() {
 		currentGameState = GameState.WaitingToStart;

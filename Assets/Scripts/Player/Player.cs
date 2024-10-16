@@ -68,6 +68,7 @@ public class Player : NetworkBehaviour {
         UsedUI.GetComponent<PlayerUI>().setPlayer(this);
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         damageType = RoundManager.instance.damageType;
+        RoundManager.instance.addPlayer();
 	}
 
 	public override void OnNetworkSpawn() {
@@ -144,7 +145,8 @@ public class Player : NetworkBehaviour {
                 Vector2 damagingVelocity = attacking.relativeVelocity;
                 Vector2 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - attacking.GetContact(0).point;
                 double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
-                if (angle < 90) {
+                if (angle < 90 || angle > 270) {
+                } else {
                     Health = Health - 5;
                     dealDamgeServerRpc(Health);
                 }
@@ -158,7 +160,7 @@ public class Player : NetworkBehaviour {
     }
     [ClientRpc]
     private void dealDamgeClientRpc(int damage) {
-        HealthChange?.Invoke(this, new HealthChangeEventArgs { newHealth = damage});
+        changeHealth(damage);
     }
 	[ServerRpc]
     public void onWallHitServerRpc() {
@@ -216,10 +218,21 @@ public class Player : NetworkBehaviour {
 		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime * squishChange);
 	}
 
-    private void changeHealth() {
+    private void changeHealth(int health) {
         HealthChange?.Invoke(this, new HealthChangeEventArgs {
-            newHealth = Health
+            newHealth = health
         });
+        Health = health;
+        if (health <= 0) {
+            //die
+            if (IsOwner) {
+                gameObject.transform.position = new Vector3(1000, 1000, 0);
+            }
+            //Move Really far away
+            //spawn death Particle
+            //start respawn timer
+            //at end of respawn bring back to map
+        }
     }
 
     #region gets/sets
