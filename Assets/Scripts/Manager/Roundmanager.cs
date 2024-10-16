@@ -22,7 +22,7 @@ public class RoundManager : NetworkBehaviour {
 		Race,
 		KingOfHill
 	}
-	private enum DamageType {
+	public enum DamageType {
 		None,
 		Stocks,
 		Percentage
@@ -30,7 +30,7 @@ public class RoundManager : NetworkBehaviour {
 
 	//Gamemode Settings
 	[SerializeField] Gamemode gamemode = Gamemode.Fighter;//TODO implement
-	[SerializeField] DamageType damageType = DamageType.Percentage;//TODO implement
+	[SerializeField] public DamageType damageType = DamageType.Percentage;//TODO implement
 	[SerializeField] bool powerUpsEnabled;
 	[SerializeField] private float powerUpSpawnTimerMax = 4f;
 	[SerializeField] GameObject[] allPowerUps;
@@ -40,7 +40,7 @@ public class RoundManager : NetworkBehaviour {
 
 	//all map specific things
 	[SerializeField] Vector4[] powerUpSpawnLocations;// X-Left, Y-Right, Z-Top, W-Bottom
-
+	private List<Player> currentPlayer;
 	//Timers
 	private float WaitingToStartTimer = 1f;
 	private float StartTimer = 3f;
@@ -55,6 +55,8 @@ public class RoundManager : NetworkBehaviour {
 	public event EventHandler OnUnPauseGame;
 
 	private PowerUpItem PowerupToManage;
+
+
 
 	public void Awake() {
 		currentGameState = GameState.WaitingToStart;
@@ -188,4 +190,6 @@ public class RoundManager : NetworkBehaviour {
 		currentPowerup.TryGetComponent<PowerUpItem>(out var powerUpItem);
 		powerUpItem.collect();
 	}
+
+
 }

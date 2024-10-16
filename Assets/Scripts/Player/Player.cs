@@ -10,15 +10,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Player : NetworkBehaviour
-{
+public class Player : NetworkBehaviour {
 
     public static event EventHandler onAnyPlayerSpawned;
     public static Player LocalInstance { get; private set; }
 
     //GamePlay
     [SerializeField] private int HealthMax;
-    private int Health;
+    [NonSerialized] public int Health;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 30f;
     [SerializeField] private float squishChange = 5f;
@@ -34,11 +33,12 @@ public class Player : NetworkBehaviour
 
     private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
-
+    private bool DealDamage;
     private bool gameStarted = false;
 	Vector2 normalVector;
     private Rigidbody2D rb;
-
+    private RoundManager.DamageType damageType;
+    public int roundposition;
     //Events
     public static event EventHandler OnAnyPlayerHitWall;
 
@@ -67,6 +67,7 @@ public class Player : NetworkBehaviour
         GameObject UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
         UsedUI.GetComponent<PlayerUI>().setPlayer(this);
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
+        damageType = RoundManager.instance.damageType;
 	}
 
 	public override void OnNetworkSpawn() {
@@ -118,7 +119,6 @@ public class Player : NetworkBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision) {
         if (!IsOwner) { return; }
-        onWallHitServerRpc();
         normalVector = transform.position -  new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
         float rotation = Vector3.Angle(normalVector, Vector3.right);
         transform.localScale = Quaternion.Euler(0, 0, rotation) * squishSize;
@@ -127,10 +127,40 @@ public class Player : NetworkBehaviour
         if (collision.collider.gameObject.TryGetComponent<Player>(out var player)) {
             EyesAnim.SetBool("hit", true);
             mouthAnim.SetBool("Hit", true);
+            
+            PlayerDealDamage(collision, this);
+        } else {
+            onWallHitServerRpc();
         }
 	}
 
+	public void PlayerDealDamage(Collision2D attacking, Player defending) {
+		switch (damageType) {
+			case RoundManager.DamageType.None://do nothing
+				break;
+			case RoundManager.DamageType.Stocks://need this coded
+				break;
+			case RoundManager.DamageType.Percentage:
+                Vector2 damagingVelocity = attacking.relativeVelocity;
+                Vector2 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - attacking.GetContact(0).point;
+                double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
+                if (angle < 90) {
+                    Health = Health - 20;
+                    dealDamgeServerRpc(Health);
+                }
+				break;
+		}
+	}
+
     [ServerRpc]
+    private void dealDamgeServerRpc(int damage) {
+        dealDamgeClientRpc(damage);
+    }
+    [ClientRpc]
+    private void dealDamgeClientRpc(int damage) {
+        HealthChange?.Invoke(this, new HealthChangeEventArgs { newHealth = damage});
+    }
+	[ServerRpc]
     public void onWallHitServerRpc() {
         onWallHitClientRpc();
     }
