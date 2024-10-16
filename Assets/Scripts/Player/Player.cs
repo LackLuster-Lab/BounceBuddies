@@ -145,7 +145,7 @@ public class Player : NetworkBehaviour {
                 Vector2 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - attacking.GetContact(0).point;
                 double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
                 if (angle < 90) {
-                    Health = Health - 20;
+                    Health = Health - 5;
                     dealDamgeServerRpc(Health);
                 }
 				break;
