@@ -16,8 +16,8 @@ public class Player : NetworkBehaviour {
     public static Player LocalInstance { get; private set; }
 
     //GamePlay
-    [SerializeField] private int HealthMax;
-    [NonSerialized] public int Health;
+    [SerializeField] private float HealthMax;
+    [NonSerialized] public float Health;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 30f;
     [SerializeField] private float squishChange = 5f;
@@ -30,8 +30,10 @@ public class Player : NetworkBehaviour {
     [SerializeField] private Animator EyesAnim;
     [SerializeField] private SpriteRenderer MouthSprite;
     [SerializeField] private SpriteRenderer BodySprite;
+    [SerializeField] private float damageMultiplier = 0.1f;
 
-    private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
+
+	private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
     private bool DealDamage;
     private bool gameStarted = false;
@@ -41,10 +43,11 @@ public class Player : NetworkBehaviour {
     public int roundposition;
     //Events
     public static event EventHandler OnAnyPlayerHitWall;
+    public Vector3 currentVelocity;
 
     public event EventHandler<HealthChangeEventArgs> HealthChange;
     public class HealthChangeEventArgs : EventArgs {
-        public int newHealth;
+        public float newHealth;
     }
 
 
@@ -95,8 +98,17 @@ public class Player : NetworkBehaviour {
             rb.velocity = Vector2.zero;
         }
         HandleSquish();
+        updateVelocityServerRpc(GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y);
 	}
 
+    [ServerRpc]
+    public void updateVelocityServerRpc(float x, float y) {
+        updateVelocityClientRpc(x, y);
+    }
+    [ClientRpc]
+    public void updateVelocityClientRpc(float x, float y) {
+        currentVelocity = new Vector3(x, y, 0);
+    }
 
     private void GameInput_onPowerUpPerformed(object sender, EventArgs e) {
         if (RoundManager.instance.IsGameplaying() && IsOwner) {
@@ -129,37 +141,44 @@ public class Player : NetworkBehaviour {
             EyesAnim.SetBool("hit", true);
             mouthAnim.SetBool("Hit", true);
             
-            PlayerDealDamage(collision, this);
+            PlayerDealDamage(collision, player, this);
         } else {
             onWallHitServerRpc();
         }
 	}
 
-	public void PlayerDealDamage(Collision2D attacking, Player defending) {
+	public void PlayerDealDamage(Collision2D collision, Player attacking, Player defending) {
 		switch (damageType) {
 			case RoundManager.DamageType.None://do nothing
 				break;
 			case RoundManager.DamageType.Stocks://need this coded
 				break;
 			case RoundManager.DamageType.Percentage:
-                Vector2 damagingVelocity = attacking.relativeVelocity;
-                Vector2 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - attacking.GetContact(0).point;
+                Vector3 damagingVelocity = attacking.currentVelocity + currentVelocity;
+                Vector3 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - collision.GetContact(0).point;
                 double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
+                Debug.Log("Velocity: " + damagingVelocity);
+                Debug.Log("playerDir: " + PlayerDir);
+                Debug.Log("angle: " + angle);
                 if (angle < 90 || angle > 270) {
-                } else {
-                    Health = Health - 5;
+                    //float damage = damageMultiplier * Vector3.Project(damagingVelocity, PlayerDir).magnitude;
+                    float damage = damageMultiplier * damagingVelocity.magnitude;
+                    Debug.Log("damage: " + damage);
+                    Health = Health - damage;
+                    
                     dealDamgeServerRpc(Health);
+                } else {
                 }
 				break;
 		}
 	}
 
     [ServerRpc]
-    private void dealDamgeServerRpc(int damage) {
+    private void dealDamgeServerRpc(float damage) {
         dealDamgeClientRpc(damage);
     }
     [ClientRpc]
-    private void dealDamgeClientRpc(int damage) {
+    private void dealDamgeClientRpc(float damage) {
         changeHealth(damage);
     }
 	[ServerRpc]
@@ -218,11 +237,12 @@ public class Player : NetworkBehaviour {
 		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime * squishChange);
 	}
 
-    private void changeHealth(int health) {
+    private void changeHealth(float health) {
         HealthChange?.Invoke(this, new HealthChangeEventArgs {
             newHealth = health
         });
         Health = health;
+        Debug.Log("New Health: " + health);
         if (health <= 0) {
             //die
             if (IsOwner) {
