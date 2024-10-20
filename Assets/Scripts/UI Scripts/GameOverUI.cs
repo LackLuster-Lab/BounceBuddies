@@ -25,7 +25,7 @@ public class GameOverUI : MonoBehaviour
 
 	private void Show() {
 		gameObject.SetActive(true);
-		WinnerText.text = "player 1 wins";//some thing to find player username + "Wins"
+		WinnerText.text = "Player 1 wins";//some thing to find player username + "Wins"
 	}
 
 	private void Hide() {
