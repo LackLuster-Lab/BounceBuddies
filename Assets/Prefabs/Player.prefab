@@ -198,7 +198,7 @@ MonoBehaviour:
   EyesAnim: {fileID: 571814485605108983}
   MouthSprite: {fileID: 8146989784130055306}
   BodySprite: {fileID: 2407715551110942184}
-  damageMultiplier: 0.5
+  damageMultiplier: 0.2
   roundposition: 0
   currentVelocity: {x: 0, y: 0, z: 0}
 --- !u!50 &8931359813837364322

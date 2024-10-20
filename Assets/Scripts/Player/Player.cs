@@ -154,16 +154,14 @@ public class Player : NetworkBehaviour {
 			case RoundManager.DamageType.Stocks://need this coded
 				break;
 			case RoundManager.DamageType.Percentage:
-                Vector3 damagingVelocity = attacking.currentVelocity + currentVelocity;
+                Vector3 damagingVelocity = (-1 * attacking.currentVelocity) + (currentVelocity);
                 Vector3 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - collision.GetContact(0).point;
                 double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
-                Debug.Log("Velocity: " + damagingVelocity);
-                Debug.Log("playerDir: " + PlayerDir);
-                Debug.Log("angle: " + angle);
+
                 if (angle < 90 || angle > 270) {
                     //float damage = damageMultiplier * Vector3.Project(damagingVelocity, PlayerDir).magnitude;
                     float damage = damageMultiplier * damagingVelocity.magnitude;
-                    Debug.Log("damage: " + damage);
+
                     Health = Health - damage;
                     
                     dealDamgeServerRpc(Health);

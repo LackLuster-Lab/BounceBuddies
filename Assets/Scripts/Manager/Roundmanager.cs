@@ -83,14 +83,12 @@ public class RoundManager : NetworkBehaviour {
 				WaitingToStartTimer -= Time.deltaTime;
 				if (WaitingToStartTimer < 0f) {
 					setStateClientRpc(GameState.Start);
-					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				break;
 			case GameState.Start:
-				StartTimer -= Time.deltaTime;
+				startTimerClientRpc(Time.deltaTime);
 				if (StartTimer < 0f) {
 					setStateClientRpc(GameState.playing);
-					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				break;
 			case GameState.playing:
@@ -104,12 +102,9 @@ public class RoundManager : NetworkBehaviour {
 						break;
 				}
 				//Game Timer
-				if (UseGameTimer) {
-					GameTimer -= Time.deltaTime;
-					if (GameTimer < 0f) {
-						setStateClientRpc(GameState.Endgame);
-						OnStateChanged?.Invoke(this, EventArgs.Empty);
-					}
+				GameTimerClientRpc(Time.deltaTime);
+				if (GameTimer < 0f) {
+					setStateClientRpc(GameState.Endgame);
 				}
 				//Powerups
 				if (powerUpsEnabled) {
@@ -135,10 +130,24 @@ public class RoundManager : NetworkBehaviour {
 		}
 	}
 
+	[ClientRpc]
+	private void startTimerClientRpc(float deltaTime) {
+		StartTimer -= deltaTime;
+	}
+
+	[ClientRpc]
+	private void GameTimerClientRpc(float deltaTime) {
+		if (UseGameTimer) {
+			GameTimer -= deltaTime;
+
+		}
+	}
+
 	//state sets
 	[ClientRpc]
 	private void setStateClientRpc(GameState newState) {
 		currentGameState = newState;
+		OnStateChanged?.Invoke(this, EventArgs.Empty);
 	}
 
 	//state Gets
