@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class RoundManager : NetworkBehaviour {
 
-	public static RoundManager instance {get; private set;}
+	public static RoundManager instance { get; private set; }
 
 
 	//all different variables for game modes
@@ -27,13 +27,14 @@ public class RoundManager : NetworkBehaviour {
 		Stocks,
 		Percentage
 	}
-
+	public bool isLocalPlayerReady;
 	//Gamemode Settings
 	[SerializeField] Gamemode gamemode = Gamemode.Fighter;//TODO implement
 	[SerializeField] public DamageType damageType = DamageType.Percentage;//TODO implement
 	[SerializeField] bool powerUpsEnabled;
 	[SerializeField] private float powerUpSpawnTimerMax = 4f;
 	[SerializeField] GameObject[] allPowerUps;
+	[SerializeField] public List<Vector3> spawnPositions;
 	private float powerUpSpawnTimer;
 	private GameObject currentPowerup;
 	private GameState currentGameState;
@@ -49,10 +50,13 @@ public class RoundManager : NetworkBehaviour {
 	[SerializeField] private float GameTimerMax = 60f;
 	[SerializeField] private float GameTimer = 60f;
 
+
+	private Dictionary<ulong, bool> PlayerReadyDictionary;
 	//Events
 	public event EventHandler OnStateChanged;
 	public event EventHandler OnPauseGame;
 	public event EventHandler OnUnPauseGame;
+	public event EventHandler OnLocalplayerReady;
 
 	private PowerUpItem PowerupToManage;
 
@@ -62,9 +66,15 @@ public class RoundManager : NetworkBehaviour {
 		currentPlayers++;
 	}
 
+	[ServerRpc(RequireOwnership = false)]
+	public void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
+		serverRpcParams.Receive.SenderClientId
+	}
+
 	public void Awake() {
 		currentGameState = GameState.WaitingToStart;
 		GameTimer = GameTimerMax;
+		PlayerReadyDictionary = new Dictionary<ulong, bool>();
 		instance = this;
 	}
 
@@ -170,6 +180,10 @@ public class RoundManager : NetworkBehaviour {
 
 	public bool isGameOver() {
 		return currentGameState == GameState.Endgame;
+	}
+
+	public bool isLocalPlayerRead() {
+		return isLocalPlayerReady;
 	}
 
 	//Timer Gets

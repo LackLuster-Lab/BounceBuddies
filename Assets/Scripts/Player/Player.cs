@@ -15,6 +15,7 @@ public class Player : NetworkBehaviour {
     public static event EventHandler onAnyPlayerSpawned;
     public static Player LocalInstance { get; private set; }
 
+
     //GamePlay
     [SerializeField] private float HealthMax;
     [NonSerialized] public float Health;
@@ -78,6 +79,7 @@ public class Player : NetworkBehaviour {
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         damageType = RoundManager.instance.damageType;
         RoundManager.instance.addPlayer();
+        RoundManager.instance.isLocalPlayerReady = true;
 	}
 
 	public override void OnNetworkSpawn() {
@@ -85,6 +87,7 @@ public class Player : NetworkBehaviour {
             LocalInstance = this;
         }
 
+		transform.position = RoundManager.instance.spawnPositions[(int)OwnerClientId];
 		onAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
 	}
 
