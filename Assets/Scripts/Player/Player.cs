@@ -31,8 +31,10 @@ public class Player : NetworkBehaviour {
     [SerializeField] private SpriteRenderer MouthSprite;
     [SerializeField] private SpriteRenderer BodySprite;
     [SerializeField] private float damageMultiplier = 0.1f;
+    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
 
-
+    public static List<bool> numberOfPlayers = new List<bool>();
+    private int playerPosition;
 	private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
     private bool DealDamage;
@@ -57,7 +59,11 @@ public class Player : NetworkBehaviour {
     }
 
 	public void Awake() {
-		//Instance = this;
+        //Instance = this;
+        playerPosition = numberOfPlayers.Count + 1;
+
+		numberOfPlayers.Add(true);
+        textMeshProUGUI.text = "Player " + playerPosition;
 	}
 
 	public void Start() {
@@ -243,6 +249,7 @@ public class Player : NetworkBehaviour {
         Debug.Log("New Health: " + health);
         if (health <= 0) {
             //die
+            numberOfPlayers[playerPosition - 1] = false;
             if (IsOwner) {
                 gameObject.transform.position = new Vector3(1000, 1000, 0);
             }

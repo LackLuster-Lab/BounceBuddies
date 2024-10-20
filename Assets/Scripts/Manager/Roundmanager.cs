@@ -95,6 +95,15 @@ public class RoundManager : NetworkBehaviour {
 				//GamemodeUpdates
 				switch (gamemode) {
 					case Gamemode.Fighter:
+						int alivePlayers = 0;
+						foreach (bool b in Player.numberOfPlayers) {
+							if (b) {
+								alivePlayers++;
+							}
+						}
+						if (alivePlayers == 1) {
+							setStateClientRpc(GameState.Endgame);
+						}
 						break;
 					case Gamemode.Race:
 						break;

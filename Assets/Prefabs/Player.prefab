@@ -199,6 +199,7 @@ MonoBehaviour:
   MouthSprite: {fileID: 8146989784130055306}
   BodySprite: {fileID: 2407715551110942184}
   damageMultiplier: 0.2
+  textMeshProUGUI: {fileID: 6455341780255888206}
   roundposition: 0
   currentVelocity: {x: 0, y: 0, z: 0}
 --- !u!50 &8931359813837364322
