@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class RoundManager : NetworkBehaviour {
@@ -37,7 +38,7 @@ public class RoundManager : NetworkBehaviour {
 	[SerializeField] public List<Vector3> spawnPositions;
 	private float powerUpSpawnTimer;
 	private GameObject currentPowerup;
-	private GameState currentGameState;
+	private NetworkVariable<GameState> currentGameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
 
 	//all map specific things
 	[SerializeField] Vector4[] powerUpSpawnLocations;// X-Left, Y-Right, Z-Top, W-Bottom
@@ -66,13 +67,32 @@ public class RoundManager : NetworkBehaviour {
 		currentPlayers++;
 	}
 
-	[ServerRpc(RequireOwnership = false)]
-	public void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
-		serverRpcParams.Receive.SenderClientId
+	public override void OnNetworkSpawn() {
+		currentGameState.OnValueChanged += CurrentGameState_OnValueChanged;
 	}
 
+
+	[ServerRpc(RequireOwnership = false)]
+	private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
+		PlayerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
+		bool allClientsReady = true;
+		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+			if (!PlayerReadyDictionary.ContainsKey(clientId) || !PlayerReadyDictionary[clientId]) {
+				// This player is NOT ready
+				allClientsReady = false;
+				break;
+			}
+		}
+
+		if (allClientsReady) {
+			currentGameState.Value = GameState.Start;
+		}
+	}
+	private void CurrentGameState_OnValueChanged(GameState previousValue, GameState newValue) {
+		OnStateChanged?.Invoke(this, EventArgs.Empty);
+	}
 	public void Awake() {
-		currentGameState = GameState.WaitingToStart;
+		currentGameState.Value = GameState.WaitingToStart;
 		GameTimer = GameTimerMax;
 		PlayerReadyDictionary = new Dictionary<ulong, bool>();
 		instance = this;
@@ -80,25 +100,31 @@ public class RoundManager : NetworkBehaviour {
 
 	public void Start() {
 		GameInput.instance.pausePerformed += Game_pausePerformed;
+		GameInput.instance.onPowerUpPerformed += GameInput_OnInteractAction;
 	}
 
 	private void Game_pausePerformed(object sender, EventArgs e) {
 		PauseGame();
 	}
 
+	private void GameInput_OnInteractAction(object sender, EventArgs e) {
+		if (currentGameState.Value == GameState.WaitingToStart) {
+			isLocalPlayerReady = true;
+			OnLocalplayerReady?.Invoke(this, EventArgs.Empty);
+
+			SetPlayerReadyServerRpc();
+		}
+	}
+
 	public void Update() {
 		if (!IsServer) { return; }
-		switch (currentGameState) {
+		switch (currentGameState.Value) {
 			case GameState.WaitingToStart:
-				WaitingToStartTimer -= Time.deltaTime;
-				if (WaitingToStartTimer < 0f) {
-					setStateClientRpc(GameState.Start);
-				}
 				break;
 			case GameState.Start:
 				startTimerClientRpc(Time.deltaTime);
 				if (StartTimer < 0f) {
-					setStateClientRpc(GameState.playing);
+					setState(GameState.playing);
 				}
 				break;
 			case GameState.playing:
@@ -112,7 +138,8 @@ public class RoundManager : NetworkBehaviour {
 							}
 						}
 						if (alivePlayers == 1) {
-							setStateClientRpc(GameState.Endgame);
+							setState(GameState.Endgame);
+							OnStateChanged?.Invoke(this, EventArgs.Empty);
 						}
 						break;
 					case Gamemode.Race:
@@ -123,7 +150,8 @@ public class RoundManager : NetworkBehaviour {
 				//Game Timer
 				GameTimerClientRpc(Time.deltaTime);
 				if (GameTimer < 0f) {
-					setStateClientRpc(GameState.Endgame);
+					setState(GameState.Endgame);
+					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 				//Powerups
 				if (powerUpsEnabled) {
@@ -163,23 +191,21 @@ public class RoundManager : NetworkBehaviour {
 	}
 
 	//state sets
-	[ClientRpc]
-	private void setStateClientRpc(GameState newState) {
-		currentGameState = newState;
-		OnStateChanged?.Invoke(this, EventArgs.Empty);
+	private void setState(GameState newState) {
+		currentGameState.Value = newState;
 	}
 
 	//state Gets
 	public bool isCountDownToStartActive() {
-		return currentGameState == GameState.Start;
+		return currentGameState.Value == GameState.Start;
 	}
 
 	public bool IsGameplaying() {
-		return currentGameState == GameState.playing;
+		return currentGameState.Value == GameState.playing;
 	}
 
 	public bool isGameOver() {
-		return currentGameState == GameState.Endgame;
+		return currentGameState.Value == GameState.Endgame;
 	}
 
 	public bool isLocalPlayerRead() {
