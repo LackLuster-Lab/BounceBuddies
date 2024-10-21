@@ -53,7 +53,7 @@ public class RoundManager : NetworkBehaviour {
 	[SerializeField] private float GameTimer = 60f;
 	private bool autoTestGamePauseState = false;
 
-
+	[SerializeField] public Transform PlayerPrefab;
 	private Dictionary<ulong, bool> PlayerReadyDictionary;
 	private Dictionary<ulong, bool> PlayerPauseDictionary;
 	//Events
@@ -78,6 +78,14 @@ public class RoundManager : NetworkBehaviour {
 
 		if (IsServer) {
 			NetworkManager.Singleton.OnClientDisconnectCallback += Singleton_OnClientDisconnectCallback;
+			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+		}
+	}
+
+	private void SceneManager_OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
+		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+			Transform playerTransform = Instantiate(PlayerPrefab);
+			playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
 		}
 	}
 
@@ -95,22 +103,7 @@ public class RoundManager : NetworkBehaviour {
 		}
 	}
 
-	[ServerRpc(RequireOwnership = false)]
-	private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
-		PlayerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
-		bool allClientsReady = true;
-		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
-			if (!PlayerReadyDictionary.ContainsKey(clientId) || !PlayerReadyDictionary[clientId]) {
-				// This player is NOT ready
-				allClientsReady = false;
-				break;
-			}
-		}
 
-		if (allClientsReady) {
-			currentGameState.Value = GameState.Start;
-		}
-	}
 	private void CurrentGameState_OnValueChanged(GameState previousValue, GameState newValue) {
 		OnStateChanged?.Invoke(this, EventArgs.Empty);
 	}
@@ -139,7 +132,22 @@ public class RoundManager : NetworkBehaviour {
 			SetPlayerReadyServerRpc();
 		}
 	}
+	[ServerRpc(RequireOwnership = false)]
+	private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
+		PlayerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
+		bool allClientsReady = true;
+		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+			if (!PlayerReadyDictionary.ContainsKey(clientId) || !PlayerReadyDictionary[clientId]) {
+				// This player is NOT ready
+				allClientsReady = false;
+				break;
+			}
+		}
 
+		if (allClientsReady) {
+			currentGameState.Value = GameState.Start;
+		}
+	}
 	private void LateUpdate() {
 		if (autoTestGamePauseState) {
 			autoTestGamePauseState = false;
@@ -267,6 +275,10 @@ public class RoundManager : NetworkBehaviour {
 	[ClientRpc]
 	private void SpawnPowerUpClientRpc(Vector3 position, int powerupInt) {
 		currentPowerup = Instantiate(allPowerUps[powerupInt], position, Quaternion.identity);
+	}
+
+	public bool isWaitingToStart() {
+		return currentGameState.Value == GameState.WaitingToStart;
 	}
 
 	public void collectPowerup() {
