@@ -33,8 +33,9 @@ public class Player : NetworkBehaviour {
     [SerializeField] private SpriteRenderer BodySprite;
     [SerializeField] private float damageMultiplier = 0.1f;
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
+    GameObject UsedUI;
 
-    public static List<bool> numberOfPlayers = new List<bool>();
+	public static List<bool> numberOfPlayers = new List<bool>();
     private int playerPosition;
 	private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
@@ -74,7 +75,7 @@ public class Player : NetworkBehaviour {
         MouthSprite.color = BodyColor;
         Health = HealthMax;
         Parent = GameObject.Find("Canvas/PlayersUI");
-        GameObject UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
+        UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
         UsedUI.GetComponent<PlayerUI>().setPlayer(this);
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         damageType = RoundManager.instance.damageType;
@@ -89,6 +90,15 @@ public class Player : NetworkBehaviour {
 
 		transform.position = RoundManager.instance.spawnPositions[(int)OwnerClientId];
 		onAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+        if (IsServer) {
+            NetworkManager.Singleton.OnClientDisconnectCallback += Singleton_OnClientDisconnectCallback;
+        }
+	}
+
+	private void Singleton_OnClientDisconnectCallback(ulong ClientId) {
+        if (ClientId == OwnerClientId) {
+            Destroy(UsedUI);
+        }
 	}
 
 	public void Update() {

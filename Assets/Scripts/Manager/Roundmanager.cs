@@ -46,17 +46,22 @@ public class RoundManager : NetworkBehaviour {
 	//Timers
 	private float WaitingToStartTimer = 1f;
 	private float StartTimer = 3f;
-	public bool isGamePaused = false;
+	public bool isLocalGamePaused = false;
+	private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
 	[SerializeField] private bool UseGameTimer = true;
 	[SerializeField] private float GameTimerMax = 60f;
 	[SerializeField] private float GameTimer = 60f;
+	private bool autoTestGamePauseState = false;
 
 
 	private Dictionary<ulong, bool> PlayerReadyDictionary;
+	private Dictionary<ulong, bool> PlayerPauseDictionary;
 	//Events
 	public event EventHandler OnStateChanged;
-	public event EventHandler OnPauseGame;
-	public event EventHandler OnUnPauseGame;
+	public event EventHandler OnLocalPauseGame;
+	public event EventHandler OnMultiplayerPauseGame;
+	public event EventHandler OnMultiplayerUnPauseGame;
+	public event EventHandler OnLocalUnPauseGame;
 	public event EventHandler OnLocalplayerReady;
 
 	private PowerUpItem PowerupToManage;
@@ -69,8 +74,26 @@ public class RoundManager : NetworkBehaviour {
 
 	public override void OnNetworkSpawn() {
 		currentGameState.OnValueChanged += CurrentGameState_OnValueChanged;
+		isGamePaused.OnValueChanged += isGamePaused_OnValueChange;
+
+		if (IsServer) {
+			NetworkManager.Singleton.OnClientDisconnectCallback += Singleton_OnClientDisconnectCallback;
+		}
 	}
 
+	private void Singleton_OnClientDisconnectCallback(ulong obj) {
+		autoTestGamePauseState = true;
+	}
+
+	private void isGamePaused_OnValueChange(bool previousValue, bool newValue) {
+		if (isGamePaused.Value) {
+			Time.timeScale = 0f;
+			OnMultiplayerPauseGame?.Invoke(this, EventArgs.Empty);
+		} else {
+			Time.timeScale = 1f;
+			OnMultiplayerUnPauseGame?.Invoke(this, EventArgs.Empty);
+		}
+	}
 
 	[ServerRpc(RequireOwnership = false)]
 	private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
@@ -95,6 +118,7 @@ public class RoundManager : NetworkBehaviour {
 		currentGameState.Value = GameState.WaitingToStart;
 		GameTimer = GameTimerMax;
 		PlayerReadyDictionary = new Dictionary<ulong, bool>();
+		PlayerPauseDictionary = new Dictionary<ulong, bool>();
 		instance = this;
 	}
 
@@ -113,6 +137,13 @@ public class RoundManager : NetworkBehaviour {
 			OnLocalplayerReady?.Invoke(this, EventArgs.Empty);
 
 			SetPlayerReadyServerRpc();
+		}
+	}
+
+	private void LateUpdate() {
+		if (autoTestGamePauseState) {
+			autoTestGamePauseState = false;
+			TestGamePaused();
 		}
 	}
 
@@ -223,13 +254,13 @@ public class RoundManager : NetworkBehaviour {
 
 	//Pause Game
 	public void PauseGame() {
-		isGamePaused = !isGamePaused;
-		if (isGamePaused) {
-			Time.timeScale = 1.0f;
-			OnUnPauseGame?.Invoke(this, EventArgs.Empty);
+		isLocalGamePaused = !isLocalGamePaused;
+		if (isLocalGamePaused) {
+			PauseServerRpc();
+			OnLocalPauseGame?.Invoke(this, EventArgs.Empty);
 		} else {
-			Time.timeScale = 0.0f;
-			OnPauseGame?.Invoke(this, EventArgs.Empty);
+			UnPauseServerRpc();
+			OnLocalUnPauseGame?.Invoke(this, EventArgs.Empty);
 		}
 	}
 
@@ -253,5 +284,25 @@ public class RoundManager : NetworkBehaviour {
 		powerUpItem.collect();
 	}
 
+	[ServerRpc(RequireOwnership = false)]
+	private void PauseServerRpc(ServerRpcParams serverRpcParams = default) {
+		PlayerPauseDictionary[serverRpcParams.Receive.SenderClientId] = true;
+		TestGamePaused();
+	}
+	[ServerRpc(RequireOwnership = false)]
+	private void UnPauseServerRpc(ServerRpcParams serverRpcParams = default) {
+		PlayerPauseDictionary[serverRpcParams.Receive.SenderClientId] = false;
+		TestGamePaused();
+	}
 
+	private void TestGamePaused() {
+		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+			if (PlayerPauseDictionary.ContainsKey(clientId) && PlayerPauseDictionary[clientId]) {
+				isGamePaused.Value = true;
+				return;
+			}
+		}
+
+		isGamePaused.Value = false;
+	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,18 +21,19 @@ public class PauseMenu : MonoBehaviour
 			RoundManager.instance.PauseGame();
 		});
 		mainMenuButton.onClick.AddListener(() => {
+			NetworkManager.Singleton.Shutdown();
 			Loader.Load(Loader.scenes.MainMenu);
 		});
 		OptionsButton.onClick.AddListener(() => {
 			Hide(this,EventArgs.Empty);
 			OptionsMenu.Show(ShowWindow);
-			RoundManager.instance.OnUnPauseGame += OptionsMenu.GameManger_UnpauseGame;
+			RoundManager.instance.OnLocalUnPauseGame += OptionsMenu.GameManger_UnpauseGame;
 		});
 	}
 
 	private void Start() {
-		RoundManager.instance.OnPauseGame += Show;
-		RoundManager.instance.OnUnPauseGame += Hide;
+		RoundManager.instance.OnLocalPauseGame += Show;
+		RoundManager.instance.OnLocalUnPauseGame += Hide;
 
 		Hide(this, EventArgs.Empty);
 	}

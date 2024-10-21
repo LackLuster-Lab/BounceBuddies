@@ -12,11 +12,11 @@ public class testingUI : MonoBehaviour
 
 	private void Awake() {
 		HostButton.onClick.AddListener(() => {
-			NetworkManager.Singleton.StartHost();
+			MultiplayerManager.instance.StartHost();
 			Hide();
 		});
 		ClientButton.onClick.AddListener(() => {
-			NetworkManager.Singleton.StartClient();
+			MultiplayerManager.instance.StartClient();
 			Hide();
 		});
 	}
