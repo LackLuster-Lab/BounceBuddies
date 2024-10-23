@@ -33,6 +33,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private SpriteRenderer BodySprite;
     [SerializeField] private float damageMultiplier = 0.1f;
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
+    [SerializeField] private playerVisual playerVisual;
     GameObject UsedUI;
 
 	public static List<bool> numberOfPlayers = new List<bool>();
@@ -81,6 +82,8 @@ public class Player : NetworkBehaviour {
         damageType = RoundManager.instance.damageType;
         RoundManager.instance.addPlayer();
         RoundManager.instance.isLocalPlayerReady = true;
+        PlayerData playerData = MultiplayerManager.instance.GetPlayerDatafromClientId(OwnerClientId);
+        playerVisual.setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerData.ColorId));
 	}
 
 	public override void OnNetworkSpawn() {

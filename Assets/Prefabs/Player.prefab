@@ -200,6 +200,7 @@ MonoBehaviour:
   BodySprite: {fileID: 2407715551110942184}
   damageMultiplier: 0.2
   textMeshProUGUI: {fileID: 6455341780255888206}
+  playerVisual: {fileID: 7813318271660066097}
   roundposition: 0
   currentVelocity: {x: 0, y: 0, z: 0}
 --- !u!50 &8931359813837364322
@@ -543,6 +544,17 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
   m_PrefabInstance: {fileID: 8231991733956793350}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7813318271660066097 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2185252214856765751, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+  m_PrefabInstance: {fileID: 8231991733956793350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c0cfa092bccf24bb0b4d58db7cc7d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &8146989784130055306 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 230251851335645324, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}

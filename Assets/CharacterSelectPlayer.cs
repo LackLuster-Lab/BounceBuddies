@@ -28,7 +28,7 @@ public class CharacterSelectPlayer : MonoBehaviour {
 			PlayerData playerData = MultiplayerManager.instance.GetPlayerDatafromPlayerIndex(playerIndex);
 			readyGameObject.SetActive(CharacterSelectReady.instance.IsPlayerReady(playerData.clientId));
 
-			playerVisual.setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerIndex));
+			playerVisual.setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerData.ColorId));
 		} else {
 			Hide();
 		}
