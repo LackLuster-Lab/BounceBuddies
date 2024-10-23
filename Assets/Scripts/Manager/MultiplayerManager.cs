@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MultiplayerManager : NetworkBehaviour {
-	private const int MAX_PLAYERS = 4;
+	public const int MAX_PLAYERS = 4;
 	public static MultiplayerManager instance { get; private set; }
 
 	public event EventHandler OnTryingToJoinGame;
