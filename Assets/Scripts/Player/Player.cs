@@ -91,7 +91,7 @@ public class Player : NetworkBehaviour {
             LocalInstance = this;
         }
 
-		transform.position = RoundManager.instance.spawnPositions[(int)OwnerClientId];
+		transform.position = RoundManager.instance.spawnPositions[MultiplayerManager.instance.GetPlayerDataIndexfromClientId(OwnerClientId)];
 		onAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
         if (IsServer) {
             NetworkManager.Singleton.OnClientDisconnectCallback += Singleton_OnClientDisconnectCallback;

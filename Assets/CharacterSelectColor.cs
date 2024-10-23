@@ -32,4 +32,9 @@ public class CharacterSelectColor : MonoBehaviour {
 			selectedGameObject.SetActive(false);
 		}
     }
+
+	private void OnDestroy() {
+
+		MultiplayerManager.instance.OnPlayerDataNetworkListChanged -= Instance_OnPlayerDataNetworkListChanged;
+	}
 }
