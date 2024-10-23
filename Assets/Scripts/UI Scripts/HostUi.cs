@@ -8,13 +8,16 @@ public class HostUi : MonoBehaviour
 {
     [SerializeField] Button MainMenuButton;
 
+	private void Awake() {
+		MainMenuButton.onClick.AddListener(() => {
+			Loader.Load(Loader.scenes.MainMenu);
+		});
+	}
+
 	private void Start() {
 		NetworkManager.Singleton.OnClientDisconnectCallback += Singleton_OnClientDisconnectCallback;
 
-		MainMenuButton.onClick.AddListener(() => {
-			NetworkManager.Singleton.Shutdown();
-			Loader.Load(Loader.scenes.MainMenu);
-		});
+
 		Hide();
 	}
 
