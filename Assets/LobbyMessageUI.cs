@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ErrorMessageUI : MonoBehaviour{
+public class LobbyMessageUI : MonoBehaviour{
 
 	[SerializeField] private TextMeshProUGUI ErrorMessageText;
 	[SerializeField] private Button closeButton;

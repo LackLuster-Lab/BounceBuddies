@@ -11,6 +11,7 @@ public class GameLobby : MonoBehaviour {
 	public static GameLobby Instance { get; private set; }
 
 	private Lobby joinedLobby;
+	private float heartBeatTimer;
 
 	private void Awake() {
 		DontDestroyOnLoad(gameObject);
@@ -27,7 +28,23 @@ public class GameLobby : MonoBehaviour {
 			await AuthenticationService.Instance.SignInAnonymouslyAsync();
 		}
 	}
+	private void Update() {
+		handleHeartbeat();
+	}
 
+	private void handleHeartbeat() {
+		if (isLobbyHost()) {
+			heartBeatTimer-= Time.deltaTime;
+			if (heartBeatTimer < 0) {
+				heartBeatTimer = 15f;
+				LobbyService.Instance.SendHeartbeatPingAsync(joinedLobby.Id);
+			}
+		}
+	}
+
+	private bool isLobbyHost() {
+		return joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+	}
 	public async void CreateLobby(string lobbyName, bool isPrivate) {
 		try {
 			joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerManager.MAX_PLAYERS, new CreateLobbyOptions {
@@ -50,4 +67,48 @@ public class GameLobby : MonoBehaviour {
 			Debug.Log(e);
 		}
 	}
+
+	public async void JoinWithCode(string LobbyCode) {
+		try {
+			joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(LobbyCode);
+			MultiplayerManager.instance.StartClient();
+		} catch (LobbyServiceException e) {
+			Debug.Log(e);
+		}
+	}
+
+	public async void DeleteLobby() {
+		if (joinedLobby != null) {
+			try {
+				await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+				joinedLobby = null;
+			} catch (LobbyServiceException e) {
+				Debug.Log(e);
+			}
+		}
+	}
+
+	public async void LeaveLobby() {
+		if (joinedLobby != null) {
+			try {
+				await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+				
+				joinedLobby = null;
+			} catch (LobbyServiceException e) {
+				Debug.Log(e);
+			}
+		}
+	}
+
+	public async void KickPlayer(string playerId) {
+		if (isLobbyHost()) {
+			try {
+				await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, playerId);
+			} catch (LobbyServiceException e) {
+				Debug.Log(e);
+			}
+		}
+	}
+
+	public Lobby GetLobby() { return joinedLobby; }
 }
