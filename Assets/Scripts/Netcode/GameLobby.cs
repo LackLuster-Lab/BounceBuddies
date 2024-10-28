@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Mathematics;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -22,7 +23,6 @@ public class GameLobby : MonoBehaviour {
 	private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
 
 	public static GameLobby Instance { get; private set; }
-
 	public event EventHandler OnCreateLobbyStarted;
 	public event EventHandler OnCreateLobbyFailed;
 	public event EventHandler OnJoinStarted;
@@ -120,11 +120,16 @@ public class GameLobby : MonoBehaviour {
 			});
 
 			Allocation allocation = await AllocateRelay();
+			string password = UnityEngine.Random.Range(100000, 999999).ToString();
 			string relayjoinCode = await getRelayJoinCode(allocation);
 			await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions {
 				Data = new Dictionary<string, DataObject> {
-					{KEY_RELAY_JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Member, relayjoinCode)}
+					{KEY_RELAY_JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Member, relayjoinCode)},
+					{"password", new DataObject(DataObject.VisibilityOptions.Public, password, DataObject.IndexOptions.S1)},
+					{"lobbycode", new DataObject(DataObject.VisibilityOptions.Public, joinedLobby.LobbyCode)}
+
 				}
+				
 			});
 
 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
@@ -157,7 +162,18 @@ NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new R
 	public async void JoinWithCode(string LobbyCode) {
 		OnJoinStarted?.Invoke(this, EventArgs.Empty);
 		try {
-			joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(LobbyCode);
+
+			QueryLobbiesOptions query = new QueryLobbiesOptions {
+				Filters = new List<QueryFilter> {
+				new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
+				new QueryFilter(QueryFilter.FieldOptions.S1, LobbyCode, QueryFilter.OpOptions.EQ)
+				}
+
+			};
+			QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(query);
+			string joinLobbyCode = queryResponse.Results[0].Data["lobbycode"].Value;
+
+			joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinLobbyCode);
 			string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
 			JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
 
