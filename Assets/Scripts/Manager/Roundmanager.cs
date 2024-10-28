@@ -49,8 +49,8 @@ public class RoundManager : NetworkBehaviour {
 	public bool isLocalGamePaused = false;
 	private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
 	[SerializeField] private bool UseGameTimer = true;
-	[SerializeField] private float GameTimerMax = 60f;
-	[SerializeField] private float GameTimer = 60f;
+	[SerializeField] private float GameTimerMax = 10f;
+	[SerializeField] private float GameTimer = 10f;
 	private bool autoTestGamePauseState = false;
 
 	[SerializeField] public Transform PlayerPrefab;
@@ -63,7 +63,7 @@ public class RoundManager : NetworkBehaviour {
 	public event EventHandler OnMultiplayerUnPauseGame;
 	public event EventHandler OnLocalUnPauseGame;
 	public event EventHandler OnLocalplayerReady;
-
+	public event EventHandler OnEndGame;
 	private PowerUpItem PowerupToManage;
 
 	private int currentPlayers;
@@ -72,11 +72,18 @@ public class RoundManager : NetworkBehaviour {
 		currentPlayers++;
 	}
 
+	public void SetValues(bool IsPowerups, float gameTimer) {
+		powerUpsEnabled = IsPowerups;
+		GameTimer = gameTimer;
+		GameTimerMax = gameTimer;
+	}
+
 	public override void OnNetworkSpawn() {
 		currentGameState.OnValueChanged += CurrentGameState_OnValueChanged;
 		isGamePaused.OnValueChanged += isGamePaused_OnValueChange;
 
 		if (IsServer) {
+			OnEndGame += GameManager.instance.EndRound;
 			NetworkManager.Singleton.OnClientDisconnectCallback += Singleton_OnClientDisconnectCallback;
 			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 		}
@@ -212,6 +219,7 @@ public class RoundManager : NetworkBehaviour {
 				}
 				break;
 			case GameState.Endgame:
+				Loader.LoadNetwork(Loader.scenes.GameScene2);
 				break;
 		}
 	}
@@ -316,5 +324,20 @@ public class RoundManager : NetworkBehaviour {
 		}
 
 		isGamePaused.Value = false;
+	}
+
+	public override void OnDestroy() {
+
+		GameInput.instance.pausePerformed -= Game_pausePerformed;
+		GameInput.instance.onPowerUpPerformed -= GameInput_OnInteractAction;
+		currentGameState.OnValueChanged -= CurrentGameState_OnValueChanged;
+		isGamePaused.OnValueChanged -= isGamePaused_OnValueChange;
+
+		if (IsServer) {
+
+			OnEndGame -= GameManager.instance.EndRound;
+			NetworkManager.Singleton.OnClientDisconnectCallback -= Singleton_OnClientDisconnectCallback;
+			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneManager_OnLoadEventCompleted;
+		}
 	}
 }

@@ -14,6 +14,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
 	private void Awake() {
 		mainMenuButton.onClick.AddListener(() => {
+			GameLobby.Instance.LeaveLobby();
 			NetworkManager.Singleton.Shutdown();
 			Loader.Load(Loader.scenes.MainMenu);
 		});

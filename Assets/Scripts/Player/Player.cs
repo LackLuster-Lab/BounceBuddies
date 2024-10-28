@@ -63,10 +63,8 @@ public class Player : NetworkBehaviour {
 
 	public void Awake() {
         //Instance = this;
-        playerPosition = numberOfPlayers.Count + 1;
 
 		numberOfPlayers.Add(true);
-        textMeshProUGUI.text = "Player " + playerPosition;
 	}
 
 	public void Start() {
@@ -75,9 +73,12 @@ public class Player : NetworkBehaviour {
         BodySprite.color = BodyColor;
         MouthSprite.color = BodyColor;
         Health = HealthMax;
-        Parent = GameObject.Find("Canvas/PlayersUI");
-        UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
-        UsedUI.GetComponent<PlayerUI>().setPlayer(this);
+        if (RoundManager.instance.damageType == RoundManager.DamageType.Percentage) {
+            Parent = GameObject.Find("Canvas/PlayersUI");
+            UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
+            UsedUI.GetComponent<PlayerUI>().setPlayer(this);
+        }
+
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         damageType = RoundManager.instance.damageType;
         RoundManager.instance.addPlayer();
