@@ -23,7 +23,7 @@ public class CharacterSelectUI : MonoBehaviour {
 		});
 	}
 
-	private void Start() {
+	private void Update() {
 		Lobby lobby = GameLobby.Instance.GetLobby();
 		lobbyNameText.text = "Lobby Name: " + lobby.Name;
 		lobbyCodeText.text = "Lobby Code: " + lobby.Data["password"].Value;

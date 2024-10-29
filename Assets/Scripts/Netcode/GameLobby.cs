@@ -122,7 +122,7 @@ public class GameLobby : MonoBehaviour {
 			Allocation allocation = await AllocateRelay();
 			string password = UnityEngine.Random.Range(100000, 999999).ToString();
 			string relayjoinCode = await getRelayJoinCode(allocation);
-			await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions {
+			joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions {
 				Data = new Dictionary<string, DataObject> {
 					{KEY_RELAY_JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Member, relayjoinCode)},
 					{"password", new DataObject(DataObject.VisibilityOptions.Public, password, DataObject.IndexOptions.S1)},

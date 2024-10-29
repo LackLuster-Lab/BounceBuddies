@@ -14,7 +14,8 @@ public static class Loader
 		MainMenu,
 		LoadingScreen,
 		LobbyScene,
-		CharacterSelectScene
+		CharacterSelectScene,
+		InbetweenScene
 	}
 
 	public static void Load(scenes targetScene) {

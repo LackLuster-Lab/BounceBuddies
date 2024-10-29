@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -63,7 +64,10 @@ public class RoundManager : NetworkBehaviour {
 	public event EventHandler OnMultiplayerUnPauseGame;
 	public event EventHandler OnLocalUnPauseGame;
 	public event EventHandler OnLocalplayerReady;
-	public event EventHandler OnEndGame;
+	public event EventHandler<onEndgameEventArgs> OnEndGame;
+	public class onEndgameEventArgs : EventArgs {
+		public List<bool> winners;
+	}
 	private PowerUpItem PowerupToManage;
 
 	private int currentPlayers;
@@ -184,6 +188,7 @@ public class RoundManager : NetworkBehaviour {
 							}
 						}
 						if (alivePlayers == 1) {
+
 							setState(GameState.Endgame);
 							OnStateChanged?.Invoke(this, EventArgs.Empty);
 						}
@@ -219,7 +224,9 @@ public class RoundManager : NetworkBehaviour {
 				}
 				break;
 			case GameState.Endgame:
-				Loader.LoadNetwork(Loader.scenes.GameScene2);
+				OnEndGame?.Invoke(this,new onEndgameEventArgs {
+					winners = Player.numberOfPlayers
+				});
 				break;
 		}
 	}
