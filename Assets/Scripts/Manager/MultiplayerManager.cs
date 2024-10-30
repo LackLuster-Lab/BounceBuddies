@@ -161,6 +161,33 @@ public class MultiplayerManager : NetworkBehaviour {
 	}
 
 	[ServerRpc(RequireOwnership = false)]
+	public void sortPlayersServerRpc() {
+		List<PlayerData> list = new List<PlayerData>();
+		for (int i = 0; i < playerDataNetworkList.Count; i++) {
+			list.Add(playerDataNetworkList[i]);
+		}
+		list.Sort(delegate (PlayerData item1, PlayerData item2) {
+			return item1.points.CompareTo(item2.points);
+		});
+		playerDataNetworkList.Clear();
+		foreach (PlayerData playerData in list) {
+			playerDataNetworkList.Add(playerData);
+		}
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	public void updatePointsServerRpc(int pointsToAdd, ulong clientId) {
+
+		int playerDataIndex = GetPlayerDataIndexfromClientId(clientId);
+
+		PlayerData playerData = playerDataNetworkList[playerDataIndex];
+
+		playerData.points = playerData.points + 1;
+
+		playerDataNetworkList[playerDataIndex] = playerData;
+	}
+
+	[ServerRpc(RequireOwnership = false)]
 	public void ChangePlayerColorServerRpc(int colorId, ServerRpcParams serverRpcParams = default) {
 		if (!isColorAvaliable(colorId)) {
 			return;

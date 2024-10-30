@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/LobbyScene.unity
     guid: ff97f9b2075f5fb409abac780624c31b
   - enabled: 1
-    path: Assets/Scenes/GameScene.unity
+    path: Assets/Scenes/FighterDungeon.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/LoadingScreen.unity
@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InbetweenScene.unity
     guid: af6ab2955a9032f468699fb909bd34bf
+  - enabled: 1
+    path: Assets/Scenes/WinScene.unity
+    guid: c2ccef644279da448a3ca9ff1048fcb9
   m_configObjects: {}

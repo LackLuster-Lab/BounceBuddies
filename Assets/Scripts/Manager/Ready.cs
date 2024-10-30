@@ -35,7 +35,7 @@ public class Ready : NetworkBehaviour {
 		}
 
 		if (allClientsReady) {
-			GameManager.instance.loadScene();
+			GameManager.instance.nextRound();
 		}
 	}
 

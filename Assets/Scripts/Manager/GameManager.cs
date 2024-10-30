@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,10 +12,25 @@ public class GameManager : NetworkBehaviour {
 
 	public static GameManager instance{get; private set;}
 
-	int Rounds = 5;
+	public enum gamemode {
+		All,
+		Fighter,
+		Race,
+		KingOfTheHill
+	}
+
+	public enum map {
+		All,
+		Dungeon
+	}
+
+	map selectedMap = map.All;
+	gamemode selectedGameMode = gamemode.Fighter;
+	int Rounds = 2;
 	bool isPowerUps = true;
 	float roundTimer = 60;
 
+	public List<PlayerData> winners;
 
 	public override void OnNetworkSpawn() {
 		if (IsServer) {
@@ -36,7 +52,23 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	public void loadScene() {
-		Loader.LoadNetwork(Loader.scenes.GameScene);
+		switch (selectedGameMode) {
+			case gamemode.All:
+				int gamemodeRandom = UnityEngine.Random.Range(0, 0);
+				switch (gamemodeRandom) {
+					case 0:
+						loadFighter();
+						break;
+				}
+				break;
+			case gamemode.Fighter:
+				loadFighter();
+				break;
+			case gamemode.Race:
+				break;
+			case gamemode.KingOfTheHill:
+				break;
+		}
 		Rounds--;
 	}
 
@@ -45,12 +77,13 @@ public class GameManager : NetworkBehaviour {
 		//update points
 		foreach (KeyValuePair<ulong, bool> player in e.winners) {
 			if (player.Value) {
-				PlayerData data = MultiplayerManager.instance.GetPlayerDatafromClientId(player.Key);
-				data.points = data.points + 1;
+				MultiplayerManager.instance.updatePointsServerRpc(1, player.Key);
 			}
 		}
 		if (Rounds <= 0) {
 			//load win scene
+			sortWinners(e.winners.Keys.ToList<ulong>());
+			Loader.LoadNetwork(Loader.scenes.WinScene);
 		} else {
 			//load inbetween scene
 			Loader.LoadNetwork(Loader.scenes.InbetweenScene);
@@ -59,5 +92,31 @@ public class GameManager : NetworkBehaviour {
 
 	public void nextRound() {
 		loadScene();
+	}
+
+	public void sortWinners(List<ulong> list) {
+		MultiplayerManager.instance.sortPlayersServerRpc();
+	}
+
+	private void loadFighter() {
+		int mapRandom;
+		switch (selectedMap) {
+			case GameManager.map.All:
+				mapRandom = UnityEngine.Random.Range(0, 0);
+				switch (mapRandom) {
+					case 0:
+						Loader.LoadNetwork(Loader.scenes.FighterDungeon);
+						break;
+				}
+				break;
+			case GameManager.map.Dungeon:
+				mapRandom = UnityEngine.Random.Range(0, 0);
+				switch (mapRandom) {
+					case 0:
+						Loader.LoadNetwork(Loader.scenes.FighterDungeon);
+						break;
+				}
+				break;
+		}
 	}
 }

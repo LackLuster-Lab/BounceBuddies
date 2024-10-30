@@ -9,13 +9,14 @@ public static class Loader
 	private static scenes TargetScene;
 
 	public enum scenes {
-		GameScene,
+		FighterDungeon,
 		GameScene2,
 		MainMenu,
 		LoadingScreen,
 		LobbyScene,
 		CharacterSelectScene,
-		InbetweenScene
+		InbetweenScene,
+		WinScene
 	}
 
 	public static void Load(scenes targetScene) {

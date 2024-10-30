@@ -63,11 +63,6 @@ public class Player : NetworkBehaviour {
 
 	public void Awake() {
         //Instance = this;
-        if (!numberOfPlayers.ContainsKey(OwnerClientId)) {
-            numberOfPlayers.Add(OwnerClientId, true);
-        } else {
-            numberOfPlayers[OwnerClientId] = true;
-        }
 	}
 
 	public void Start() {
@@ -95,6 +90,11 @@ public class Player : NetworkBehaviour {
             LocalInstance = this;
         }
 
+		if (!numberOfPlayers.ContainsKey(OwnerClientId)) {
+			numberOfPlayers.Add(OwnerClientId, true);
+		} else {
+			numberOfPlayers[OwnerClientId] = true;
+		}
 		transform.position = RoundManager.instance.spawnPositions[MultiplayerManager.instance.GetPlayerDataIndexfromClientId(OwnerClientId)];
 		onAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
         if (IsServer) {
