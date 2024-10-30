@@ -26,7 +26,7 @@ public class GameManager : NetworkBehaviour {
 
 	map selectedMap = map.All;
 	gamemode selectedGameMode = gamemode.Fighter;
-	int Rounds = 2;
+	int Rounds = 5;
 	bool isPowerUps = true;
 	float roundTimer = 60;
 

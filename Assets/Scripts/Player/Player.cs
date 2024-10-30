@@ -184,20 +184,20 @@ public class Player : NetworkBehaviour {
                 Vector3 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - collision.GetContact(0).point;
                 double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
 
-                if (angle < 90 || angle > 270) {
+                if (angle > 90 && angle < 270) {
                     //float damage = damageMultiplier * Vector3.Project(damagingVelocity, PlayerDir).magnitude;
                     float damage = damageMultiplier * damagingVelocity.magnitude;
 
                     Health = Health - damage;
                     
-                    dealDamgeServerRpc(Health);
+                    attacking.dealDamgeServerRpc(Health);
                 } else {
                 }
 				break;
 		}
 	}
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void dealDamgeServerRpc(float damage) {
         dealDamgeClientRpc(damage);
     }
