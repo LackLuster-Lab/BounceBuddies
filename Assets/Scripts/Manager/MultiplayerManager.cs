@@ -167,7 +167,7 @@ public class MultiplayerManager : NetworkBehaviour {
 			list.Add(playerDataNetworkList[i]);
 		}
 		list.Sort(delegate (PlayerData item1, PlayerData item2) {
-			return item1.points.CompareTo(item2.points);
+			return item2.points.CompareTo(item1.points);
 		});
 		playerDataNetworkList.Clear();
 		foreach (PlayerData playerData in list) {
