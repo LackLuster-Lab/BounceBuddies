@@ -36,7 +36,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private playerVisual playerVisual;
     GameObject UsedUI;
 
-	public static List<bool> numberOfPlayers = new List<bool>();
+	public static Dictionary<ulong, bool> numberOfPlayers = new Dictionary<ulong, bool>();
     private int playerPosition;
 	private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
@@ -63,8 +63,11 @@ public class Player : NetworkBehaviour {
 
 	public void Awake() {
         //Instance = this;
-
-		numberOfPlayers.Add(true);
+        if (!numberOfPlayers.ContainsKey(OwnerClientId)) {
+            numberOfPlayers.Add(OwnerClientId, true);
+        } else {
+            numberOfPlayers[OwnerClientId] = true;
+        }
 	}
 
 	public void Start() {
@@ -266,7 +269,7 @@ public class Player : NetworkBehaviour {
         Debug.Log("New Health: " + health);
         if (health <= 0) {
             //die
-            numberOfPlayers[playerPosition - 1] = false;
+            numberOfPlayers[OwnerClientId] = false;
             if (IsOwner) {
                 gameObject.transform.position = new Vector3(1000, 1000, 0);
             }

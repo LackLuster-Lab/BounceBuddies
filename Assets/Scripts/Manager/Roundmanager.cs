@@ -66,7 +66,7 @@ public class RoundManager : NetworkBehaviour {
 	public event EventHandler OnLocalplayerReady;
 	public event EventHandler<onEndgameEventArgs> OnEndGame;
 	public class onEndgameEventArgs : EventArgs {
-		public List<bool> winners;
+		public Dictionary<ulong, bool> winners;
 	}
 	private PowerUpItem PowerupToManage;
 
@@ -182,7 +182,7 @@ public class RoundManager : NetworkBehaviour {
 				switch (gamemode) {
 					case Gamemode.Fighter:
 						int alivePlayers = 0;
-						foreach (bool b in Player.numberOfPlayers) {
+						foreach (bool b in Player.numberOfPlayers.Values) {
 							if (b) {
 								alivePlayers++;
 							}

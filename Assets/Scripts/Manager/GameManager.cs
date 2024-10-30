@@ -15,7 +15,6 @@ public class GameManager : NetworkBehaviour {
 	bool isPowerUps = true;
 	float roundTimer = 60;
 
-	public Dictionary<ulong,int> points;
 
 	public override void OnNetworkSpawn() {
 		if (IsServer) {
@@ -34,11 +33,6 @@ public class GameManager : NetworkBehaviour {
 
 	public void startGame() {
 		loadScene();
-		points = new Dictionary<ulong, int>();
-		List<ulong> clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToList();
-		foreach (ulong clientId in clientIds) {
-			points.Add(clientId, 0);
-		}
 	}
 
 	public void loadScene() {
@@ -49,9 +43,10 @@ public class GameManager : NetworkBehaviour {
 	public void EndRound(object sender, RoundManager.onEndgameEventArgs e) {
 		//between step
 		//update points
-		for (int i = 0; i < e.winners.Count; i++) {
-			if (e.winners[i]) {
-				//points[i]++;
+		foreach (KeyValuePair<ulong, bool> player in e.winners) {
+			if (player.Value) {
+				PlayerData data = MultiplayerManager.instance.GetPlayerDatafromClientId(player.Key);
+				data.points = data.points + 1;
 			}
 		}
 		if (Rounds <= 0) {

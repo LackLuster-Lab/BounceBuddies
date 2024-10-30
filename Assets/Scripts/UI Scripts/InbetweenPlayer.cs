@@ -40,7 +40,7 @@ public class InbetweenPlayer : MonoBehaviour {
 			playerNameText.text = playerData.playerName.ToString();
 
 			playerVisual.setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerData.ColorId));
-			PointsEarned.text = GameManager.instance.points[playerData.clientId].ToString();
+			PointsEarned.text = playerData.points.ToString();
 		} else {
 			Hide();
 		}
