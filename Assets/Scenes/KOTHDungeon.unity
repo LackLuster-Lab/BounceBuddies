@@ -3179,7 +3179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocalPlayerReady: 0
   gamemode: 2
-  damageType: 2
+  damageType: 0
   powerUpsEnabled: 1
   powerUpSpawnTimerMax: 8
   allPowerUps:

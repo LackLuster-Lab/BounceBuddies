@@ -57,6 +57,7 @@ MonoBehaviour:
   BodyColor: {r: 0.972549, g: 0, b: 0, a: 1}
   squishSize: {x: 0.4, y: 1.4, z: 1}
   FighterUI: {fileID: 6159855205066279493, guid: 6c8080b3551750347b448ed9a31fad3a, type: 3}
+  KOTHUI: {fileID: 6159855205066279493, guid: e69b462dc1890344294494310dbec6b9, type: 3}
   Parent: {fileID: 0}
   mouthAnim: {fileID: 1255969774321618455}
   EyesAnim: {fileID: 571814485605108983}

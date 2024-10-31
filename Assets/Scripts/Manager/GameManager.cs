@@ -25,7 +25,7 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	map selectedMap = map.All;
-	gamemode selectedGameMode = gamemode.Fighter;
+	gamemode selectedGameMode = gamemode.All;
 	int Rounds = 5;
 	bool isPowerUps = true;
 	float roundTimer = 60;
@@ -54,7 +54,7 @@ public class GameManager : NetworkBehaviour {
 	public void loadScene() {
 		switch (selectedGameMode) {
 			case gamemode.All:
-				int gamemodeRandom = UnityEngine.Random.Range(0, 1);
+				int gamemodeRandom = UnityEngine.Random.Range(0, 2);
 				switch (gamemodeRandom) {
 					case 0:
 						loadFighter();

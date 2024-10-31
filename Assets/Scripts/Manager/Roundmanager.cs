@@ -226,21 +226,32 @@ public class RoundManager : NetworkBehaviour {
 				}
 				break;
 			case GameState.Endgame:
+				Dictionary<ulong, bool> winners = new Dictionary<ulong, bool>(); ;
 				switch (gamemode) {
 					case Gamemode.Fighter:
-						Dictionary<ulong, bool> winners = new Dictionary<ulong, bool>();
 						foreach (KeyValuePair<ulong, int> value in Player.numberOfPlayers) {
 							winners.Add(value.Key, value.Value == 1);
 						}
-						OnEndGame?.Invoke(this, new onEndgameEventArgs {
-							winners = winners
-						});
 						break;
 					case Gamemode.Race:
 						break;
 					case Gamemode.KingOfHill:
+						int highestInt = 0;
+						foreach (KeyValuePair<ulong, int> value in Player.numberOfPlayers) {
+							if (value.Value > highestInt) {
+								highestInt = value.Value;
+							}
+						}
+
+						foreach (KeyValuePair<ulong, int> value in Player.numberOfPlayers) {
+							winners.Add(value.Key, value.Value == highestInt);
+						}
 						break;
 				}
+
+				OnEndGame?.Invoke(this, new onEndgameEventArgs {
+					winners = winners
+				});
 				break;
 		}
 	}

@@ -25,6 +25,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private Color BodyColor;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
     [SerializeField] private GameObject FighterUI;
+    [SerializeField] private GameObject KOTHUI;
     [SerializeField] private GameObject Parent;
     //Anim
     [SerializeField] private Animator mouthAnim;
@@ -56,8 +57,12 @@ public class Player : NetworkBehaviour {
         public float newHealth;
     }
 
+	public event EventHandler<PointsChangeEventArgs> PointsChange;
+	public class PointsChangeEventArgs : EventArgs {
+		public float newPoints;
+	}
 
-    public event EventHandler<UpdateIconArgs> UpdateIcon;
+	public event EventHandler<UpdateIconArgs> UpdateIcon;
     public class UpdateIconArgs : EventArgs {
         public Sprite Icon;
     }
@@ -77,6 +82,12 @@ public class Player : NetworkBehaviour {
             UsedUI = Instantiate(FighterUI, Parent.gameObject.transform);//network issue
             UsedUI.GetComponent<PlayerUI>().setPlayer(this);
         }
+
+		if (RoundManager.instance.GetGamemode() == RoundManager.Gamemode.KingOfHill) {
+			Parent = GameObject.Find("Canvas/PlayersUI");
+			UsedUI = Instantiate(KOTHUI, Parent.gameObject.transform);//network issue
+			UsedUI.GetComponent<PlayerUI>().setPlayer(this);
+		}
 
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         damageType = RoundManager.instance.damageType;
@@ -232,16 +243,20 @@ public class Player : NetworkBehaviour {
             }
         }
 
-        if (collision.gameObject.tag == "KOTH" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.KingOfHill) {
-            kothTime -= Time.deltaTime;
-            if (IsOwner && kothTime <= 0) {
-                kothTime = 1f;
-                addKOTHPointsServerRpc();
-            }
-        }
+
     }
 
-    [ServerRpc]
+	private void OnTriggerStay2D(Collider2D collision) {
+		if (collision.gameObject.tag == "KOTH" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.KingOfHill) {
+			kothTime -= Time.deltaTime;
+			if (IsOwner && kothTime <= 0) {
+				kothTime = 1f;
+				addKOTHPointsServerRpc();
+			}
+		}
+	}
+
+	[ServerRpc]
     public void addKOTHPointsServerRpc() {
         addKOTHPointsClientRpc();
     }
@@ -249,6 +264,9 @@ public class Player : NetworkBehaviour {
     [ClientRpc]
     public void addKOTHPointsClientRpc() {
         numberOfPlayers[OwnerClientId] = numberOfPlayers[OwnerClientId] + 1;
+        PointsChange?.Invoke(this, new PointsChangeEventArgs {
+            newPoints = numberOfPlayers[OwnerClientId]
+        });
     }
 
     [ServerRpc]

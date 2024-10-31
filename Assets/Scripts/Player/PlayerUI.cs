@@ -5,15 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour {
-	[SerializeField] private Player player;
-	[SerializeField] private Slider HealthBarUI;
-	[SerializeField] private Image powerupIcon;
-	[SerializeField] private Sprite EmptyIcon;
+	[SerializeField] protected Player player;
+	[SerializeField] protected Slider HealthBarUI;
+	[SerializeField] protected Image powerupIcon;
+	[SerializeField] protected Sprite EmptyIcon;
 
 	private void Start() {
 	}
 
-	private void Player_UpdateIcon(object sender, Player.UpdateIconArgs e) {
+	protected void Player_UpdateIcon(object sender, Player.UpdateIconArgs e) {
 		if (e.Icon != null) {
 			powerupIcon.sprite = e.Icon;
 		} else {
@@ -25,7 +25,7 @@ public class PlayerUI : MonoBehaviour {
 		HealthBarUI.value = e.newHealth;
 	}
 
-	public void setPlayer(Player inputPlayer) {
+	public virtual void setPlayer(Player inputPlayer) {
 		player = inputPlayer;
 		player.HealthChange += Player_HealthChange;
 		player.UpdateIcon += Player_UpdateIcon;
