@@ -19,7 +19,7 @@ public class RoundManager : NetworkBehaviour {
 		playing,
 		Endgame
 	}
-	private enum Gamemode {
+	public enum Gamemode {
 		Fighter,
 		Race,
 		KingOfHill
@@ -57,6 +57,8 @@ public class RoundManager : NetworkBehaviour {
 	[SerializeField] public Transform PlayerPrefab;
 	private Dictionary<ulong, bool> PlayerReadyDictionary;
 	private Dictionary<ulong, bool> PlayerPauseDictionary;
+
+
 	//Events
 	public event EventHandler OnStateChanged;
 	public event EventHandler OnLocalPauseGame;
@@ -182,8 +184,8 @@ public class RoundManager : NetworkBehaviour {
 				switch (gamemode) {
 					case Gamemode.Fighter:
 						int alivePlayers = 0;
-						foreach (bool b in Player.numberOfPlayers.Values) {
-							if (b) {
+						foreach (int b in Player.numberOfPlayers.Values) {
+							if (b == 1) {
 								alivePlayers++;
 							}
 						}
@@ -224,14 +226,27 @@ public class RoundManager : NetworkBehaviour {
 				}
 				break;
 			case GameState.Endgame:
-				OnEndGame?.Invoke(this,new onEndgameEventArgs {
-					winners = Player.numberOfPlayers
-				});
+				switch (gamemode) {
+					case Gamemode.Fighter:
+						Dictionary<ulong, bool> winners = new Dictionary<ulong, bool>();
+						foreach (KeyValuePair<ulong, int> value in Player.numberOfPlayers) {
+							winners.Add(value.Key, value.Value == 1);
+						}
+						OnEndGame?.Invoke(this, new onEndgameEventArgs {
+							winners = winners
+						});
+						break;
+					case Gamemode.Race:
+						break;
+					case Gamemode.KingOfHill:
+						break;
+				}
 				break;
 		}
 	}
 
-	[ClientRpc]
+
+[ClientRpc]
 	private void startTimerClientRpc(float deltaTime) {
 		StartTimer -= deltaTime;
 	}
@@ -331,6 +346,10 @@ public class RoundManager : NetworkBehaviour {
 		}
 
 		isGamePaused.Value = false;
+	}
+
+	public Gamemode GetGamemode() {
+		return gamemode;
 	}
 
 	public override void OnDestroy() {

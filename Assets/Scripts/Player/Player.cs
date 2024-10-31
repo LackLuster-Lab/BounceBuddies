@@ -24,7 +24,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private float squishChange = 5f;
     [SerializeField] private Color BodyColor;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
-    [SerializeField] private GameObject UI;
+    [SerializeField] private GameObject FighterUI;
     [SerializeField] private GameObject Parent;
     //Anim
     [SerializeField] private Animator mouthAnim;
@@ -36,7 +36,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private playerVisual playerVisual;
     GameObject UsedUI;
 
-	public static Dictionary<ulong, bool> numberOfPlayers = new Dictionary<ulong, bool>();
+	public static Dictionary<ulong, int> numberOfPlayers = new Dictionary<ulong, int>();
     private int playerPosition;
 	private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
     private PowerUpItem powerup;
@@ -49,6 +49,7 @@ public class Player : NetworkBehaviour {
     //Events
     public static event EventHandler OnAnyPlayerHitWall;
     public Vector3 currentVelocity;
+    float kothTime = 1f;
 
     public event EventHandler<HealthChangeEventArgs> HealthChange;
     public class HealthChangeEventArgs : EventArgs {
@@ -73,7 +74,7 @@ public class Player : NetworkBehaviour {
         Health = HealthMax;
         if (RoundManager.instance.damageType == RoundManager.DamageType.Percentage) {
             Parent = GameObject.Find("Canvas/PlayersUI");
-            UsedUI = Instantiate(UI, Parent.gameObject.transform);//network issue
+            UsedUI = Instantiate(FighterUI, Parent.gameObject.transform);//network issue
             UsedUI.GetComponent<PlayerUI>().setPlayer(this);
         }
 
@@ -91,9 +92,9 @@ public class Player : NetworkBehaviour {
         }
 
 		if (!numberOfPlayers.ContainsKey(OwnerClientId)) {
-			numberOfPlayers.Add(OwnerClientId, true);
+			numberOfPlayers.Add(OwnerClientId, 1);
 		} else {
-			numberOfPlayers[OwnerClientId] = true;
+			numberOfPlayers[OwnerClientId] = 1;
 		}
 		transform.position = RoundManager.instance.spawnPositions[MultiplayerManager.instance.GetPlayerDataIndexfromClientId(OwnerClientId)];
 		onAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
@@ -230,6 +231,24 @@ public class Player : NetworkBehaviour {
                 collectServerRpc(name);
             }
         }
+
+        if (collision.gameObject.tag == "KOTH" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.KingOfHill) {
+            kothTime -= Time.deltaTime;
+            if (IsOwner && kothTime <= 0) {
+                kothTime = 1f;
+                addKOTHPointsServerRpc();
+            }
+        }
+    }
+
+    [ServerRpc]
+    public void addKOTHPointsServerRpc() {
+        addKOTHPointsClientRpc();
+    }
+
+    [ClientRpc]
+    public void addKOTHPointsClientRpc() {
+        numberOfPlayers[OwnerClientId] = numberOfPlayers[OwnerClientId] + 1;
     }
 
     [ServerRpc]
@@ -269,7 +288,7 @@ public class Player : NetworkBehaviour {
         Debug.Log("New Health: " + health);
         if (health <= 0) {
             //die
-            numberOfPlayers[OwnerClientId] = false;
+            numberOfPlayers[OwnerClientId] = 0;
             if (IsOwner) {
                 gameObject.transform.position = new Vector3(1000, 1000, 0);
             }

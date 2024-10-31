@@ -10,7 +10,7 @@ public static class Loader
 
 	public enum scenes {
 		FighterDungeon,
-		GameScene2,
+		KOTHDungeon,
 		MainMenu,
 		LoadingScreen,
 		LobbyScene,

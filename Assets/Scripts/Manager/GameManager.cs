@@ -54,10 +54,13 @@ public class GameManager : NetworkBehaviour {
 	public void loadScene() {
 		switch (selectedGameMode) {
 			case gamemode.All:
-				int gamemodeRandom = UnityEngine.Random.Range(0, 0);
+				int gamemodeRandom = UnityEngine.Random.Range(0, 1);
 				switch (gamemodeRandom) {
 					case 0:
 						loadFighter();
+						break;
+					case 1:
+						loadKOTH();
 						break;
 				}
 				break;
@@ -67,6 +70,7 @@ public class GameManager : NetworkBehaviour {
 			case gamemode.Race:
 				break;
 			case gamemode.KingOfTheHill:
+				loadKOTH();
 				break;
 		}
 		Rounds--;
@@ -114,6 +118,28 @@ public class GameManager : NetworkBehaviour {
 				switch (mapRandom) {
 					case 0:
 						Loader.LoadNetwork(Loader.scenes.FighterDungeon);
+						break;
+				}
+				break;
+		}
+	}
+
+	private void loadKOTH() {
+		int mapRandom;
+		switch (selectedMap) {
+			case GameManager.map.All:
+				mapRandom = UnityEngine.Random.Range(0, 0);
+				switch (mapRandom) {
+					case 0:
+						Loader.LoadNetwork(Loader.scenes.KOTHDungeon);
+						break;
+				}
+				break;
+			case GameManager.map.Dungeon:
+				mapRandom = UnityEngine.Random.Range(0, 0);
+				switch (mapRandom) {
+					case 0:
+						Loader.LoadNetwork(Loader.scenes.KOTHDungeon);
 						break;
 				}
 				break;
