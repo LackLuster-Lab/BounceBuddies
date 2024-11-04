@@ -8,13 +8,18 @@ using UnityEngine.UI;
 public class LobbyUI : MonoBehaviour {
 	[SerializeField] Button mainMenuButton;
 	[SerializeField] Button createLobbyButton;
-	[SerializeField] Button quickJoinButton;
+	[SerializeField] Button BrowseLobbiesButotn;
 	[SerializeField] Button joinCodeButton;
+	[SerializeField] Button joinCodeUIButton;
+	[SerializeField] Button CloseBrowse;
+	[SerializeField] Button CloseJoin;
 	[SerializeField] TMP_InputField codeText;
 	[SerializeField] TMP_InputField playerNameInputField;
 	[SerializeField] LobbyCreateUI lobbyCreateUI;
 	[SerializeField] Transform lobbyContainer;
 	[SerializeField] Transform lobbyTemplate;
+	[SerializeField] Transform LobbyListUI;
+	[SerializeField] Transform JoinCodeUI;
 
 	private void Awake() {
 		mainMenuButton.onClick.AddListener(() => {
@@ -25,15 +30,25 @@ public class LobbyUI : MonoBehaviour {
 			//GameLobby.Instance.CreateLobby("LobbyName", false);
 			lobbyCreateUI.Show();
 		});
-		quickJoinButton.onClick.AddListener(() => {
-			GameLobby.Instance.QuickJoin();
+		BrowseLobbiesButotn.onClick.AddListener(() => {
+			LobbyListUI.gameObject.SetActive(true);
 		});
 		joinCodeButton.onClick.AddListener(() => {
 			GameLobby.Instance.JoinWithCode(codeText.text);
 		});
+		CloseBrowse.onClick.AddListener(() => {
+			LobbyListUI.gameObject.SetActive(false);
+		});
+		CloseJoin.onClick.AddListener(() => {
+			JoinCodeUI.gameObject.SetActive(false);
+		});
+		joinCodeUIButton.onClick.AddListener(() => {
+			JoinCodeUI.gameObject.SetActive(true);
+		});
 
-
+		JoinCodeUI.gameObject.SetActive(false);
 		lobbyTemplate.gameObject.SetActive(false);
+		LobbyListUI.gameObject.SetActive(false);
 	}
 
 	private void Start() {

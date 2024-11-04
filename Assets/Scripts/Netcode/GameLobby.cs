@@ -17,6 +17,7 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using WebSocketSharp;
 
 public class GameLobby : MonoBehaviour {
 
@@ -28,6 +29,7 @@ public class GameLobby : MonoBehaviour {
 	public event EventHandler OnJoinStarted;
 	public event EventHandler OnJoinFailed;
 	public event EventHandler OnQuickJoinFailed;
+	public event EventHandler EmptyLobbyName;
 	public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
 	public class OnLobbyListChangedEventArgs : EventArgs {
 		public List<Lobby> lobbyList;
@@ -114,6 +116,11 @@ public class GameLobby : MonoBehaviour {
 	}
 	public async void CreateLobby(string lobbyName, bool isPrivate) {
 		OnCreateLobbyStarted?.Invoke(this,EventArgs.Empty);
+		if (lobbyName.IsNullOrEmpty()) {
+
+			EmptyLobbyName?.Invoke(this, EventArgs.Empty);
+			return;
+		}
 		try {
 			joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MultiplayerManager.MAX_PLAYERS, new CreateLobbyOptions {
 				IsPrivate = isPrivate

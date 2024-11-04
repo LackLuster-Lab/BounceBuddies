@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -22,8 +23,13 @@ public class LobbyMessageUI : MonoBehaviour{
 		GameLobby.Instance.OnJoinStarted += Instance_OnJoinStarted;
 		GameLobby.Instance.OnJoinFailed += Instance_OnJoinFailed;
 		GameLobby.Instance.OnQuickJoinFailed += Instance_OnQuickJoinFailed;
+		GameLobby.Instance.EmptyLobbyName += emptyLobbyName;
 
 		Hide();
+	}
+
+	private void emptyLobbyName(object sender, EventArgs e) {
+		ShowMessage("Lobby Name is Empty!");
 	}
 
 	private void Instance_OnQuickJoinFailed(object sender, System.EventArgs e) {
