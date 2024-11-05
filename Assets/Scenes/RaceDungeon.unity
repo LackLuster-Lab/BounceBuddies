@@ -3178,7 +3178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocalPlayerReady: 0
-  gamemode: 2
+  gamemode: 1
   damageType: 0
   powerUpsEnabled: 1
   powerUpSpawnTimerMax: 8
@@ -3223,7 +3223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4195909012
+  GlobalObjectIdHash: 4192481937
   AlwaysReplicateAsRoot: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -3613,7 +3613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2518848037
+  GlobalObjectIdHash: 2048771597
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -5103,7 +5103,7 @@ GameObject:
   - component: {fileID: 673362645}
   m_Layer: 0
   m_Name: Square
-  m_TagString: KOTH
+  m_TagString: RaceFinish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

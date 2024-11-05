@@ -5437,7 +5437,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -70, y: 20}
-  m_SizeDelta: {x: 498.14, y: 120}
+  m_SizeDelta: {x: 500, y: 120}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &796150655
 MonoBehaviour:
@@ -6761,6 +6761,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fcbc176561af547a6270d5136edf16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  codeText: {fileID: 58927772}
+  button0: {fileID: 1177271186}
+  button1: {fileID: 423450594}
+  button2: {fileID: 1379228700}
+  button3: {fileID: 2095046906}
+  button4: {fileID: 1024963061}
+  button5: {fileID: 13818353}
+  button6: {fileID: 901375298}
+  button7: {fileID: 1557075707}
+  button8: {fileID: 654108764}
+  button9: {fileID: 470806222}
+  backspacebutton: {fileID: 1124288902}
 --- !u!1 &992747517
 GameObject:
   m_ObjectHideFlags: 0
@@ -7868,7 +7880,7 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 1, b: 1, a: 1}
-  - {r: 0.4627451, g: 0, b: 1, a: 0}
+  - {r: 0.4627451, g: 0, b: 1, a: 1}
 --- !u!4 &1180192443
 Transform:
   m_ObjectHideFlags: 0
