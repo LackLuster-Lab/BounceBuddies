@@ -15,7 +15,7 @@ public class Player : NetworkBehaviour {
     public static event EventHandler onAnyPlayerSpawned;
     public static Player LocalInstance { get; private set; }
 
-
+    public LobbyUI mylobbyui;
     //GamePlay
     [SerializeField] private float HealthMax;
     [NonSerialized] public float Health;
@@ -243,8 +243,10 @@ public class Player : NetworkBehaviour {
             }
         }
 
-
-    }
+		if (collision.gameObject.tag == "RaceFinish" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.Race) {
+				//FinishRaceServerRpc();
+		}
+	}
 
 	private void OnTriggerStay2D(Collider2D collision) {
 		if (collision.gameObject.tag == "KOTH" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.KingOfHill) {
