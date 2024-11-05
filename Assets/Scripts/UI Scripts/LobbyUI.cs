@@ -63,6 +63,7 @@ public class LobbyUI : MonoBehaviour {
 
 	private void Instance_OnLobbyListChanged(object sender, GameLobby.OnLobbyListChangedEventArgs e) {
 		updateLobbyList(e.lobbyList);
+		Player.LocalInstance.mylobbyui = this;
 	}
 
 	private void updateLobbyList(List<Lobby> lobbies) {
