@@ -17,7 +17,7 @@ public class WinPlayer : MonoBehaviour {
 
 	private void Start() {
 		MultiplayerManager.instance.OnPlayerDataNetworkListChanged += Instance_OnPlayerDataNetworkListChanged;
-		Ready.instance.OnReadyChange += Instance_OnReadyChange;
+
 
 		UpdatePlayer();
 	}
@@ -34,7 +34,7 @@ public class WinPlayer : MonoBehaviour {
 		if (MultiplayerManager.instance.IsPlayerIndexConnected(playerIndex)) {
 			Show();
 			PlayerData playerData = MultiplayerManager.instance.GetPlayerDatafromPlayerIndex(playerIndex);
-			readyGameObject.SetActive(Ready.instance.IsPlayerReady(playerData.clientId));
+
 
 			playerNameText.text = playerData.playerName.ToString();
 

@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WinScene.unity
     guid: c2ccef644279da448a3ca9ff1048fcb9
+  - enabled: 1
+    path: Assets/Scenes/RaceDungeon.unity
+    guid: 0e97ec0d70d338040b42e6adf7bf79e2
   m_configObjects: {}

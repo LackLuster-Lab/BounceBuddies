@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e17b7b1d25e194ba9dc799aa37efb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mylobbyui: {fileID: 0}
   HealthMax: 100
   moveSpeed: 0.3
   maxSpeed: 50
@@ -58,6 +59,7 @@ MonoBehaviour:
   squishSize: {x: 0.4, y: 1.4, z: 1}
   FighterUI: {fileID: 6159855205066279493, guid: 6c8080b3551750347b448ed9a31fad3a, type: 3}
   KOTHUI: {fileID: 6159855205066279493, guid: e69b462dc1890344294494310dbec6b9, type: 3}
+  RaceUI: {fileID: 6159855205066279493, guid: 25efc81d0f783a24699e345fc2ca3c5c, type: 3}
   Parent: {fileID: 0}
   mouthAnim: {fileID: 1255969774321618455}
   EyesAnim: {fileID: 571814485605108983}
@@ -272,8 +274,8 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 8490014150382590193, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
   m_PrefabInstance: {fileID: 8231991733956793350}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &612088403426336378 stripped
-Transform:
+--- !u!224 &612088403426336378 stripped
+RectTransform:
   m_CorrespondingSourceObject: {fileID: 8810021588418071164, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
   m_PrefabInstance: {fileID: 8231991733956793350}
   m_PrefabAsset: {fileID: 0}

@@ -26,6 +26,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
     [SerializeField] private GameObject FighterUI;
     [SerializeField] private GameObject KOTHUI;
+    [SerializeField] private GameObject RaceUI;
     [SerializeField] private GameObject Parent;
     //Anim
     [SerializeField] private Animator mouthAnim;
@@ -88,7 +89,11 @@ public class Player : NetworkBehaviour {
 			UsedUI = Instantiate(KOTHUI, Parent.gameObject.transform);//network issue
 			UsedUI.GetComponent<PlayerUI>().setPlayer(this);
 		}
-
+		if (RoundManager.instance.GetGamemode() == RoundManager.Gamemode.Race) {
+			Parent = GameObject.Find("Canvas/PlayersUI");
+			UsedUI = Instantiate(RaceUI, Parent.gameObject.transform);//network issue
+			UsedUI.GetComponent<PlayerUI>().setPlayer(this);
+		}
 		GameInput.instance.onPowerUpPerformed += GameInput_onPowerUpPerformed;
         damageType = RoundManager.instance.damageType;
         RoundManager.instance.addPlayer();
@@ -244,7 +249,7 @@ public class Player : NetworkBehaviour {
         }
 
 		if (collision.gameObject.tag == "RaceFinish" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.Race) {
-				//FinishRaceServerRpc();
+            RoundManager.instance.OnfinishRaceServerRpc();
 		}
 	}
 

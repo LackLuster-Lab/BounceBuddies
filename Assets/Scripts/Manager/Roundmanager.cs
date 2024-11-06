@@ -29,9 +29,18 @@ public class RoundManager : NetworkBehaviour {
 		Stocks,
 		Percentage
 	}
+
+	public enum CameraMode {
+		Horizontal,
+		Vertical,
+		None
+	}
+
 	public bool isLocalPlayerReady;
 	//Gamemode Settings
 	[SerializeField] Gamemode gamemode = Gamemode.Fighter;//TODO implement
+	[SerializeField] CameraMode cameraMode = CameraMode.None;
+	[SerializeField] GameObject cameraMove;
 	[SerializeField] public DamageType damageType = DamageType.Percentage;//TODO implement
 	[SerializeField] bool powerUpsEnabled;
 	[SerializeField] private float powerUpSpawnTimerMax = 4f;
@@ -57,7 +66,7 @@ public class RoundManager : NetworkBehaviour {
 	[SerializeField] public Transform PlayerPrefab;
 	private Dictionary<ulong, bool> PlayerReadyDictionary;
 	private Dictionary<ulong, bool> PlayerPauseDictionary;
-
+	private ulong RaceWinner;
 
 	//Events
 	public event EventHandler OnStateChanged;
@@ -206,6 +215,9 @@ public class RoundManager : NetworkBehaviour {
 					setState(GameState.Endgame);
 					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
+
+				updateCameraClientRpc();
+
 				//Powerups
 				if (powerUpsEnabled) {
 					if (powerUpSpawnTimer >= powerUpSpawnTimerMax && currentPowerup == null) {
@@ -234,6 +246,9 @@ public class RoundManager : NetworkBehaviour {
 						}
 						break;
 					case Gamemode.Race:
+						foreach (KeyValuePair<ulong, int> value in Player.numberOfPlayers) {
+							winners.Add(value.Key, value.Key == RaceWinner);
+						}
 						break;
 					case Gamemode.KingOfHill:
 						int highestInt = 0;
@@ -255,9 +270,21 @@ public class RoundManager : NetworkBehaviour {
 				break;
 		}
 	}
+	[ClientRpc]
+	private void updateCameraClientRpc() {
+		switch (cameraMode) {
+			case CameraMode.Horizontal:
+		cameraMove.transform.position = new Vector3(Player.LocalInstance.gameObject.transform.position.x, cameraMove.transform.position.y, cameraMove.transform.position.z);
+				break;
+			case CameraMode.Vertical:
+		cameraMove.transform.position = new Vector3(cameraMove.transform.position.x, Player.LocalInstance.gameObject.transform.position.y, cameraMove.transform.position.z);
+				break;
+			case CameraMode.None:
+				break;
+		}
+	}
 
-
-[ClientRpc]
+	[ClientRpc]
 	private void startTimerClientRpc(float deltaTime) {
 		StartTimer -= deltaTime;
 	}
@@ -376,5 +403,11 @@ public class RoundManager : NetworkBehaviour {
 			NetworkManager.Singleton.OnClientDisconnectCallback -= Singleton_OnClientDisconnectCallback;
 			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneManager_OnLoadEventCompleted;
 		}
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	public void OnfinishRaceServerRpc(ServerRpcParams serverRpcParams = default) {
+		RaceWinner = serverRpcParams.Receive.SenderClientId;
+		setState(GameState.Endgame);
 	}
 }

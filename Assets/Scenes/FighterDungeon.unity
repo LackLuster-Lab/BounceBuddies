@@ -3179,6 +3179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocalPlayerReady: 0
   gamemode: 0
+  cameraMode: 2
+  cameraMove: {fileID: 519420031}
   damageType: 2
   powerUpsEnabled: 1
   powerUpSpawnTimerMax: 8
