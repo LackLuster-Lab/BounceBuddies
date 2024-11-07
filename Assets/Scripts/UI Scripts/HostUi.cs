@@ -32,6 +32,7 @@ public class HostUi : MonoBehaviour
     }
     private void Show() {
         gameObject.SetActive(true);
+		MainMenuButton.Select();
     }
 
 	private void OnDestroy() {

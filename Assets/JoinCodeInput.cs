@@ -57,11 +57,15 @@ public class JoinCodeInput : MonoBehaviour
 		});
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// Update is called once per frame
+	public void show() {
+		gameObject.SetActive(true);
+		button1.Select();
+	}
+
+	public void hide() {
+		gameObject.SetActive(false);
+	}
 
 	public void backspace() {
 		codeText.text = codeText.text.Substring(0, codeText.text.Length - 1);

@@ -22,6 +22,7 @@ public class LobbyCreateUI : MonoBehaviour
 
 		closeButton.onClick.AddListener(() => {
 			Hide();
+
 		});
 	}
 	private void Start() {
@@ -34,5 +35,6 @@ public class LobbyCreateUI : MonoBehaviour
 
 	public void Show() {
 		gameObject.SetActive(true);
+		createPrivateButton.Select();
 	}
 }

@@ -23,6 +23,10 @@ public class CharacterSelectUI : MonoBehaviour {
 		});
 	}
 
+	private void Start() {
+		readyButton.Select();
+	}
+
 	private void Update() {
 		Lobby lobby = GameLobby.Instance.GetLobby();
 		lobbyNameText.text = lobby.Name;

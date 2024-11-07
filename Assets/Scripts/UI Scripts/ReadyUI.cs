@@ -15,6 +15,10 @@ public class ReadyUI : MonoBehaviour {
 		});
 	}
 
+	private void Start() {
+		readyButton.Select();
+	}
+
 	private void Update() {
 		Lobby lobby = GameLobby.Instance.GetLobby();
 	}
