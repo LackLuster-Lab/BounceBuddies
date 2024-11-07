@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class Player : NetworkBehaviour {
 
@@ -100,6 +101,7 @@ public class Player : NetworkBehaviour {
         RoundManager.instance.isLocalPlayerReady = true;
         PlayerData playerData = MultiplayerManager.instance.GetPlayerDatafromClientId(OwnerClientId);
         playerVisual.setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerData.ColorId));
+        UsedUI.GetComponent<PlayerUI>().setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerData.ColorId));
 	}
 
 	public override void OnNetworkSpawn() {

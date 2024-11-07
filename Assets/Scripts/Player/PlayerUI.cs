@@ -9,6 +9,7 @@ public class PlayerUI : MonoBehaviour {
 	[SerializeField] protected Slider HealthBarUI;
 	[SerializeField] protected Image powerupIcon;
 	[SerializeField] protected Sprite EmptyIcon;
+	[SerializeField] protected playerVisualUI visual;
 
 	private void Start() {
 	}
@@ -29,5 +30,9 @@ public class PlayerUI : MonoBehaviour {
 		player = inputPlayer;
 		player.HealthChange += Player_HealthChange;
 		player.UpdateIcon += Player_UpdateIcon;
+	}
+
+	public void setPlayerColor(Color color) {
+		visual.setPlayerColor(color);
 	}
 }

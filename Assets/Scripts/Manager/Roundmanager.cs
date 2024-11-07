@@ -59,8 +59,8 @@ public class RoundManager : NetworkBehaviour {
 	public bool isLocalGamePaused = false;
 	private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
 	[SerializeField] private bool UseGameTimer = true;
-	[SerializeField] private float GameTimerMax = 10f;
-	[SerializeField] private float GameTimer = 10f;
+	[SerializeField] private float GameTimerMax = 60f;
+	[SerializeField] private float GameTimer = 60f;
 	private bool autoTestGamePauseState = false;
 
 	[SerializeField] public Transform PlayerPrefab;

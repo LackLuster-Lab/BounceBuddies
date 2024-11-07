@@ -22,7 +22,7 @@ public class InteractUI : MonoBehaviour
 	}
 
 	private void UpdateVisual() {
-		Interact.text = "Press " + GameInput.instance.GetBindingText(GameInput.Binding.Power_Up) + " to Ready";
+		Interact.text = "Press " + GameInput.instance.GetBindingText(GameInput.Binding.Power_Up) + " to Continue";
 	}
 
 	private void KitchenGameManager_OnLocalPlayerReadyChanged(object sender, System.EventArgs e) {
