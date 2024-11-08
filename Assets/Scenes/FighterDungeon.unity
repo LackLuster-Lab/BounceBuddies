@@ -2651,6 +2651,7 @@ MonoBehaviour:
   powerUpsEnabled: 1
   powerUpSpawnTimerMax: 8
   allPowerUps:
+  - {fileID: 5146337186254192159, guid: e62473372b6952d4b86318c4f2c6094e, type: 3}
   - {fileID: 5146337186254192159, guid: e56d1aeba0ee771408e118deadf479d0, type: 3}
   spawnPositions:
   - {x: -6, y: 1, z: 0}
@@ -2708,6 +2709,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rocketvfx: {fileID: 7267094215010224710, guid: ebd133751bb49d04b86aec1259e1ba4a, type: 3}
+  timeBombArea: {fileID: 4722323907363968000, guid: a4d1206e51875574f99dd6d15ad99f3b, type: 3}
+  projectile: {fileID: 4722323907363968000, guid: 5c2c909dc5c084b4d95c0843c76a298b, type: 3}
 --- !u!1 &477920039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4148,7 +4151,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 183}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -366}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &692532132
@@ -6771,7 +6774,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 200}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1459178161

@@ -252,6 +252,10 @@ public class Player : NetworkBehaviour {
 		if (collision.gameObject.tag == "RaceFinish" && RoundManager.instance.GetGamemode() == RoundManager.Gamemode.Race) {
             RoundManager.instance.OnfinishRaceServerRpc();
 		}
+
+        if (IsOwner && collision.gameObject.tag == "TimeBomb") {
+            maxSpeed /= 4;
+        }
 	}
 
 	private void OnTriggerStay2D(Collider2D collision) {
@@ -261,6 +265,12 @@ public class Player : NetworkBehaviour {
 				kothTime = 1f;
 				addKOTHPointsServerRpc();
 			}
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision) {
+		if (IsOwner && collision.gameObject.tag == "TimeBomb") {
+			maxSpeed *= 4;
 		}
 	}
 
@@ -294,6 +304,9 @@ public class Player : NetworkBehaviour {
 
     private void HandleMovement() {
         rb.velocity += GameInput.instance.getMovementVectorNormalized() * moveSpeed; //network issue
+        if (rb.velocity.magnitude > maxSpeed) {
+            rb.velocity = rb.velocity.normalized * maxSpeed;
+        }
     }
 
     private void HandleSquish() {

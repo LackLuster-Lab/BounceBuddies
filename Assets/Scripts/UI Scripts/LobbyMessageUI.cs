@@ -12,6 +12,7 @@ public class LobbyMessageUI : MonoBehaviour{
 	[SerializeField] private TextMeshProUGUI ErrorMessageText;
 	[SerializeField] private Button closeButton;
 
+	public static event EventHandler OnButtonPress;
 	private void Awake() {
 		closeButton.onClick.AddListener(Hide);
 	}
@@ -70,6 +71,7 @@ public class LobbyMessageUI : MonoBehaviour{
 	}
 
 	private void Hide() {
+		OnButtonPress?.Invoke(this, EventArgs.Empty);
 		gameObject.SetActive(false);
 	}
 

@@ -41,6 +41,7 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private TextMeshProUGUI GamepadMoveDownText;
 	[SerializeField] private TextMeshProUGUI GamepadMoveLeftText;
 	[SerializeField] private TextMeshProUGUI GamepadMoveRightText;
+	public static event EventHandler OnButtonPress;
 
 	//rebind visual
 	[SerializeField] private Transform PressToRebindVisualTransform;
@@ -53,50 +54,65 @@ public class OptionsUI : MonoBehaviour {
 		sFXButton.onClick.AddListener(() => {
 			SoundManager.instance.ChangeVolume();
 			updateVisual();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		musicButton.onClick.AddListener(() => {
 			MusicManager.instance.ChangeVolume();
 			updateVisual();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		CloseButton.onClick.AddListener(() => {
 			Hide();
 			closeButtonAction();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		MoveUpButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Move_Up);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		}); 
 		MoveDownButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Move_Down);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		MoveLeftButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Move_Left);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		MoveRightButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Move_Right);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		PowerUpButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Power_Up);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		PauseButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.Pause);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		GamePadPauseButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_Pause);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		GamePadPowerUpButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_PowerUp);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});//change binding
 		GamepadMoveUpButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_MoveUp);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		GamepadMoveDownButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_MoveDown);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		GamepadMoveLeftButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_MoveLeft);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		GamepadMoveRightButton.onClick.AddListener(() => {
 			rebindKey(GameInput.Binding.GamePad_MoveRight);
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		instance = this;
 	}

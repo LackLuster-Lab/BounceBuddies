@@ -15,14 +15,29 @@ public class SoundManager : MonoBehaviour
 	}
 
 	private void Start() {
-			Player.OnAnyPlayerHitWall += Player_OnPlayerHitWall;
-		
+		Player.OnAnyPlayerHitWall += Player_OnPlayerHitWall;
+		MainMenuUI.OnButtonPress += OnButtonPress;
+		OptionsUI.OnButtonPress += OnButtonPress;
+		LobbyUI.OnButtonPress += OnButtonPress;
+		LobbyCreateUI.OnButtonPress += OnButtonPress;
+		JoinCodeInput.OnButtonPress += OnButtonPress;
+		LobbyMessageUI.OnButtonPress += OnButtonPress;
+		HostUi.OnButtonPress += OnButtonPress;
+		CharacterSelectUI.OnButtonPress += OnButtonPress;
+		CharacterSelectColor.OnButtonPress += OnButtonPress;
+		ReadyUI.OnButtonPress += OnButtonPress;
+		EndGamUI.OnButtonPress += OnButtonPress;
 	}
 
 	//play sounds
 	private void Player_OnPlayerHitWall(object sender, System.EventArgs e) {
 		Player player = sender as Player;
 		PlaySound(sounds.PlayerHitWall, player.transform.position, sounds.PlayerHitWallVolume); 
+	}
+
+	private void OnButtonPress(object sender, System.EventArgs e) {
+		Player player = sender as Player;
+		PlaySound(sounds.buttonPress, Camera.allCameras[0].transform.position, sounds.buttonPressVolume);
 	}
 
 	//sound manager functions
@@ -42,5 +57,21 @@ public class SoundManager : MonoBehaviour
 
 	public float GetVolume() {
 		return volume;
+	}
+
+	private void OnDestroy() {
+
+		Player.OnAnyPlayerHitWall -= Player_OnPlayerHitWall;
+		MainMenuUI.OnButtonPress -= OnButtonPress;
+		OptionsUI.OnButtonPress -= OnButtonPress;
+		LobbyUI.OnButtonPress -= OnButtonPress;
+		LobbyCreateUI.OnButtonPress -= OnButtonPress;
+		JoinCodeInput.OnButtonPress -= OnButtonPress;
+		LobbyMessageUI.OnButtonPress -= OnButtonPress;
+		HostUi.OnButtonPress -= OnButtonPress;
+		CharacterSelectUI.OnButtonPress -= OnButtonPress;
+		CharacterSelectColor.OnButtonPress -= OnButtonPress;
+		ReadyUI.OnButtonPress -= OnButtonPress;
+		EndGamUI.OnButtonPress -= OnButtonPress;
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +9,11 @@ using UnityEngine.UI;
 
 public class ReadyUI : MonoBehaviour {
 	[SerializeField] Button readyButton;
+	public static event EventHandler OnButtonPress;
 
 	private void Awake() {
 		readyButton.onClick.AddListener(() => {
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 			Ready.instance.SetPlayerReady();
 		});
 	}

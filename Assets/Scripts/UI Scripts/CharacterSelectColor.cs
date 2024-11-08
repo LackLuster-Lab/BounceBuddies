@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,11 @@ public class CharacterSelectColor : MonoBehaviour {
 	[SerializeField] int ColorId;
 	[SerializeField] Image image;
 	[SerializeField] GameObject selectedGameObject;
+	public static event EventHandler OnButtonPress;
 
 	private void Awake() {
 		GetComponent<Button>().onClick.AddListener(() => {
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 			MultiplayerManager.instance.ChangePlayerColor(ColorId);
 		});
 	}

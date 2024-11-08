@@ -3,16 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PowerUpFunctions : NetworkBehaviour
 {
     public static PowerUpFunctions instance {get; private set; }
 
 	[SerializeField] protected GameObject Rocketvfx;
+	[SerializeField] protected GameObject timeBombArea;
+	[SerializeField] protected GameObject projectile;
+
+	public EventHandler<ProjectileCallbackEventArgs> onProjectileCallback;
+	public class ProjectileCallbackEventArgs : EventArgs {
+		public Vector3 position;
+	}
 
 	public enum powerup {
 		None,
         Rocket,
+		TimeBomb
     }
 
 	private void Awake() {
@@ -26,7 +35,33 @@ public class PowerUpFunctions : NetworkBehaviour
 			case powerup.Rocket:
 				RocketPower(gameInput, gameObject);
 				break;
+			case powerup .TimeBomb:
+				TimeBomb(gameInput, gameObject);
+				break;
 		}
+	}
+
+	public void TimeBomb(GameInput gameInput, GameObject gameObject) {
+		Vector2 currentDir = gameInput.playerInputActions.Player.Move.ReadValue<Vector2>();
+		Vector3 velocity = new Vector3(currentDir.x, currentDir.y, 0);
+		SpawnTimeBombServerRpc(gameObject.transform.position, velocity);
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	private void SpawnTimeBombServerRpc(Vector3 position, Vector3 velocity) {
+		SpawnTimeBombClientRpc(position, velocity);
+	}
+
+	[ClientRpc]
+	private void SpawnTimeBombClientRpc(Vector3 position,Vector3 velocity) {
+		GameObject timeBomb = Instantiate(projectile, position, Quaternion.identity);
+		timeBomb.GetComponent<Projectile>().SetVelocity(velocity);
+		onProjectileCallback += spawnTimeBombArea;
+	}
+
+	private void spawnTimeBombArea(object sender, ProjectileCallbackEventArgs e) {
+		GameObject timeBomb = Instantiate(timeBombArea, e.position, Quaternion.identity);
+		Destroy(timeBomb, 5);
 	}
 
 

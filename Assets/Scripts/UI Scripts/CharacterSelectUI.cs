@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,14 +12,17 @@ public class CharacterSelectUI : MonoBehaviour {
 	[SerializeField] Button readyButton;
 	[SerializeField] TextMeshProUGUI lobbyNameText;
 	[SerializeField] TextMeshProUGUI lobbyCodeText;
+	public static event EventHandler OnButtonPress;
 
 	private void Awake() {
 		mainMenuButton.onClick.AddListener(() => {
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 			GameLobby.Instance.LeaveLobby();
 			NetworkManager.Singleton.Shutdown();
 			Loader.Load(Loader.scenes.MainMenu);
 		});
 		readyButton.onClick.AddListener(() => {
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 			CharacterSelectReady.instance.SetPlayerReady();
 		});
 	}

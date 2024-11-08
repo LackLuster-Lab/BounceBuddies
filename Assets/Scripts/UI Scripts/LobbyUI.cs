@@ -22,6 +22,7 @@ public class LobbyUI : MonoBehaviour {
 	[SerializeField] Transform lobbyTemplate;
 	[SerializeField] Transform LobbyListUI;
 	[SerializeField] JoinCodeInput JoinCodeUI;
+	public static event EventHandler OnButtonPress;
 
 
 	private void Awake() {
@@ -32,28 +33,35 @@ public class LobbyUI : MonoBehaviour {
 		createLobbyButton.onClick.AddListener(() => {
 			//GameLobby.Instance.CreateLobby("LobbyName", false);
 			lobbyCreateUI.Show();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 
 		});
 		BrowseLobbiesButotn.onClick.AddListener(() => {
 			LobbyListUI.gameObject.SetActive(true);
 			CloseBrowse.Select();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		joinCodeButton.onClick.AddListener(() => {
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 			GameLobby.Instance.JoinWithCode(codeText.text);
 		});
 		CloseBrowse.onClick.AddListener(() => {
 			LobbyListUI.gameObject.SetActive(false);
 			createLobbyButton.Select();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		CloseJoin.onClick.AddListener(() => {
 			JoinCodeUI.gameObject.SetActive(false);
 			createLobbyButton.Select();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		CloseCreate.onClick.AddListener(() => {
 			createLobbyButton.Select();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		joinCodeUIButton.onClick.AddListener(() => {
 			JoinCodeUI.show();
+			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 
 		JoinCodeUI.gameObject.SetActive(false);

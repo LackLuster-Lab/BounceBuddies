@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,11 +20,12 @@ public class JoinCodeInput : MonoBehaviour
     [SerializeField] Button button8;
     [SerializeField] Button button9;
     [SerializeField] Button backspacebutton;
-    // Start is called before the first frame update
-    void Start()
+	public static event EventHandler OnButtonPress;
+	// Start is called before the first frame update
+	void Start()
     {
         button0.onClick.AddListener(() => {
-            addNumber(0);
+			addNumber(0);
         });
 		button1.onClick.AddListener(() => {
 			addNumber(1);
@@ -68,10 +70,12 @@ public class JoinCodeInput : MonoBehaviour
 	}
 
 	public void backspace() {
+		OnButtonPress?.Invoke(this, EventArgs.Empty);
 		codeText.text = codeText.text.Substring(0, codeText.text.Length - 1);
 	}
 
     private void addNumber(int number) {
-        codeText.text = codeText.text + number;
+		OnButtonPress?.Invoke(this, EventArgs.Empty);
+		codeText.text = codeText.text + number;
     }
 }

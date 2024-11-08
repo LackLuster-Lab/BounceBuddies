@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5135050fee435d44b07e968dfd46355, type: 3}
-  m_Name: SoundRefsSO
+  m_Script: {fileID: 11500000, guid: 04a6c8ca2d4fb6344adca8e99b6c0a93, type: 3}
+  m_Name: TimeBomb
   m_EditorClassIdentifier: 
-  PlayerHitWall: {fileID: 8300000, guid: e8c578f94ae625346b521a7feba25e19, type: 3}
-  buttonPress: {fileID: 8300000, guid: 23f854ff812e61d40bfce59e98b14e7b, type: 3}
-  PlayerHitWallVolume: 1
+  Sprite: {fileID: 21300000, guid: 093ccd60c76d1d04f8d3f80885d9760a, type: 3}

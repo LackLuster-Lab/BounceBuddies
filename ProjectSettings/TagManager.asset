@@ -6,6 +6,7 @@ TagManager:
   tags:
   - KOTH
   - RaceFinish
+  - TimeBomb
   layers:
   - Default
   - TransparentFX
