@@ -13,6 +13,9 @@ public class PowerUpFunctions : NetworkBehaviour
 	[SerializeField] protected GameObject timeBombArea;
 	[SerializeField] protected GameObject projectile;
 
+	public EventHandler OnExplosion;
+	public EventHandler OnProjectile;
+
 	public EventHandler<ProjectileCallbackEventArgs> onProjectileCallback;
 	public class ProjectileCallbackEventArgs : EventArgs {
 		public Vector3 position;
@@ -56,10 +59,12 @@ public class PowerUpFunctions : NetworkBehaviour
 	private void SpawnTimeBombClientRpc(Vector3 position,Vector3 velocity) {
 		GameObject timeBomb = Instantiate(projectile, position, Quaternion.identity);
 		timeBomb.GetComponent<Projectile>().SetVelocity(velocity);
+		OnProjectile?.Invoke(this, EventArgs.Empty);
 		onProjectileCallback += spawnTimeBombArea;
 	}
 
 	private void spawnTimeBombArea(object sender, ProjectileCallbackEventArgs e) {
+		OnExplosion?.Invoke(this, EventArgs.Empty);
 		GameObject timeBomb = Instantiate(timeBombArea, e.position, Quaternion.identity);
 		Destroy(timeBomb, 5);
 	}
@@ -92,5 +97,6 @@ public class PowerUpFunctions : NetworkBehaviour
 		Debug.Log("spawnParticles");
 		GameObject particles = Instantiate(Rocketvfx, position, rotation);
 		Destroy(particles, 1);
+		OnExplosion?.Invoke(this, EventArgs.Empty);
 	}
 }

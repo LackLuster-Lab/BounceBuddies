@@ -16,7 +16,8 @@ public class GameManager : NetworkBehaviour {
 		All,
 		Fighter,
 		Race,
-		KingOfTheHill
+		KingOfTheHill,
+		Demo
 	}
 
 	public enum map {
@@ -25,8 +26,8 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	map selectedMap = map.All;
-	gamemode selectedGameMode = gamemode.All;
-	int Rounds = 5;
+	gamemode selectedGameMode = gamemode.Demo;
+	int Rounds = 3;
 	bool isPowerUps = true;
 	float roundTimer = 60;
 
@@ -76,8 +77,26 @@ public class GameManager : NetworkBehaviour {
 			case gamemode.KingOfTheHill:
 				loadKOTH();
 				break;
+			case gamemode.Demo:
+				loadDemo();
+				break;
+
 		}
 		Rounds--;
+	}
+
+	private void loadDemo() {
+		switch (Rounds) {
+			case 3:
+				loadFighter();
+				break;
+			case 2:
+				loadKOTH();
+				break;
+			case 1:
+				loadRace();
+				break;
+		}
 	}
 
 	public void EndRound(object sender, RoundManager.onEndgameEventArgs e) {

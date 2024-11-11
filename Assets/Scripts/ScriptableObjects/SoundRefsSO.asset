@@ -14,4 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerHitWall: {fileID: 8300000, guid: e8c578f94ae625346b521a7feba25e19, type: 3}
   buttonPress: {fileID: 8300000, guid: 23f854ff812e61d40bfce59e98b14e7b, type: 3}
+  Projectile: {fileID: 8300000, guid: d41e0eb2ae8eab94797600ae77516175, type: 3}
+  Explosion: {fileID: 8300000, guid: 87805fcd4b7e9c446beff4d38aa41469, type: 3}
   PlayerHitWallVolume: 1
+  buttonPressVolume: 0.6
+  ProjectileVolume: 3
+  ExplosionVolume: 0.6

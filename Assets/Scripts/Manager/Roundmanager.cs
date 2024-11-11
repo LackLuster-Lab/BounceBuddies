@@ -216,7 +216,6 @@ public class RoundManager : NetworkBehaviour {
 					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 
-				updateCameraClientRpc();
 
 				//Powerups
 				if (powerUpsEnabled) {
@@ -270,14 +269,21 @@ public class RoundManager : NetworkBehaviour {
 				break;
 		}
 	}
+
+	private void FixedUpdate() {
+		if (IsServer) {
+			updateCameraClientRpc();
+				}
+	}
+
 	[ClientRpc]
 	private void updateCameraClientRpc() {
 		switch (cameraMode) {
 			case CameraMode.Horizontal:
-		cameraMove.transform.position = new Vector3(Player.LocalInstance.gameObject.transform.position.x, cameraMove.transform.position.y, cameraMove.transform.position.z);
+		cameraMove.transform.position = Vector3.Lerp(cameraMove.transform.position, new Vector3(Player.LocalInstance.gameObject.transform.position.x, cameraMove.transform.position.y, cameraMove.transform.position.z), .5f);
 				break;
 			case CameraMode.Vertical:
-		cameraMove.transform.position = new Vector3(cameraMove.transform.position.x, Player.LocalInstance.gameObject.transform.position.y, cameraMove.transform.position.z);
+		cameraMove.transform.position = Vector3.Lerp(cameraMove.transform.position, new Vector3(cameraMove.transform.position.x, Player.LocalInstance.gameObject.transform.position.y, cameraMove.transform.position.z), .5f);
 				break;
 			case CameraMode.None:
 				break;

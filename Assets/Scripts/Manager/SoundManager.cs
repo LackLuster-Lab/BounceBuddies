@@ -27,6 +27,8 @@ public class SoundManager : MonoBehaviour
 		CharacterSelectColor.OnButtonPress += OnButtonPress;
 		ReadyUI.OnButtonPress += OnButtonPress;
 		EndGamUI.OnButtonPress += OnButtonPress;
+		PowerUpFunctions.instance.OnExplosion += OnExplosion;
+		PowerUpFunctions.instance.OnProjectile += onProjectile;
 	}
 
 	//play sounds
@@ -36,8 +38,15 @@ public class SoundManager : MonoBehaviour
 	}
 
 	private void OnButtonPress(object sender, System.EventArgs e) {
-		Player player = sender as Player;
 		PlaySound(sounds.buttonPress, Camera.allCameras[0].transform.position, sounds.buttonPressVolume);
+	}
+
+	private void OnExplosion(object sender, System.EventArgs e) {
+		PlaySound(sounds.Explosion, Camera.allCameras[0].transform.position, sounds.ExplosionVolume);
+	}
+
+	private void onProjectile(object sender, System.EventArgs e) {
+		PlaySound(sounds.Projectile, Camera.allCameras[0].transform.position, sounds.ProjectileVolume);
 	}
 
 	//sound manager functions
