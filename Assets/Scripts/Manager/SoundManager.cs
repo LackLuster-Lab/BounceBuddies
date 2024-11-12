@@ -27,8 +27,8 @@ public class SoundManager : MonoBehaviour
 		CharacterSelectColor.OnButtonPress += OnButtonPress;
 		ReadyUI.OnButtonPress += OnButtonPress;
 		EndGamUI.OnButtonPress += OnButtonPress;
-		PowerUpFunctions.instance.OnExplosion += OnExplosion;
-		PowerUpFunctions.instance.OnProjectile += onProjectile;
+		PowerUpFunctions.OnExplosion += OnExplosion;
+		PowerUpFunctions.OnProjectile += onProjectile;
 	}
 
 	//play sounds

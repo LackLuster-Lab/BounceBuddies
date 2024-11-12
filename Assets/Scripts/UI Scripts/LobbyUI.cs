@@ -21,6 +21,7 @@ public class LobbyUI : MonoBehaviour {
 	[SerializeField] Transform lobbyContainer;
 	[SerializeField] Transform lobbyTemplate;
 	[SerializeField] Transform LobbyListUI;
+	[SerializeField] Transform NoLobbiesText;
 	[SerializeField] JoinCodeInput JoinCodeUI;
 	public static event EventHandler OnButtonPress;
 
@@ -92,10 +93,16 @@ public class LobbyUI : MonoBehaviour {
 			Destroy(child.gameObject);
 		}
 
-		foreach (Lobby lobby in lobbies) {
-			Transform lobbyTransform = Instantiate(lobbyTemplate, lobbyContainer);
-			lobbyTransform.gameObject.SetActive(true);
-			lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
+
+		if (lobbies.Count > 0) {
+			foreach (Lobby lobby in lobbies) {
+				Transform lobbyTransform = Instantiate(lobbyTemplate, lobbyContainer);
+				lobbyTransform.gameObject.SetActive(true);
+				lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
+			}
+			NoLobbiesText.gameObject.SetActive(false);
+		} else {
+			NoLobbiesText.gameObject.SetActive(true);
 		}
 	}
 

@@ -13,8 +13,8 @@ public class PowerUpFunctions : NetworkBehaviour
 	[SerializeField] protected GameObject timeBombArea;
 	[SerializeField] protected GameObject projectile;
 
-	public EventHandler OnExplosion;
-	public EventHandler OnProjectile;
+	public static EventHandler OnExplosion;
+	public static EventHandler OnProjectile;
 
 	public EventHandler<ProjectileCallbackEventArgs> onProjectileCallback;
 	public class ProjectileCallbackEventArgs : EventArgs {
