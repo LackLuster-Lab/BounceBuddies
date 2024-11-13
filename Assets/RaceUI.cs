@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RaceUI : MonoBehaviour
 {
     [SerializeField] private int playerIndex;
     [SerializeField] private float finish;
     [SerializeField] private float start;
-    [SerializeField] private SpriteRenderer playercolor;
+    [SerializeField] private Image playercolor;
     private ulong clientID;
 
     // Start is called before the first frame update
@@ -17,7 +18,6 @@ public class RaceUI : MonoBehaviour
     {
         if (MultiplayerManager.instance.IsPlayerIndexConnected(playerIndex)) {
             show();
-
 			PlayerData playerData = MultiplayerManager.instance.GetPlayerDatafromPlayerIndex(playerIndex);
 			playercolor.color = MultiplayerManager.instance.getPlayerColor(playerData.ColorId);
             clientID = playerData.clientId;
