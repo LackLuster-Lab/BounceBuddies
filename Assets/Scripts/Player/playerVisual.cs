@@ -5,6 +5,8 @@ using UnityEngine;
 public class playerVisual : MonoBehaviour
 {
 	[SerializeField] SpriteRenderer Body;
+	[SerializeField] Sprite BodySprite;
+	[SerializeField] Sprite HeavySprite;
 	[SerializeField] SpriteRenderer Mouth;
 
 	private Color color;
@@ -23,4 +25,12 @@ public class playerVisual : MonoBehaviour
 		Mouth.color = this.color;
 	}
 
+	public void Heavy() {
+		Body.sprite = HeavySprite;
+
+	}
+
+	public void Normal() {
+		Body.sprite = BodySprite;
+	}
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -24,7 +25,8 @@ public class PowerUpFunctions : NetworkBehaviour
 	public enum powerup {
 		None,
         Rocket,
-		TimeBomb
+		TimeBomb,
+		Heavy
     }
 
 	private void Awake() {
@@ -38,9 +40,18 @@ public class PowerUpFunctions : NetworkBehaviour
 			case powerup.Rocket:
 				RocketPower(gameInput, gameObject);
 				break;
-			case powerup .TimeBomb:
+			case powerup.TimeBomb:
 				TimeBomb(gameInput, gameObject);
 				break;
+			case powerup.Heavy:
+				break;
+		}
+	}
+
+	public void Heavy() {
+		if (gameObject.TryGetComponent<Player>(out Player player)) {
+			player.currentMaxSpeed = player.MaxSpeed * .5f;
+			player.updateWeight(3, 5);
 		}
 	}
 

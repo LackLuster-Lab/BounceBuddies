@@ -1900,6 +1900,7 @@ MonoBehaviour:
   allPowerUps:
   - {fileID: 5146337186254192159, guid: e62473372b6952d4b86318c4f2c6094e, type: 3}
   - {fileID: 5146337186254192159, guid: e56d1aeba0ee771408e118deadf479d0, type: 3}
+  - {fileID: 5146337186254192159, guid: 5d54964c2d3576f44915b64fd10808f2, type: 3}
   spawnPositions:
   - {x: -15, y: 7, z: 0}
   - {x: -15, y: 2, z: 0}
@@ -2248,7 +2249,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 251.5
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5237,7 +5238,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6211,7 +6212,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -28305,7 +28306,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1

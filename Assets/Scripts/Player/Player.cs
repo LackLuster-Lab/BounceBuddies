@@ -20,7 +20,9 @@ public class Player : NetworkBehaviour {
     [SerializeField] private float HealthMax;
     [NonSerialized] public float Health;
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float maxSpeed = 30f;
+    [SerializeField] public float MaxSpeed = 30f;
+    public float currentMaxSpeed = 30f;
+    [SerializeField] public float weight = 1f;
     [SerializeField] private float squishChange = 5f;
     [SerializeField] private Color BodyColor;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
@@ -37,7 +39,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
     [SerializeField] private playerVisual playerVisual;
     GameObject UsedUI;
-
+    private float powerupTimer = 0;
 	public static Dictionary<ulong, int> numberOfPlayers = new Dictionary<ulong, int>();
     private int playerPosition;
 	private PowerUpFunctions.powerup currentPowerUp = PowerUpFunctions.powerup.None;
@@ -143,7 +145,16 @@ public class Player : NetworkBehaviour {
         }
         HandleSquish();
         updateVelocityServerRpc(GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y);
-	}
+
+        powerupTimer -= Time.deltaTime;
+
+        if (powerupTimer <= 0) {
+            powerupTimer = 1;
+            currentMaxSpeed = MaxSpeed;
+            updateWeight(1, 1);
+            playerVisual.Normal();
+        }
+    }
 
     [ServerRpc]
     public void updateVelocityServerRpc(float x, float y) {
@@ -198,11 +209,11 @@ public class Player : NetworkBehaviour {
 			case RoundManager.DamageType.Stocks://need this coded
 				break;
 			case RoundManager.DamageType.Percentage:
-                Vector3 damagingVelocity = (-1 * attacking.currentVelocity) + (currentVelocity);
+                Vector3 damagingVelocity = (attacking.currentVelocity * attacking.weight) + (defending.currentVelocity * defending.weight);
                 Vector3 PlayerDir = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) - collision.GetContact(0).point;
                 double angle = (180 * Math.Acos(Vector2.Dot(PlayerDir, damagingVelocity)/((damagingVelocity.magnitude) * PlayerDir.magnitude)))/Math.PI;
 
-                if (angle > 90 && angle < 270) {
+                if (angle < 90 || angle > 270) {
                     //float damage = damageMultiplier * Vector3.Project(damagingVelocity, PlayerDir).magnitude;
                     float damage = damageMultiplier * damagingVelocity.magnitude;
 
@@ -215,7 +226,23 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
+    public void updateWeight(float multiplier, float time) {
+        powerupTimer = time;
+        updateWeightServerRpc(multiplier);
+	}
     [ServerRpc(RequireOwnership = false)]
+    public void updateWeightServerRpc(float multiplier) {
+        updateWeightClientRpc(multiplier);
+	}
+    [ClientRpc]
+    public void updateWeightClientRpc(float multiplier) {
+        weight = multiplier;
+        if (weight > 1) {
+            playerVisual.Heavy();
+        }
+    }
+
+		[ServerRpc(RequireOwnership = false)]
     private void dealDamgeServerRpc(float damage) {
         dealDamgeClientRpc(damage);
     }
@@ -254,7 +281,7 @@ public class Player : NetworkBehaviour {
 		}
 
         if (IsOwner && collision.gameObject.tag == "TimeBomb") {
-            maxSpeed /= 4;
+            currentMaxSpeed /= 4;
         }
 	}
 
@@ -270,7 +297,7 @@ public class Player : NetworkBehaviour {
 
 	private void OnTriggerExit2D(Collider2D collision) {
 		if (IsOwner && collision.gameObject.tag == "TimeBomb") {
-			maxSpeed *= 4;
+			currentMaxSpeed *= 4;
 		}
 	}
 
@@ -304,16 +331,16 @@ public class Player : NetworkBehaviour {
 
     private void HandleMovement() {
         rb.velocity += GameInput.instance.getMovementVectorNormalized() * moveSpeed; //network issue
-        if (rb.velocity.magnitude > maxSpeed) {
-            rb.velocity = rb.velocity.normalized * maxSpeed;
+        if (rb.velocity.magnitude > currentMaxSpeed) {
+            rb.velocity = rb.velocity.normalized * currentMaxSpeed;
         }
     }
 
     private void HandleSquish() {
 
 		transform.right = Vector3.right;
-		if (rb.velocity.magnitude > maxSpeed) {
-			rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity.normalized * maxSpeed, Time.deltaTime * 3);
+		if (rb.velocity.magnitude > currentMaxSpeed) {
+			rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity.normalized * currentMaxSpeed, Time.deltaTime * 3);
 		}
 
 		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), Time.deltaTime * squishChange);

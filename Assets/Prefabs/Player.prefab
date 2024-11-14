@@ -53,7 +53,9 @@ MonoBehaviour:
   mylobbyui: {fileID: 0}
   HealthMax: 100
   moveSpeed: 0.3
-  maxSpeed: 35
+  MaxSpeed: 30
+  currentMaxSpeed: 30
+  weight: 1
   squishChange: 6
   BodyColor: {r: 0.972549, g: 0, b: 0, a: 1}
   squishSize: {x: 0.4, y: 1.4, z: 1}
@@ -202,16 +204,40 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2185252214856765751, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: BodySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5afd0b79995893648928924ce58c3010, type: 3}
+    - target: {fileID: 2185252214856765751, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: HeavySprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f560fb49ff02d5c47b4011002f5488a7, type: 3}
     - target: {fileID: 3731846516018666535, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
       propertyPath: m_Name
       value: body
       objectReference: {fileID: 0}
+    - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Size.x
+      value: 47.249996
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Size.y
+      value: 47.249996
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5afd0b79995893648928924ce58c3010, type: 3}
     - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004428964034288110, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8810021588418071164, guid: c26ab901d27ea5c4bb77bb10b14b140f, type: 3}
