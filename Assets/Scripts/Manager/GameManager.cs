@@ -29,7 +29,7 @@ public class GameManager : NetworkBehaviour {
 	gamemode selectedGameMode = gamemode.Demo;
 	int Rounds = 3;
 	bool isPowerUps = true;
-	float roundTimer = 60;
+	float roundTimer = 90;
 
 	public List<PlayerData> winners;
 

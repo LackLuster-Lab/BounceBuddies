@@ -52,7 +52,7 @@ public class RaceUI : MonoBehaviour
 
     [ClientRpc]
     public void updateUIClientRpc(float position) {
-        gameObject.transform.position = new Vector3(position, 0, 0);
+        gameObject.transform.localPosition = new Vector3(position, -50, 0);
     }
 
 

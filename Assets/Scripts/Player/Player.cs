@@ -6,6 +6,7 @@ using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -227,18 +228,21 @@ public class Player : NetworkBehaviour {
 	}
 
     public void updateWeight(float multiplier, float time) {
-        powerupTimer = time;
-        updateWeightServerRpc(multiplier);
+        updateWeightServerRpc(multiplier, time);
 	}
     [ServerRpc(RequireOwnership = false)]
-    public void updateWeightServerRpc(float multiplier) {
-        updateWeightClientRpc(multiplier);
+    public void updateWeightServerRpc(float multiplier, float time) {
+        updateWeightClientRpc(multiplier,time);
 	}
     [ClientRpc]
-    public void updateWeightClientRpc(float multiplier) {
-        weight = multiplier;
+    public void updateWeightClientRpc(float multiplier, float time) {
+		powerupTimer = time;
+		weight = multiplier;
         if (weight > 1) {
             playerVisual.Heavy();
+        }
+        if (weight < 1) {
+            playerVisual.Light();
         }
     }
 
@@ -280,9 +284,7 @@ public class Player : NetworkBehaviour {
             RoundManager.instance.OnfinishRaceServerRpc();
 		}
 
-        if (IsOwner && collision.gameObject.tag == "TimeBomb") {
-            currentMaxSpeed /= 4;
-        }
+
 	}
 
 	private void OnTriggerStay2D(Collider2D collision) {
@@ -292,6 +294,9 @@ public class Player : NetworkBehaviour {
 				kothTime = 1f;
 				addKOTHPointsServerRpc();
 			}
+		}
+		if (IsOwner && collision.gameObject.tag == "TimeBomb") {
+			currentMaxSpeed = MaxSpeed / 4;
 		}
 	}
 

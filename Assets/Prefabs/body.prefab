@@ -139,7 +139,7 @@ RectTransform:
   - {fileID: 7644992242329664463}
   - {fileID: 3261618680653406926}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -159,7 +159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Body: {fileID: 6004428964034288110}
+  BodySprite: {fileID: 21300000, guid: 5afd0b79995893648928924ce58c3010, type: 3}
+  HeavySprite: {fileID: 21300000, guid: f560fb49ff02d5c47b4011002f5488a7, type: 3}
   Mouth: {fileID: 230251851335645324}
+  Eyes: {fileID: 9103020292437328630}
 --- !u!1 &4142217026888601690
 GameObject:
   m_ObjectHideFlags: 0

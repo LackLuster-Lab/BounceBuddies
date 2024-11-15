@@ -8,6 +8,7 @@ public class playerVisual : MonoBehaviour
 	[SerializeField] Sprite BodySprite;
 	[SerializeField] Sprite HeavySprite;
 	[SerializeField] SpriteRenderer Mouth;
+	[SerializeField] SpriteRenderer Eyes;
 
 	private Color color;
 
@@ -30,7 +31,16 @@ public class playerVisual : MonoBehaviour
 
 	}
 
+	public void Light() {
+		Body.color = new Color(color.r, color.g, color.b, .3f);
+		Mouth.color = new Color(color.r, color.g, color.b, .3f);
+		Eyes.color = new Color(1, 1, 1, .3f);
+	}
+		
 	public void Normal() {
 		Body.sprite = BodySprite;
+		Body.color = new Color(color.r, color.g, color.b, 1);
+		Mouth.color = new Color(color.r, color.g, color.b, 1);
+		Eyes.color = new Color(1, 1, 1, 1);
 	}
 }

@@ -26,7 +26,8 @@ public class PowerUpFunctions : NetworkBehaviour
 		None,
         Rocket,
 		TimeBomb,
-		Heavy
+		Heavy,
+		Light
     }
 
 	private void Awake() {
@@ -44,17 +45,27 @@ public class PowerUpFunctions : NetworkBehaviour
 				TimeBomb(gameInput, gameObject);
 				break;
 			case powerup.Heavy:
+				Heavy(gameObject);
+				break;
+			case powerup.Light:
+				Light(gameObject);
 				break;
 		}
 	}
 
-	public void Heavy() {
+	public void Heavy(GameObject gameObject) {
 		if (gameObject.TryGetComponent<Player>(out Player player)) {
 			player.currentMaxSpeed = player.MaxSpeed * .5f;
 			player.updateWeight(3, 5);
 		}
 	}
 
+	public void Light(GameObject gameObject) {
+		if (gameObject.TryGetComponent<Player>(out Player player)) {
+			player.currentMaxSpeed = player.MaxSpeed * 2f;
+			player.updateWeight(0.5f, 5);
+		}
+	}
 	public void TimeBomb(GameInput gameInput, GameObject gameObject) {
 		Vector2 currentDir = gameInput.playerInputActions.Player.Move.ReadValue<Vector2>();
 		Vector3 velocity = new Vector3(currentDir.x, currentDir.y, 0);
