@@ -597,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8810021588418071164, guid: 70360f0cb573cbb4ba3dc5ad36bca744, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -170
+      value: -234.95
       objectReference: {fileID: 0}
     - target: {fileID: 8810021588418071164, guid: 70360f0cb573cbb4ba3dc5ad36bca744, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1455,8 +1455,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 825, y: 475}
+  m_AnchoredPosition: {x: 34.7997, y: 0}
+  m_SizeDelta: {x: 894.5995, y: 475}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &942670201
 MonoBehaviour:
@@ -1478,7 +1478,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B  unce Buddies
+  m_text: B  uncing Buds
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 851a8555583e79946836bd4505a40cd2, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 3fe9b3927c36de047b20702c80679cb1, type: 2}
