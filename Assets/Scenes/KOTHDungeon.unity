@@ -1499,6 +1499,7 @@ MonoBehaviour:
   - {fileID: 5146337186254192159, guid: e62473372b6952d4b86318c4f2c6094e, type: 3}
   - {fileID: 5146337186254192159, guid: e56d1aeba0ee771408e118deadf479d0, type: 3}
   - {fileID: 5146337186254192159, guid: 5d54964c2d3576f44915b64fd10808f2, type: 3}
+  - {fileID: 5146337186254192159, guid: 4a56d9f22d443a64a90032aa1244fa11, type: 3}
   spawnPositions:
   - {x: -13, y: 4, z: 0}
   - {x: 13, y: 4, z: 0}
