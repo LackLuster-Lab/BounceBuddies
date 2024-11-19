@@ -22,7 +22,6 @@ public class SoundManager : MonoBehaviour
 		LobbyCreateUI.OnButtonPress += OnButtonPress;
 		JoinCodeInput.OnButtonPress += OnButtonPress;
 		LobbyMessageUI.OnButtonPress += OnButtonPress;
-		HostUi.OnButtonPress += OnButtonPress;
 		CharacterSelectUI.OnButtonPress += OnButtonPress;
 		CharacterSelectColor.OnButtonPress += OnButtonPress;
 		ReadyUI.OnButtonPress += OnButtonPress;
@@ -77,7 +76,6 @@ public class SoundManager : MonoBehaviour
 		LobbyCreateUI.OnButtonPress -= OnButtonPress;
 		JoinCodeInput.OnButtonPress -= OnButtonPress;
 		LobbyMessageUI.OnButtonPress -= OnButtonPress;
-		HostUi.OnButtonPress -= OnButtonPress;
 		CharacterSelectUI.OnButtonPress -= OnButtonPress;
 		CharacterSelectColor.OnButtonPress -= OnButtonPress;
 		ReadyUI.OnButtonPress -= OnButtonPress;

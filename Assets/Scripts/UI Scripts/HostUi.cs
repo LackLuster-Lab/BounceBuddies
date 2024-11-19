@@ -8,12 +8,10 @@ using UnityEngine.UI;
 public class HostUi : MonoBehaviour
 {
     [SerializeField] Button MainMenuButton;
-	public static event EventHandler OnButtonPress;
 
 	private void Awake() {
 		MainMenuButton.onClick.AddListener(() => {
 			Loader.Load(Loader.scenes.MainMenu);
-			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 	}
 

@@ -11,7 +11,7 @@ public class WinPlayer : MonoBehaviour {
 	[SerializeField] GameObject readyGameObject;
 	[SerializeField] playerVisual playerVisual;
 	[SerializeField] private TextMeshPro playerNameText;
-
+	[SerializeField] private TextMeshPro pointsText;
 	private void Awake() {
 	}
 
@@ -37,6 +37,8 @@ public class WinPlayer : MonoBehaviour {
 
 
 			playerNameText.text = playerData.playerName.ToString();
+
+			pointsText.text = "(" + playerData.points.ToString()+ " points)";
 
 			playerVisual.setPlayerColor(MultiplayerManager.instance.getPlayerColor(playerData.ColorId));
 
