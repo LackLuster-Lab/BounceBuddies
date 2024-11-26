@@ -1294,6 +1294,7 @@ GameObject:
   - component: {fileID: 254195773}
   - component: {fileID: 254195772}
   - component: {fileID: 254195771}
+  - component: {fileID: 254195774}
   m_Layer: 5
   m_Name: Image (3)
   m_TagString: Untagged
@@ -1376,6 +1377,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254195769}
   m_CullTransparentMesh: 1
+--- !u!114 &254195774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254195769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1735062224
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &256528732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2250,7 +2267,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 251.5
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4783,6 +4800,7 @@ GameObject:
   - component: {fileID: 1163943693}
   - component: {fileID: 1163943692}
   - component: {fileID: 1163943691}
+  - component: {fileID: 1163943694}
   m_Layer: 5
   m_Name: Image (2)
   m_TagString: Untagged
@@ -4865,6 +4883,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163943689}
   m_CullTransparentMesh: 1
+--- !u!114 &1163943694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163943689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 188872605
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1214828137
 GameObject:
   m_ObjectHideFlags: 3
@@ -5208,7 +5242,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 300
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6015,6 +6049,7 @@ GameObject:
   - component: {fileID: 1609115150}
   - component: {fileID: 1609115149}
   - component: {fileID: 1609115148}
+  - component: {fileID: 1609115151}
   m_Layer: 5
   m_Name: Image (4)
   m_TagString: Untagged
@@ -6097,6 +6132,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609115146}
   m_CullTransparentMesh: 1
+--- !u!114 &1609115151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609115146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3224090889
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1627203279
 GameObject:
   m_ObjectHideFlags: 0
@@ -6182,7 +6233,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 150
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -28276,7 +28327,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 100
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -37010,6 +37061,7 @@ GameObject:
   - component: {fileID: 2068278622}
   - component: {fileID: 2068278621}
   - component: {fileID: 2068278620}
+  - component: {fileID: 2068278623}
   m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
@@ -37092,6 +37144,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068278618}
   m_CullTransparentMesh: 1
+--- !u!114 &2068278623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068278618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1888903852
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &2082154802
 GameObject:
   m_ObjectHideFlags: 0

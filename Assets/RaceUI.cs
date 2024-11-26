@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RaceUI : MonoBehaviour
+public class RaceUI : NetworkBehaviour
 {
     [SerializeField] private int playerIndex;
     [SerializeField] private float finish;
