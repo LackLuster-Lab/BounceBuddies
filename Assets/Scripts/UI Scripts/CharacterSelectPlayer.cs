@@ -24,8 +24,9 @@ public class CharacterSelectPlayer : MonoBehaviour {
 	private void Start() {
 		MultiplayerManager.instance.OnPlayerDataNetworkListChanged += Instance_OnPlayerDataNetworkListChanged;
 		CharacterSelectReady.instance.OnReadyChange += Instance_OnReadyChange;
-
-		KickPlayer.gameObject.SetActive(NetworkManager.Singleton.IsServer);
+		if (playerIndex != 0) {
+			KickPlayer.gameObject.SetActive(NetworkManager.Singleton.IsServer);
+		}
 		UpdatePlayer();
 	}
 

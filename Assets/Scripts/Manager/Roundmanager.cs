@@ -88,6 +88,11 @@ public class RoundManager : NetworkBehaviour {
 	}
 
 	public void SetValues(bool IsPowerups, float gameTimer) {
+		SetValuesClientRpc(IsPowerups, gameTimer);
+	}
+
+	[ClientRpc]
+	public void SetValuesClientRpc(bool IsPowerups, float gameTimer) {
 		powerUpsEnabled = IsPowerups;
 		GameTimer = gameTimer;
 		GameTimerMax = gameTimer;
