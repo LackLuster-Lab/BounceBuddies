@@ -73,7 +73,9 @@ public class LobbyUI : MonoBehaviour {
 	private void Start() {
 		playerNameInputField.text = MultiplayerManager.instance.GetPlayerName();
 		playerNameInputField.onValueChanged.AddListener((string newText) => {
-			MultiplayerManager.instance.SetPlayerName(newText);
+			if (newText.Trim() != "") {
+				MultiplayerManager.instance.SetPlayerName(newText.Trim());
+			}
 		});
 
 		createLobbyButton.Select();

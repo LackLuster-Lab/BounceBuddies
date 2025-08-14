@@ -19,4 +19,4 @@ MonoBehaviour:
   PlayerHitWallVolume: 1
   buttonPressVolume: 0.6
   ProjectileVolume: 3
-  ExplosionVolume: 0.3
+  ExplosionVolume: 0.1

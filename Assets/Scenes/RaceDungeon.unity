@@ -2267,7 +2267,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 251.5
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5242,7 +5242,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6233,7 +6233,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -27742,7 +27742,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
+  m_Color: {r: 0.4509804, g: 0.50980395, b: 0.5686275, a: 1}
   m_Origin: {x: -20, y: -16, z: 0}
   m_Size: {x: 159, y: 27, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -28327,7 +28327,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 18
   m_fontSizeBase: 373.2
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -15,13 +15,17 @@ public class LobbyCreateUI : MonoBehaviour
 
 	private void Awake() {
 		createPublicButton.onClick.AddListener(() => {
-			GameLobby.Instance.CreateLobby(lobbyNameInputField.text, false);
-			OnButtonPress?.Invoke(this, EventArgs.Empty);
+			if (lobbyNameInputField.text.Trim() != "") {
+				GameLobby.Instance.CreateLobby(lobbyNameInputField.text.Trim(), false);
+				OnButtonPress?.Invoke(this, EventArgs.Empty);
+			}
 		});
 
 		createPrivateButton.onClick.AddListener(() => {
-			GameLobby.Instance.CreateLobby(lobbyNameInputField.text, true);
-			OnButtonPress?.Invoke(this, EventArgs.Empty);
+			if (lobbyNameInputField.text.Trim() != "") {
+				GameLobby.Instance.CreateLobby(lobbyNameInputField.text.Trim(), true);
+				OnButtonPress?.Invoke(this, EventArgs.Empty);
+			}
 		});
 
 		closeButton.onClick.AddListener(() => {
