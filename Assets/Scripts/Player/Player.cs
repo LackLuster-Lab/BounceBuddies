@@ -24,7 +24,9 @@ public class Player : NetworkBehaviour {
     public float currentMaxSpeed = 30f;
     [SerializeField] public float weight = 1f;
     [SerializeField] private float squishChange = 5f;
-    [SerializeField] private Color BodyColor;
+	[SerializeField] private float recoilMultiplier = 1.0f;
+
+	[SerializeField] private Color BodyColor;
     [SerializeField] private Vector3 squishSize = new Vector3(0.2f, 1.5f, 1f);
     [SerializeField] private GameObject FighterUI;
     [SerializeField] private GameObject KOTHUI;
@@ -197,9 +199,25 @@ public class Player : NetworkBehaviour {
             mouthAnim.SetBool("Hit", true);
             
             PlayerDealDamage(collision, player, this);
-        } else {
+
+			Vector2 direction = (player.transform.position - transform.position).normalized;
+			float speed = GetComponent<Rigidbody2D>().velocity.magnitude;
+			float strength = speed * recoilMultiplier;
+			ApplyRecoilServerRpc(player.OwnerClientId, direction, strength);
+		} else {
             onWallHitServerRpc();
         }
+	}
+
+	[ServerRpc]
+	private void ApplyRecoilServerRpc(ulong targetClientId, Vector2 dir, float strength) {
+		var targetPlayer = NetworkManager.Singleton.ConnectedClients[targetClientId]
+			.PlayerObject.GetComponent<Player>();
+
+		var rb = targetPlayer.GetComponent<Rigidbody2D>();
+		if (rb != null) {
+			rb.AddForce(dir * strength, ForceMode2D.Impulse);
+		}
 	}
 
 	public void PlayerDealDamage(Collision2D collision, Player attacking, Player defending) {

@@ -44,8 +44,18 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	private void Awake() {
-		instance = this;
-		DontDestroyOnLoad(this.gameObject);
+		if (instance != null && instance != this) {
+			selectedMap = instance.selectedMap;
+			selectedGameMode = instance.selectedGameMode;
+			Rounds = instance.Rounds;
+			isPowerUps = instance.isPowerUps;
+			roundTimer = instance.roundTimer;
+			winners = instance.winners;
+			Destroy(instance);
+			instance = this;
+		} else {
+			instance = this;
+		}
 	}
 
 	public void startGame() {
