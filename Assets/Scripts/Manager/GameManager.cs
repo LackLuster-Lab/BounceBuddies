@@ -51,11 +51,12 @@ public class GameManager : NetworkBehaviour {
 			isPowerUps = instance.isPowerUps;
 			roundTimer = instance.roundTimer;
 			winners = instance.winners;
-			Destroy(instance);
+			Destroy(instance.gameObject);
 			instance = this;
 		} else {
 			instance = this;
 		}
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public void startGame() {

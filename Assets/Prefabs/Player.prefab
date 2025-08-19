@@ -57,6 +57,7 @@ MonoBehaviour:
   currentMaxSpeed: 30
   weight: 1
   squishChange: 6
+  recoilMultiplier: 1
   BodyColor: {r: 0.972549, g: 0, b: 0, a: 1}
   squishSize: {x: 0.4, y: 1.4, z: 1}
   FighterUI: {fileID: 6159855205066279493, guid: 6c8080b3551750347b448ed9a31fad3a, type: 3}
@@ -175,7 +176,7 @@ MonoBehaviour:
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   InLocalSpace: 0
-  Interpolate: 0
+  Interpolate: 1
 --- !u!114 &1014346439441496845
 MonoBehaviour:
   m_ObjectHideFlags: 0

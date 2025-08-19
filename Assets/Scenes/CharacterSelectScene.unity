@@ -3787,6 +3787,10 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 87f98634645acd4429743e2825b84d0f, type: 2}
+    - target: {fileID: 2952268549191792338, guid: 1af8ef793e8a9984a8ece3f910129c73, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4773229291409156775, guid: 1af8ef793e8a9984a8ece3f910129c73, type: 3}
       propertyPath: m_Name
       value: Player_0
