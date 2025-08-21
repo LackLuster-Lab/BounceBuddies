@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a6c8ca2d4fb6344adca8e99b6c0a93, type: 3}
   m_Name: TimeBomb
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: 093ccd60c76d1d04f8d3f80885d9760a, type: 3}
+  Sprite: {fileID: 21300000, guid: a9a07542e21e93c419b2f99f19fe6111, type: 3}
