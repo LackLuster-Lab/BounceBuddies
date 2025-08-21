@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a6c8ca2d4fb6344adca8e99b6c0a93, type: 3}
   m_Name: Light
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: e1897890760974947bbfe33f573d3669, type: 3}
+  Sprite: {fileID: 21300000, guid: 9f2061b09d9530b4c89d62e83ac99de1, type: 3}
