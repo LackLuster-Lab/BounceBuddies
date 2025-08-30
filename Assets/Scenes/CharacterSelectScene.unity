@@ -2556,6 +2556,9 @@ MonoBehaviour:
   TimeButtonUp: {fileID: 1114768488}
   TimeButtonDown: {fileID: 1267930677}
   PowerUpButton: {fileID: 937082874}
+  RoundsText: {fileID: 2020311157}
+  TimeText: {fileID: 759371001}
+  powerupCheck: {fileID: 627300181}
   RoundsMax: 100
   timerInc: 30
   timerMax: 180

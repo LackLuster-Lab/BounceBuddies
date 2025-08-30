@@ -39,7 +39,7 @@ public class GameOptionsUI : MonoBehaviour {
 	private void Awake() {
 		CloseButton.onClick.AddListener(() => {
 			Hide();
-			closeButtonAction();
+			//closeButtonAction();
 			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		MapDropdown.onValueChanged.AddListener((int value) => {
@@ -63,12 +63,12 @@ public class GameOptionsUI : MonoBehaviour {
 		});
 		TimeButtonUp.onClick.AddListener(() => {
 			UpdateTimer(true);
-			RoundsText.text = "Time: " + GameManager.instance.getRoundTimer() + " Secs";
+			TimeText.text = "Time: " + GameManager.instance.getRoundTimer() + " Secs";
 			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		TimeButtonDown.onClick.AddListener(() => {
 			UpdateTimer(false);
-			RoundsText.text = "Time: " + GameManager.instance.getRoundTimer() + " Secs";
+			TimeText.text = "Time: " + GameManager.instance.getRoundTimer() + " Secs";
 			OnButtonPress?.Invoke(this, EventArgs.Empty);
 		});
 		PowerUpButton.onClick.AddListener(() => {
@@ -108,12 +108,12 @@ public class GameOptionsUI : MonoBehaviour {
 		float curRounds = GameManager.instance.getRoundTimer();
 		if (Up) {
 			if (curRounds == timerMax) {
-				GameManager.instance.updateTimer(1);
+				GameManager.instance.updateTimer(timerInc);
 			} else {
 				GameManager.instance.updateTimer(curRounds + timerInc);
 			}
 		} else {
-			if (curRounds == 1) {
+			if (curRounds == timerInc) {
 				GameManager.instance.updateTimer(timerMax);
 			} else {
 				GameManager.instance.updateTimer(curRounds - timerInc);
