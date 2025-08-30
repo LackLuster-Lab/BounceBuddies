@@ -31,6 +31,54 @@ public class GameManager : NetworkBehaviour {
 	bool isPowerUps = true;
 	float roundTimer = 90;
 
+	public bool getPower() {
+		return isPowerUps;
+	}
+
+	public int getRounds() {
+		return Rounds;
+	}
+
+	public float getRoundTimer() {
+		return roundTimer;
+	}
+
+	public void updateMap(int value) {
+		switch (value) {
+			default:
+			case 0:
+				selectedMap = map.All; break;
+			case 1:
+				selectedMap = map.Dungeon; break;
+		}
+	}
+
+	public void updateMode(int value) {
+		switch (value) {
+			default:
+			case 0:
+				selectedGameMode = gamemode.All; break;
+			case 1:
+				selectedGameMode = gamemode.Fighter; break;
+			case 2:
+				selectedGameMode = gamemode.Race; break;
+			case 3:
+				selectedGameMode = gamemode.KingOfTheHill; break;
+		}
+	}
+
+	public void updateRounds(int value) {
+		Rounds = value;
+	}
+
+	public void updateTimer(float value) {
+		roundTimer = value;
+	}
+
+	public void updatePowerUps(bool value) {
+		isPowerUps = value;
+	}
+
 	public List<PlayerData> winners;
 
 	public override void OnNetworkSpawn() {
